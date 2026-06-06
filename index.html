@@ -1276,7 +1276,7 @@
             // Generar Noticia Regular
             if (classRes === "win") newsBox.innerHTML = `📰 <b>ESPN:</b> ¡Implacable! ${userObj.nombre} derrota a ${rivalUser.nombre} de forma contundente.`;
             else if (classRes === "draw") newsBox.innerHTML = `📰 <b>ESPN:</b> Puntos divididos. ${userObj.nombre} se atora frente a un duro ${rivalUser.nombre}.`;
-            else newsBox.innerHTML = `📰 <b>ESPN:</b> ¡Sorpresa en la jornada! ${rivalUser.nombre} hace la maldad y le arrebata el invicto a ${userObj.nombre}.`;
+            else newsBox.innerHTML = `📰 <b>ESPN:</b> "Ahora resulta que meter menos goles que el rival es perder". ${rivalUser.nombre} hace la maldad y le arrebata los 3 puntos a ${userObj.nombre}.`;
             
             // Simular Resto de Partidos
             let otrosEquipos = equiposLiga.filter(e => !e.isUser && e.nombre !== rivalUser.nombre);
