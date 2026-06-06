@@ -1202,6 +1202,7 @@
         let golesGlobalRival = 0;
         let misRivalesLiguilla = [];
         let resorteosRestantes = 2;
+        let equiposYaSalidos = [];
 
         // Elementos DOM Draft
         const selectorFormacion = document.getElementById("formation-select");
@@ -1255,20 +1256,31 @@
         renderizarCancha();
 
         function ejecutarRandomizador() {
-            const periodos = Object.keys(baseDeDatosRetro);
-            const epoca = periodos[Math.floor(Math.random() * periodos.length)];
-            const listaEquipos = baseDeDatosRetro[epoca];
-            clubSeleccionado = listaEquipos[Math.floor(Math.random() * listaEquipos.length)];
+            let todosLosEquipos = [];
+            Object.values(baseDeDatosRetro).forEach(periodo => {
+            todosLosEquipos = todosLosEquipos.concat(periodo);
+            });
+            let equiposDisponibles = todosLosEquipos.filter(eq => !equiposYaSalidos.includes(eq.nombre));
+    
+            if (equiposDisponibles.length === 0) {
+                equiposYaSalidos = [];
+                equiposDisponibles = todosLosEquipos;
+                }
+
+            clubSeleccionado = equiposDisponibles[Math.floor(Math.random() * equiposDisponibles.length)];
+    
+            equiposYaSalidos.push(clubSeleccionado.nombre);
+
             const badgeClass = clubSeleccionado.estado === "activo" ? "status-activo" : "status-extinto";
             const badgeText = clubSeleccionado.estado === "activo" ? "En Primera" : "Descendido/Extinto";
-            bannerInfo.innerHTML = `Opciones extraídas de: <span>${clubSeleccionado.nombre} (${epoca})</span> <span class="status-badge ${badgeClass}">${badgeText}</span>`;
+            bannerInfo.innerHTML = `Opciones extraídas de: <span>${clubSeleccionado.nombre}</span> <span class="status-badge ${badgeClass}">${badgeText}</span>`;
 
             botonRandom.disabled = true;
             botonReroll.style.display = "block";
             botonReroll.innerText = `🔄 Resortear (${resorteosRestantes})`;
             botonReroll.disabled = resorteosRestantes === 0;
-            chkHardMode.disabled = true; // Bloquea cambiar de modo una vez iniciado
-            
+            chkHardMode.disabled = true;
+    
             desplegarOpcionesInmediatas();
         }
 
