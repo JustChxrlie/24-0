@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -153,16 +153,16 @@
         .btn-random {
             background: #38bdf8;
             color: #0f172a;
-            margin-left: auto;
         }
+        
         .btn-random:hover:not(:disabled) {
             background: #0ea5e9;
             box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
         }
 
         .btn-random:disabled, .btn-primary:disabled {
-            background: #1e293b;
-            color: #64748b;
+            background: #1e293b !important;
+            color: #64748b !important;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
@@ -179,7 +179,8 @@
 
         @media (max-width: 900px) {
             .draft-workspace { grid-template-columns: 1fr; }
-            .btn-random { margin-left: 0; width: 100%; }
+            .setup-controls > div.actions-container { width: 100%; justify-content: stretch; }
+            .setup-controls > div.actions-container > button { flex: 1; margin: 0; }
         }
 
         /* CANCHA */
@@ -491,10 +492,21 @@
 
                 <div class="control-group">
                     <label for="input-team-name">Nombre de Tu Equipo</label>
-                    <input type="text" id="input-team-name" value="" placeholder="Ej. Real Troncos">
+                    <input type="text" id="input-team-name" value="" placeholder="Ej. Real Samesta">
+                </div>
+                
+                <div class="control-group">
+                    <label for="chk-hard-mode">Modo</label>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.3rem;">
+                        <input type="checkbox" id="chk-hard-mode" style="width: 18px; height: 18px; accent-color: var(--danger); cursor: pointer;">
+                        <span style="font-size: 0.85rem; font-weight: 800; color: var(--danger); text-transform: uppercase;">Difícil</span>
+                    </div>
                 </div>
 
-                <button id="btn-random-team" class="btn-random">🎲 Obtener Jugadores</button>
+                <div class="actions-container" style="margin-left: auto; display: flex; gap: 0.8rem;">
+                    <button id="btn-reroll" class="btn-random" style="background: var(--warning); color: #000; display: none;">🔄 Resortear (2)</button>
+                    <button id="btn-random-team" class="btn-random">🎲 Obtener Jugadores</button>
+                </div>
             </div>
 
             <div class="draft-workspace">
@@ -551,8 +563,7 @@
 
     <script>
         // ==========================================================================
-        // BASE DE DATOS RETRO INTEGRADA (14 Jugadores por Equipo para Cubrir Posiciones)
-        // Posiciones soportadas: POR, DFC, LI, LD, MC, EI, ED, DC
+        // BASE DE DATOS RETRO INTEGRADA 
         // ==========================================================================
         const baseDeDatosRetro = {
             "1996-2001": [
@@ -566,7 +577,6 @@
                 ]},
                 {nombre: "Toluca (Era Meza)",estado: "activo",figuras: [
                 { nombre: "M. Albarrán", pos: "POR", rating: 85 },
-
                 { nombre: "A. Núñez", pos: "LD", rating: 81 },
                 { nombre: "A. Macías", pos: "DFC", rating: 83 },
                 { nombre: "O. Blanco", pos: "DFC", rating: 82 },
@@ -582,6 +592,64 @@
                 { nombre: "D. Vukić", pos: "MC", rating: 79 }
                 ]
                 },
+
+                {    nombre: "Santos de Maturano",
+    estado: "activo",
+    figuras: [
+        // Portero
+        { nombre: "J.A. Silva", pos: "POR", rating: 79 },
+
+        // Defensas
+        { nombre: "R. Ramírez", pos: "LD", rating: 78 },
+        { nombre: "J.I. Rivero", pos: "DFC", rating: 77 },
+        { nombre: "F. Davino", pos: "DFC", rating: 80 },
+        { nombre: "M.A. Herrera", pos: "LI", rating: 76 },
+
+        // Mediocampistas
+        { nombre: "R. Rodas", pos: "MC", rating: 79 },
+        { nombre: "H. Guerra", pos: "MC", rating: 81 },
+        { nombre: "G. Zaldívar", pos: "MC", rating: 77 },
+
+        // Delanteros
+        { nombre: "R. Zambrano", pos: "ED", rating: 80 },
+        { nombre: "D. Guzmán", pos: "DC", rating: 82 },
+        { nombre: "N. Ramírez", pos: "EI", rating: 78 },
+
+        // Cambios / Revulsivos
+        { nombre: "J.C. Razo", pos: "MC", rating: 74 },
+        { nombre: "H. Ovelar", pos: "DC", rating: 75 },
+        { nombre: "J. Rodríguez", pos: "DFC", rating: 73 }
+    ]
+},
+{
+    nombre: "Reboceros de La Piedad Campeón 2001",
+    estado: "histórico",
+    figuras: [
+        // Portero
+        { nombre: "J.A. Flores", pos: "POR", rating: 78 },
+
+        // Defensas
+        { nombre: "A. Sánchez", pos: "LD", rating: 77 },
+        { nombre: "G. Rizo", pos: "DFC", rating: 79 },
+        { nombre: "R. Murguía", pos: "DFC", rating: 76 },
+        { nombre: "R. Chávez", pos: "LI", rating: 75 },
+
+        // Mediocampistas
+        { nombre: "P. Chávez", pos: "MC", rating: 80 },
+        { nombre: "C. Morales", pos: "MC", rating: 82 },
+        { nombre: "J. Damasceno", pos: "MC", rating: 81 },
+        { nombre: "R. Valenzuela", pos: "MC", rating: 78 },
+
+        // Delanteros
+        { nombre: "C. Amaral", pos: "DC", rating: 84 },
+        { nombre: "S. Almaguer", pos: "DC", rating: 80 },
+
+        // Cambios / Revulsivos
+        { nombre: "M. Capria", pos: "MC", rating: 77 },
+        { nombre: "H. Ovelar", pos: "DC", rating: 76 },
+        { nombre: "J. L. Malibrán", pos: "DFC", rating: 74 }
+    ]
+},
                 { nombre: "Atlético Celaya", estado: "extinto", figuras: [
                     { nombre: "H. Félix", pos: "POR", rating: 82 }, { nombre: "H. Quintero", pos: "POR", rating: 74 },
                     { nombre: "I. Hurtado", pos: "DFC", rating: 85 }, { nombre: "J. Cruz", pos: "DFC", rating: 80 }, { nombre: "M. Díaz", pos: "DFC", rating: 78 },
@@ -590,35 +658,22 @@
                     { nombre: "E. Butragueño", pos: "EI", rating: 91 }, { nombre: "F. Cruz", pos: "ED", rating: 80 },
                     { nombre: "Hugo Sánchez", pos: "DC", rating: 93 }, { nombre: "E. Soto", pos: "DC", rating: 79 }
                 ]},
-                {
-    nombre: "Atlas",
-    estado: "activo",
-    figuras: [
-        // Portero
-        { nombre: "E. Cabuto", pos: "POR", rating: 83 },
-
-        // Defensas
-        { nombre: "M. Méndez", pos: "LD", rating: 82 },
-        { nombre: "H. López", pos: "DFC", rating: 84 },
-        { nombre: "R. Márquez", pos: "DFC", rating: 90 },
-        { nombre: "P. Lavallén", pos: "LI", rating: 81 },
-
-        // Mediocampistas
-        { nombre: "J. Estrada", pos: "MC", rating: 79 },
-        { nombre: "J.P. Rodríguez", pos: "MC", rating: 85 },
-        { nombre: "M. Zepeda", pos: "MC", rating: 84 },
-
-        // Delanteros
-        { nombre: "C. Andrade", pos: "EI", rating: 80 },
-        { nombre: "D. Osorno", pos: "ED", rating: 83 },
-        { nombre: "H.N. Castillo", pos: "DC", rating: 86 },
-
-        // Cambios / Revulsivos
-        { nombre: "J. Almirón", pos: "MC", rating: 78 },
-        { nombre: "G. Torres", pos: "MC", rating: 77 },
-        { nombre: "J.L. González", pos: "EI", rating: 76 }
-    ]
-},
+                {nombre: "Atlas",estado: "activo",figuras: [
+                    { nombre: "E. Cabuto", pos: "POR", rating: 83 },
+                    { nombre: "M. Méndez", pos: "LD", rating: 82 },
+                    { nombre: "H. López", pos: "DFC", rating: 84 },
+                    { nombre: "R. Márquez", pos: "DFC", rating: 90 },
+                    { nombre: "P. Lavallén", pos: "LI", rating: 81 },
+                    { nombre: "J. Estrada", pos: "MC", rating: 79 },
+                    { nombre: "J.P. Rodríguez", pos: "MC", rating: 85 },
+                    { nombre: "M. Zepeda", pos: "MC", rating: 84 },
+                    { nombre: "C. Andrade", pos: "EI", rating: 80 },
+                    { nombre: "D. Osorno", pos: "ED", rating: 83 },
+                    { nombre: "H.N. Castillo", pos: "DC", rating: 86 },
+                    { nombre: "J. Almirón", pos: "MC", rating: 78 },
+                    { nombre: "G. Torres", pos: "MC", rating: 77 },
+                    { nombre: "J.L. González", pos: "EI", rating: 76 }
+                ]},
                 { nombre: "Necaxa", estado: "activo", figuras: [
                     { nombre: "N. Navarro", pos: "POR", rating: 87 }, { nombre: "H. Pineda", pos: "POR", rating: 81 },
                     { nombre: "J. Higareda", pos: "DFC", rating: 84 }, { nombre: "M. Esquivel", pos: "DFC", rating: 82 }, { nombre: "S. Almaguer", pos: "DFC", rating: 85 },
@@ -661,64 +716,38 @@
                     { nombre: "C. Giménez", pos: "EI", rating: 88 }, { nombre: "W. Pezzolano", pos: "ED", rating: 82 },
                     { nombre: "Kléber Boas", pos: "DC", rating: 89 }, { nombre: "G. Biscayzacú", pos: "DC", rating: 87 }
                 ]},
-                {
-    nombre: "Pumas (Bicampeón 2004)",
-    estado: "activo",
-    figuras: [
-        // Portero
-        { nombre: "S. Bernal", pos: "POR", rating: 86 },
-
-        // Defensas
-        { nombre: "J. Beltrán", pos: "DFC", rating: 84 },
-        { nombre: "D. Verón", pos: "DFC", rating: 88 },
-        { nombre: "I. Castro", pos: "LD", rating: 83 },
-        { nombre: "G. Pineda", pos: "LI", rating: 82 },
-
-        // Mediocampistas
-        { nombre: "J. Lozano", pos: "MC", rating: 85 },
-        { nombre: "L. Augusto", pos: "MC", rating: 87 },
-        { nombre: "G. Galindo", pos: "MC", rating: 81 },
-
-        // Delanteros
-        { nombre: "F. Fonseca", pos: "DC", rating: 86 },
-        { nombre: "J. Botero", pos: "DC", rating: 83 },
-        { nombre: "A. da Silva", pos: "ED", rating: 85 },
-
-        // Cambios / Revulsivos
-        { nombre: "I. Íñiguez", pos: "EI", rating: 80 },
-        { nombre: "J.L. López", pos: "ED", rating: 79 },
-        { nombre: "D. Toledo", pos: "MC", rating: 78 }
-    ]
-},
-                {
-    nombre: "Pachuca",
-    estado: "activo",
-    figuras: [
-        // Portero
-        { nombre: "M. Calero", pos: "POR", rating: 90 },
-
-        // Defensas
-        { nombre: "P. Aguilar", pos: "LD", rating: 83 },
-        { nombre: "L. López", pos: "DFC", rating: 82 },
-        { nombre: "A. Mosquera", pos: "DFC", rating: 84 },
-        { nombre: "F. Pinto", pos: "LI", rating: 80 },
-
-        // Mediocampistas
-        { nombre: "F. Salazar", pos: "MC", rating: 78 },
-        { nombre: "J. Correa", pos: "MC", rating: 81 },
-        { nombre: "G. Caballero", pos: "MC", rating: 83 },
-        { nombre: "A. Chitiva", pos: "EI", rating: 85 },
-
-        // Delanteros
-        { nombre: "C. Giménez", pos: "ED", rating: 87 },
-        { nombre: "J.C. Cacho", pos: "DC", rating: 84 },
-
-        // Cambios / Revulsivos
-        { nombre: "G. Rodríguez", pos: "LI", rating: 77 },
-        { nombre: "D. Álvarez", pos: "EI", rating: 85 },
-        { nombre: "I. Franco", pos: "DC", rating: 79 } // Comodín técnico para completar la plantilla de 14
-    ]
-},
+                {nombre: "Pumas Bicampeón 2004",estado: "activo",figuras: [
+                    { nombre: "S. Bernal", pos: "POR", rating: 86 },
+                    { nombre: "J. Beltrán", pos: "DFC", rating: 84 },
+                    { nombre: "D. Verón", pos: "DFC", rating: 88 },
+                    { nombre: "I. Castro", pos: "LD", rating: 83 },
+                    { nombre: "G. Pineda", pos: "LI", rating: 82 },
+                    { nombre: "J. Lozano", pos: "MC", rating: 85 },
+                    { nombre: "L. Augusto", pos: "MC", rating: 87 },
+                    { nombre: "G. Galindo", pos: "MC", rating: 81 },
+                    { nombre: "F. Fonseca", pos: "DC", rating: 86 },
+                    { nombre: "J. Botero", pos: "DC", rating: 83 },
+                    { nombre: "A. da Silva", pos: "ED", rating: 85 },
+                    { nombre: "I. Íñiguez", pos: "EI", rating: 80 },
+                    { nombre: "J.L. López", pos: "ED", rating: 79 },
+                    { nombre: "D. Toledo", pos: "MC", rating: 78 }
+                ]},
+                {nombre: "Pachuca",estado: "activo",figuras: [
+                    { nombre: "M. Calero", pos: "POR", rating: 90 },
+                    { nombre: "P. Aguilar", pos: "LD", rating: 85 },
+                    { nombre: "L. López", pos: "DFC", rating: 86 },
+                    { nombre: "A. Mosquera", pos: "DFC", rating: 87 },
+                    { nombre: "F. Pinto", pos: "LI", rating: 84 },
+                    { nombre: "F. Salazar", pos: "MC", rating: 81 },
+                    { nombre: "J. Correa", pos: "MC", rating: 84 },
+                    { nombre: "G. Caballero", pos: "MC", rating: 83 },
+                    { nombre: "A. Chitiva", pos: "EI", rating: 85 },
+                    { nombre: "C. Giménez", pos: "ED", rating: 87 },
+                    { nombre: "J.C. Cacho", pos: "DC", rating: 89 },
+                    { nombre: "G. Rodríguez", pos: "LI", rating: 84 },
+                    { nombre: "D. Álvarez", pos: "EI", rating: 85 },
+                    { nombre: "I. Franco", pos: "DC", rating: 79 }
+                ]},
                 { nombre: "Monarcas Morelia", estado: "extinto", figuras: [
                     { nombre: "M. Muñoz", pos: "POR", rating: 86 }, { nombre: "A. Álvarez", pos: "POR", rating: 78 },
                     { nombre: "D. Franco", pos: "DFC", rating: 85 }, { nombre: "O. Trujillo", pos: "DFC", rating: 83 }, { nombre: "E. Loeschbor", pos: "DFC", rating: 81 },
@@ -737,7 +766,65 @@
                     { nombre: "J. Guerrero", pos: "EI", rating: 84 }, { nombre: "A. Rey", pos: "ED", rating: 85 },
                     { nombre: "G. Maldonado", pos: "DC", rating: 89 }, { nombre: "C. Suárez", pos: "DC", rating: 81 }
                 ]},
-                { nombre: "Indios de Ciudad Juárez", estado: "extinto", figuras: [
+                {
+    nombre: "Chivas Campeón 2006",
+    estado: "activo",
+    figuras: [
+        // Portero
+        { nombre: "O. Sánchez", pos: "POR", rating: 90 },
+
+        // Defensas
+        { nombre: "D. Martínez", pos: "LD", rating: 80 },
+        { nombre: "F.J. Rodríguez", pos: "DFC", rating: 84 },
+        { nombre: "H. Reynoso", pos: "DFC", rating: 83 },
+        { nombre: "J. Magallón", pos: "DFC", rating: 82 },
+
+        // Mediocampistas
+        { nombre: "P. Araujo", pos: "MC", rating: 79 },
+        { nombre: "G. Pineda", pos: "MC", rating: 81 },
+        { nombre: "R. Morales", pos: "MC", rating: 85 },
+
+        // Delanteros
+        { nombre: "A. Medina", pos: "ED", rating: 83 },
+        { nombre: "O. Bravo", pos: "DC", rating: 87 },
+        { nombre: "A. Bautista", pos: "EI", rating: 86 },
+
+        // Cambios / Revulsivos
+        { nombre: "S. Santana", pos: "DC", rating: 81 },
+        { nombre: "M. Sol", pos: "MC", rating: 78 },
+        { nombre: "O. Esparza", pos: "LD", rating: 77 }
+    ]
+},
+{
+    nombre: "Monterrey de Chupeteeeeeeee",
+    estado: "activo",
+    figuras: [
+        // Portero
+        { nombre: "J. Orozco", pos: "POR", rating: 87 },
+
+        // Defensas
+        { nombre: "R. Osorio", pos: "LD", rating: 83 },
+        { nombre: "J.M. Basanta", pos: "DFC", rating: 85 },
+        { nombre: "H. Mier", pos: "DFC", rating: 84 },
+        { nombre: "W. Ayoví", pos: "LI", rating: 82 },
+
+        // Mediocampistas
+        { nombre: "O. Martínez", pos: "MC", rating: 81 },
+        { nombre: "J. Zavala", pos: "MC", rating: 82 },
+        { nombre: "L.E. Pérez", pos: "MC", rating: 84 },
+
+        // Delanteros
+        { nombre: "H. Suazo", pos: "DC", rating: 91 },
+        { nombre: "A. de Nigris", pos: "DC", rating: 86 },
+        { nombre: "N. Cardozo", pos: "EI", rating: 83 },
+
+        // Cambios / Revulsivos
+        { nombre: "S. Santana", pos: "DC", rating: 80 },
+        { nombre: "D. Chávez", pos: "LI", rating: 78 },
+        { nombre: "G. Galindo", pos: "MC", rating: 77 }
+    ]
+},
+                { nombre: "Indios de Ciudad Juárez RIP", estado: "extinto", figuras: [
                     { nombre: "C. Saucedo", pos: "POR", rating: 83 }, { nombre: "H. Hernández", pos: "POR", rating: 75 },
                     { nombre: "J. C. Mosqueda", pos: "DFC", rating: 79 }, { nombre: "H. Gómez", pos: "DFC", rating: 78 }, { nombre: "S. Martínez", pos: "DFC", rating: 76 },
                     { nombre: "M. Pérez", pos: "LI", rating: 77 }, { nombre: "T. Campos", pos: "LD", rating: 80 },
@@ -763,24 +850,44 @@
                     { nombre: "F. Martínez", pos: "EI", rating: 84 }, { nombre: "R. Enríquez", pos: "ED", rating: 80 },
                     { nombre: "D. Moreno", pos: "DC", rating: 88 }, { nombre: "D. Riascos", pos: "DC", rating: 87 }
                 ]},
-                { 
-                nombre: "Leones Negros", estado: "activo", figuras: [
-                { nombre: "H. Hernández", pos: "POR", rating: 80 },
-                { nombre: "M. Alatorre", pos: "LD", rating: 76 },
-                { nombre: "F. Araujo", pos: "DFC", rating: 75 },
-                { nombre: "L. Cufré", pos: "DFC", rating: 81 },
-                { nombre: "J. González", pos: "LI", rating: 74 },
-                { nombre: "M. Crosas", pos: "MC", rating: 79 },
-                { nombre: "J. Hernández", pos: "MC", rating: 77 },
-                { nombre: "L. Télles", pos: "MC", rating: 73 },
-                { nombre: "J. González", pos: "ED", rating: 75 },
-                { nombre: "F. Martínez", pos: "EI", rating: 82 },
-                { nombre: "J. Vázquez", pos: "DC", rating: 74 },
-                { nombre: "R. Vilchis", pos: "ED", rating: 72 },
-                { nombre: "J. Barraza", pos: "DC", rating: 71 },
-                { nombre: "C. Díaz", pos: "DFC", rating: 70 }
-                ]
-                },
+                { nombre: "Leones Negros", estado: "activo", figuras: [
+                    { nombre: "H. Hernández", pos: "POR", rating: 80 }, { nombre: "M. Alatorre", pos: "LD", rating: 76 },
+                    { nombre: "F. Araujo", pos: "DFC", rating: 75 }, { nombre: "L. Cufré", pos: "DFC", rating: 81 },
+                    { nombre: "J. González", pos: "LI", rating: 74 }, { nombre: "M. Crosas", pos: "MC", rating: 79 },
+                    { nombre: "J. Hernández", pos: "MC", rating: 77 }, { nombre: "L. Télles", pos: "MC", rating: 73 },
+                    { nombre: "J. González", pos: "ED", rating: 75 }, { nombre: "F. Martínez", pos: "EI", rating: 82 },
+                    { nombre: "J. Vázquez", pos: "DC", rating: 74 }, { nombre: "R. Vilchis", pos: "ED", rating: 72 },
+                    { nombre: "J. Barraza", pos: "DC", rating: 71 }, { nombre: "C. Díaz", pos: "DFC", rating: 70 }
+                ]},
+                {
+    nombre: "Querétaro (Era Ronaldinho)",
+    estado: "activo",
+    figuras: [
+        // Portero
+        { nombre: "T. Volpi", pos: "POR", rating: 85 },
+
+        // Defensas
+        { nombre: "G. Corral", pos: "LD", rating: 77 },
+        { nombre: "M. Martínez", pos: "DFC", rating: 78 },
+        { nombre: "Y. Corona", pos: "DFC", rating: 79 },
+        { nombre: "J.R. Chávez", pos: "LI", rating: 76 },
+
+        // Mediocampistas
+        { nombre: "D. Villalva", pos: "MC", rating: 78 },
+        { nombre: "M. Osuna", pos: "MC", rating: 80 },
+        { nombre: "R. Güémez", pos: "MC", rating: 79 },
+        { nombre: "Ronaldinho", pos: "MC", rating: 91 },
+
+        // Delanteros
+        { nombre: "E. Villa", pos: "DC", rating: 82 },
+        { nombre: "C. Sanvezzo", pos: "DC", rating: 83 },
+
+        // Cambios / Revulsivos
+        { nombre: "A. Sepúlveda", pos: "ED", rating: 77 },
+        { nombre: "P. Da Silva", pos: "DFC", rating: 75 },
+        { nombre: "O. Pineda", pos: "MC", rating: 74 }
+    ]
+},
                 { nombre: "León", estado: "activo", figuras: [
                     { nombre: "W. Yarbrough", pos: "POR", rating: 86 }, { nombre: "C. Martínez", pos: "POR", rating: 78 },
                     { nombre: "R. Márquez", pos: "DFC", rating: 89 }, { nombre: "J. I. González", pos: "DFC", rating: 85 }, { nombre: "J. Magallón", pos: "DFC", rating: 83 },
@@ -788,9 +895,36 @@
                     { nombre: "L. Montes", pos: "MC", rating: 88 }, { nombre: "C. Peña", pos: "MC", rating: 87 }, { nombre: "J. Vázquez", pos: "MC", rating: 86 },
                     { nombre: "H. Burbano", pos: "EI", rating: 85 }, { nombre: "F. Arizala", pos: "ED", rating: 83 },
                     { nombre: "M. Boselli", pos: "DC", rating: 90 }, { nombre: "M. Britos", pos: "DC", rating: 84 }
-                ]}
+                ]},
+    
+                {nombre: "Cruz Azul Era Boing",estado: "activo",figuras: [
+        // Portero
+        { nombre: "J. Corona", pos: "POR", rating: 85 },
+
+        // Defensas
+        { nombre: "O. Mendoza", pos: "LD", rating: 78 },
+        { nombre: "J.C. Domínguez", pos: "DFC", rating: 80 },
+        { nombre: "E. Roco", pos: "DFC", rating: 79 },
+        { nombre: "J.C. García", pos: "LI", rating: 76 },
+
+        // Mediocampistas
+        { nombre: "R. Baca", pos: "MC", rating: 81 },
+        { nombre: "F. Silva", pos: "MC", rating: 80 },
+        { nombre: "J. Rojas", pos: "ED", rating: 79 },
+        { nombre: "C. Giménez", pos: "MC", rating: 82 },
+
+        // Delanteros
+        { nombre: "J. Guerrón", pos: "EI", rating: 81 },
+        { nombre: "J. Benítez", pos: "DC", rating: 83 },
+
+        // Cambios / Revulsivos
+        { nombre: "R. Ruiz", pos: "LD", rating: 75 },
+        { nombre: "M. Vuoso", pos: "DC", rating: 77 },
+        { nombre: "A.L. Ramírez", pos: "MC", rating: 78 }
+    ]
+}
             ],
-            "2016-2023": [
+            "2016-2022": [
                 { nombre: "Tigres UANL", estado: "activo", figuras: [
                     { nombre: "N. Guzmán", pos: "POR", rating: 89 }, { nombre: "E. Fernández", pos: "POR", rating: 78 },
                     { nombre: "Juninho", pos: "DFC", rating: 87 }, { nombre: "H. Ayala", pos: "DFC", rating: 86 }, { nombre: "F. Meza", pos: "DFC", rating: 82 },
@@ -800,53 +934,167 @@
                     { nombre: "A. Gignac", pos: "DC", rating: 92 }, { nombre: "E. Vargas", pos: "DC", rating: 85 }
                 ]},
                 {
-    nombre: "Puebla",
+    nombre: "Morelia de Ruidíaz",
     estado: "activo",
     figuras: [
         // Portero
-        { nombre: "A. Silva", pos: "POR", rating: 87 },
+        { nombre: "C. Sosa", pos: "POR", rating: 83 },
 
         // Defensas
-        { nombre: "I. Reyes", pos: "DFC", rating: 82 },
-        { nombre: "J.P. Segovia", pos: "DFC", rating: 80 },
-        { nombre: "M. Perg", pos: "DFC", rating: 78 },
-
-        // Carrileros
-        { nombre: "S. Reyes", pos: "LI", rating: 81 },
-        { nombre: "G. Ferrareis", pos: "LD", rating: 79 },
+        { nombre: "E. Loeschbor", pos: "DFC", rating: 79 },
+        { nombre: "G. Achilier", pos: "DFC", rating: 80 },
+        { nombre: "E. Vegas", pos: "LD", rating: 77 },
+        { nombre: "S. Vegas", pos: "LI", rating: 78 },
 
         // Mediocampistas
-        { nombre: "D. de Buen", pos: "MC", rating: 79 },
-        { nombre: "J. Salas", pos: "MC", rating: 77 },
-        { nombre: "F. Mancuello", pos: "MC", rating: 82 },
+        { nombre: "D. Valdés", pos: "MC", rating: 82 },
+        { nombre: "J.P. Rodríguez", pos: "MC", rating: 80 },
+        { nombre: "M. Osuna", pos: "MC", rating: 79 },
 
         // Delanteros
-        { nombre: "C. Tabó", pos: "EI", rating: 81 },
-        { nombre: "O. Fernández", pos: "ED", rating: 80 },
-        { nombre: "S. Ormeño", pos: "DC", rating: 83 },
+        { nombre: "R. Ruidíaz", pos: "DC", rating: 90 },
+        { nombre: "Á. Sepúlveda", pos: "ED", rating: 78 },
+        { nombre: "H. Mancilla", pos: "DC", rating: 77 },
 
         // Cambios / Revulsivos
-        { nombre: "E. Gularte", pos: "DFC", rating: 77 },
-        { nombre: "G. Corral", pos: "LD", rating: 76 }
+        { nombre: "A. Polo", pos: "ED", rating: 76 },
+        { nombre: "J. Cuero", pos: "EI", rating: 75 },
+        { nombre: "M. Sansores", pos: "DC", rating: 74 }
     ]
 },
+{
+    nombre: "Veracruz del Último Torneo",
+    estado: "extinto",
+    figuras: [
+        // Portero
+        { nombre: "S. Jurado", pos: "POR", rating: 78 },
+
+        // Defensas
+        { nombre: "L. Noya", pos: "DFC", rating: 72 },
+        { nombre: "C. Salcido", pos: "DFC", rating: 73 },
+        { nombre: "J. Paganoni", pos: "LD", rating: 71 },
+        { nombre: "B. Carrasco", pos: "LI", rating: 70 },
+
+        // Mediocampistas
+        { nombre: "G. Flores", pos: "MC", rating: 71 },
+        { nombre: "J. Vázquez", pos: "MC", rating: 70 },
+        { nombre: "A. López", pos: "MC", rating: 69 },
+
+        // Delanteros
+        { nombre: "C. Kazim-Richards", pos: "DC", rating: 73 },
+        { nombre: "D. Villalva", pos: "EI", rating: 72 },
+        { nombre: "I. López", pos: "ED", rating: 71 },
+
+        // Cambios / Revulsivos
+        { nombre: "E. Gularte", pos: "DFC", rating: 69 },
+        { nombre: "R. Sandoval", pos: "MC", rating: 68 },
+        { nombre: "P. Rivas", pos: "DC", rating: 67 }
+    ]
+},
+                {
+    nombre: "Lobos BUAP (Era Quiñones-Advíncula)",
+    estado: "activo",
+    figuras: [
+        // Portero
+        { nombre: "J. Villalpando", pos: "POR", rating: 77 },
+
+        // Defensas
+        { nombre: "L. Advíncula", pos: "LD", rating: 83 },
+        { nombre: "F. Rodríguez", pos: "DFC", rating: 78 },
+        { nombre: "C. Cercado", pos: "DFC", rating: 76 },
+        { nombre: "H. Olascoaga", pos: "LI", rating: 75 },
+
+        // Mediocampistas
+        { nombre: "P. Aquino", pos: "MC", rating: 80 },
+        { nombre: "J. Medina", pos: "MC", rating: 77 },
+        { nombre: "J. Canales", pos: "MC", rating: 76 },
+
+        // Delanteros
+        { nombre: "J. Quiñones", pos: "EI", rating: 85 },
+        { nombre: "A. Quiñones", pos: "ED", rating: 82 },
+        { nombre: "L. Jiménez", pos: "DC", rating: 79 },
+
+        // Cambios / Revulsivos
+        { nombre: "M. Escoto", pos: "DC", rating: 74 },
+        { nombre: "I. Ibarra", pos: "DFC", rating: 73 },
+        { nombre: "B. Rabello", pos: "MC", rating: 75 }
+    ]
+},
+{
+    nombre: "Veracruz campeón de Copa MX",
+    estado: "activo",
+    figuras: [
+        // Portero
+        { nombre: "M. Hernández", pos: "POR", rating: 78 },
+
+        // Defensas
+        { nombre: "L. López", pos: "DFC", rating: 80 },
+        { nombre: "R. Noya", pos: "DFC", rating: 76 },
+        { nombre: "H. Cid", pos: "DFC", rating: 74 },
+        { nombre: "J. Paganoni", pos: "LD", rating: 77 },
+
+        // Mediocampistas
+        { nombre: "A. Zamora", pos: "MC", rating: 75 },
+        { nombre: "G. Peñalba", pos: "MC", rating: 80 },
+        { nombre: "F. Meneses", pos: "ED", rating: 78 },
+        { nombre: "E.G. Lugo", pos: "MC", rating: 77 },
+
+        // Delanteros
+        { nombre: "J.C. Furch", pos: "DC", rating: 82 },
+        { nombre: "D. Villalva", pos: "EI", rating: 79 },
+
+        // Cambios / Revulsivos
+        { nombre: "A. Zamora", pos: "MC", rating: 75 }, // Opción de equilibrio
+        { nombre: "E.G. Lugo", pos: "MC", rating: 77 }, // Opción creativa
+        { nombre: "F. Meneses", pos: "ED", rating: 78 }  // Opción de rotación
+    ]
+},
+                {nombre: "Puebla",estado: "activo",figuras: [
+                    { nombre: "A. Silva", pos: "POR", rating: 87 },
+                    { nombre: "I. Reyes", pos: "DFC", rating: 82 }, { nombre: "J.P. Segovia", pos: "DFC", rating: 80 }, { nombre: "M. Perg", pos: "DFC", rating: 78 },
+                    { nombre: "S. Reyes", pos: "LI", rating: 81 }, { nombre: "G. Ferrareis", pos: "LD", rating: 79 },
+                    { nombre: "D. de Buen", pos: "MC", rating: 79 }, { nombre: "J. Salas", pos: "MC", rating: 77 }, { nombre: "F. Mancuello", pos: "MC", rating: 82 },
+                    { nombre: "C. Tabó", pos: "EI", rating: 81 }, { nombre: "O. Fernández", pos: "ED", rating: 80 },
+                    { nombre: "S. Ormeño", pos: "DC", rating: 83 },
+                    { nombre: "E. Gularte", pos: "DFC", rating: 77 }, { nombre: "G. Corral", pos: "LD", rating: 76 }
+                ]},
                 { nombre: "Atlas ", estado: "activo", figuras: [
                     { nombre: "C. Vargas", pos: "POR", rating: 91 },
-                    { nombre: "H. Nervo", pos: "DFC", rating: 86 },
-                    { nombre: "A. Santamaría", pos: "DFC", rating: 84 },
-                    { nombre: "E. Aguilera", pos: "DFC", rating: 82 },
-                    { nombre: "J. Abella", pos: "LD", rating: 81 },
-                    { nombre: "A. Chalá", pos: "LI", rating: 80 },
-                    { nombre: "A. Rocha", pos: "MC", rating: 87 },
-                    { nombre: "E. Zaldívar", pos: "MC", rating: 83 },
-                    { nombre: "L. Reyes", pos: "MC", rating: 85 },
-                    { nombre: "J. Quiñones", pos: "EI", rating: 90 },
-                    { nombre: "J. Furch", pos: "DC", rating: 88 },
-                    { nombre: "J. Torres", pos: "ED", rating: 84 },
-                    { nombre: "O. Herrera", pos: "ED", rating: 82 },
-                    { nombre: "B. Garnica", pos: "EI", rating: 79 }
-                ]
-                },
+                    { nombre: "H. Nervo", pos: "DFC", rating: 86 }, { nombre: "A. Santamaría", pos: "DFC", rating: 84 }, { nombre: "E. Aguilera", pos: "DFC", rating: 82 },
+                    { nombre: "J. Abella", pos: "LD", rating: 81 }, { nombre: "A. Chalá", pos: "LI", rating: 80 },
+                    { nombre: "A. Rocha", pos: "MC", rating: 87 }, { nombre: "E. Zaldívar", pos: "MC", rating: 83 }, { nombre: "L. Reyes", pos: "MC", rating: 85 },
+                    { nombre: "J. Quiñones", pos: "EI", rating: 90 }, { nombre: "J. Furch", pos: "DC", rating: 88 },
+                    { nombre: "J. Torres", pos: "ED", rating: 84 }, { nombre: "O. Herrera", pos: "ED", rating: 82 }, { nombre: "B. Garnica", pos: "EI", rating: 79 }
+                ]},
+                {
+    nombre: "Dorados de Maradona",
+    estado: "activo",
+    figuras: [
+        // Portero
+        { nombre: "G. Servio", pos: "POR", rating: 80 },
+
+        // Defensas
+        { nombre: "D. Barbosa", pos: "LD", rating: 77 },
+        { nombre: "J. Meza", pos: "DFC", rating: 76 },
+        { nombre: "G. Chávez", pos: "DFC", rating: 75 },
+        { nombre: "A. Sandoval", pos: "LI", rating: 74 },
+
+        // Mediocampistas
+        { nombre: "F. Arce", pos: "MC", rating: 78 },
+        { nombre: "E. Ferreira", pos: "MC", rating: 77 },
+        { nombre: "J. González", pos: "MC", rating: 76 },
+
+        // Delanteros
+        { nombre: "A. Escoto", pos: "EI", rating: 75 },
+        { nombre: "J. Córdoba", pos: "DC", rating: 79 },
+        { nombre: "V. Angulo", pos: "ED", rating: 81 },
+
+        // Cambios / Revulsivos
+        { nombre: "J. Gallegos", pos: "MC", rating: 74 },
+        { nombre: "A. López", pos: "ED", rating: 73 },
+        { nombre: "M. Manríquez", pos: "DFC", rating: 72 }
+    ]
+},
                 { nombre: "Monterrey", estado: "activo", figuras: [
                     { nombre: "M. Barovero", pos: "POR", rating: 87 }, { nombre: "H. González", pos: "POR", rating: 80 },
                     { nombre: "N. Sánchez", pos: "DFC", rating: 86 }, { nombre: "S. Medina", pos: "DFC", rating: 84 }, { nombre: "C. Montes", pos: "DFC", rating: 83 },
@@ -863,11 +1111,41 @@
                     { nombre: "D. Lainez", pos: "EI", rating: 84 }, { nombre: "R. Ibarra", pos: "ED", rating: 86 },
                     { nombre: "O. Peralta", pos: "DC", rating: 88 }, { nombre: "H. Martín", pos: "DC", rating: 88 }
                 ]}
+            ],
+            "2023-2026": [
+                {
+    nombre: "América (Tricampeón Torneos Cortos)",
+    estado: "activo",
+    figuras: [
+        // Portero
+        { nombre: "L. Malagón", pos: "POR", rating: 89 },
 
+        // Defensas
+        { nombre: "I. Reyes", pos: "LD", rating: 88 },
+        { nombre: "R. Juárez", pos: "DFC", rating: 85 },
+        { nombre: "S. Cáceres", pos: "DFC", rating: 86 },
+        { nombre: "C. Calderón", pos: "LI", rating: 81 },
+
+        // Mediocampistas
+        { nombre: "J. dos Santos", pos: "MC", rating: 85 },
+        { nombre: "Á. Fidalgo", pos: "MC", rating: 90 },
+        { nombre: "D. Valdés", pos: "MCO", rating: 87 },
+        { nombre: "A. Zendejas", pos: "ED", rating: 84 },
+
+        // Delanteros
+        { nombre: "J. Quiñones", pos: "EI", rating: 87 },
+        { nombre: "H. Martín", pos: "DC", rating: 88 },
+
+        // Cambios / Revulsivos
+        { nombre: "B. Rodríguez", pos: "EI", rating: 89 },
+        { nombre: "R. Sánchez", pos: "MC", rating: 88 },
+        { nombre: "I. Lichnovsky", pos: "DFC", rating: 83 }
+    ]
+}, 
             ]
         };
         
-        // RIVALES DE LA LIGA (18 EQUIPOS EN TOTAL)
+        // RIVALES DE LA LIGA NORMAL (18 EQUIPOS EN TOTAL)
         const rivalesLigaMX = [
             { nombre: "Pumas UNAM", rating: 88 }, { nombre: "Chivas", rating: 89 }, { nombre: "América", rating: 87 },
             { nombre: "Cruz Azul", rating: 91 }, { nombre: "Tigres UANL", rating: 84 }, { nombre: "Monterrey", rating: 84 },
@@ -875,6 +1153,19 @@
             { nombre: "Pachuca", rating: 80 }, { nombre: "Santos Laguna", rating: 79 }, { nombre: "Necaxa", rating: 77 },
             { nombre: "Puebla", rating: 76 }, { nombre: "Querétaro", rating: 74 }, { nombre: "Tijuana", rating: 74 },
             { nombre: "Atlante", rating: 70}, { nombre: "Atlético San Luis", rating: 73 }, { nombre: "FC Juárez", rating: 72 }
+        ];
+
+        // RIVALES DE ÉPOCA (MODO DIFÍCIL)
+        const rivalesEpoca = [
+            { nombre: "Toluca 1998", rating: 94 }, { nombre: "Chivas 2006", rating: 91 },
+            { nombre: "América Tricampeon", rating: 92 }, { nombre: "Pumas 2004", rating: 90 },
+            { nombre: "Tigres 2017", rating: 95 }, { nombre: "Cruz Azul 2021", rating: 89 },
+            { nombre: "Pachuca 2006", rating: 91 }, { nombre: "Monterrey 2009", rating: 92 },
+            { nombre: "León 2014", rating: 90 }, { nombre: "Atlas 2021", rating: 92 },
+            { nombre: "Santos 2012", rating: 93 }, { nombre: "Necaxa 1998", rating: 91 },
+            { nombre: "Tijuana 2012", rating: 88 }, { nombre: "Morelia 2000", rating: 85 },
+            { nombre: "Atlante 2007", rating: 88 }, { nombre: "Puebla 2021", rating: 87 },
+            { nombre: "Tecos 1994", rating: 86 }, { nombre: "Cruz Azul 1997", rating: 90 }
         ];
 
         const esquemasTacticos = {
@@ -910,15 +1201,18 @@
         let golesGlobalUser = 0;
         let golesGlobalRival = 0;
         let misRivalesLiguilla = [];
+        let resorteosRestantes = 2;
 
         // Elementos DOM Draft
         const selectorFormacion = document.getElementById("formation-select");
         const inputNombreEquipo = document.getElementById("input-team-name");
         const contenedorCancha = document.getElementById("pitch-display");
         const botonRandom = document.getElementById("btn-random-team");
+        const botonReroll = document.getElementById("btn-reroll");
         const bannerInfo = document.getElementById("active-team-banner");
         const panelOpciones = document.getElementById("options-panel-content");
         const botonPasarSim = document.getElementById("btn-go-to-sim");
+        const chkHardMode = document.getElementById("chk-hard-mode");
 
         // Elementos DOM Simulación
         const vistaDraft = document.getElementById("view-draft");
@@ -939,10 +1233,25 @@
             plantillaGuardada = {};
             botonPasarSim.disabled = true;
             botonRandom.disabled = false;
+            botonReroll.style.display = "none";
+            resorteosRestantes = 2;
             renderizarCancha();
         });
 
+        chkHardMode.addEventListener("change", () => {
+            renderizarCancha();
+            if(clubSeleccionado) desplegarOpcionesInmediatas();
+        });
+
         botonRandom.addEventListener("click", ejecutarRandomizador);
+        
+        botonReroll.addEventListener("click", () => {
+            if (resorteosRestantes > 0) {
+                resorteosRestantes--;
+                ejecutarRandomizador();
+            }
+        });
+
         renderizarCancha();
 
         function ejecutarRandomizador() {
@@ -955,6 +1264,11 @@
             bannerInfo.innerHTML = `Opciones extraídas de: <span>${clubSeleccionado.nombre} (${epoca})</span> <span class="status-badge ${badgeClass}">${badgeText}</span>`;
 
             botonRandom.disabled = true;
+            botonReroll.style.display = "block";
+            botonReroll.innerText = `🔄 Resortear (${resorteosRestantes})`;
+            botonReroll.disabled = resorteosRestantes === 0;
+            chkHardMode.disabled = true; // Bloquea cambiar de modo una vez iniciado
+            
             desplegarOpcionesInmediatas();
         }
 
@@ -997,12 +1311,17 @@
                 jugadoresDisponibles = jugadoresDisponibles.filter((v,i,a)=>a.findIndex(t=>(t.pos===v.pos && t.nombre===v.nombre))===i);
             }
 
+            const modoDificil = chkHardMode.checked;
+
             // 4. Renderizar absolutamente TODAS las opciones válidas del equipo
             jugadoresDisponibles.forEach(jugadorSeleccionado => {
                 const tarjetaChoice = document.createElement("div");
                 tarjetaChoice.className = "choice-card";
+                
+                const displayRating = modoDificil ? "?" : jugadorSeleccionado.rating;
+
                 tarjetaChoice.innerHTML = `
-                    <div class="choice-rating">${jugadorSeleccionado.rating}</div>
+                    <div class="choice-rating">${displayRating}</div>
                     <div class="choice-info">
                         <span class="choice-name">${jugadorSeleccionado.nombre}</span>
                         <span class="choice-pos">${jugadorSeleccionado.pos}</span>
@@ -1020,13 +1339,14 @@
 
                         if (Object.keys(plantillaGuardada).length < esquemaActual.length) {
                             botonRandom.disabled = false;
+                            botonReroll.disabled = true; // El resorteo es para brincar el equipo. Si eliges, tienes tirada gratis.
                             panelOpciones.innerHTML = `<p class="no-selection-msg" style="color: #38bdf8;">🔄 ¡Jugador fichado!<br><b>Oprime el botón azul</b> para seguir buscando talento retro.</p>`;
                         } else {
+                            botonReroll.disabled = true;
                             panelOpciones.innerHTML = `<p class="no-selection-msg" style="color: var(--accent);">🏆 ¡Alineación completada! Ponle nombre a tu club e inicia el torneo.</p>`;
                         }
                     }
                 });
-
                 panelOpciones.appendChild(tarjetaChoice);
             });
         }
@@ -1034,6 +1354,7 @@
         function renderizarCancha() {
             contenedorCancha.innerHTML = "";
             const esquemaActual = esquemasTacticos[selectorFormacion.value];
+            const modoDificil = chkHardMode.checked;
 
             esquemaActual.forEach((ranura) => {
                 const elementoSlot = document.createElement("div");
@@ -1047,7 +1368,7 @@
                 if (plantillaGuardada[ranura.id]) {
                     elementoSlot.classList.add("filled");
                     nombreMostrado = plantillaGuardada[ranura.id].nombre;
-                    ratingMostrado = plantillaGuardada[ranura.id].rating;
+                    ratingMostrado = modoDificil ? "?" : plantillaGuardada[ranura.id].rating;
                 }
 
                 elementoSlot.innerHTML = `
@@ -1082,7 +1403,6 @@
             nombreEquipoUsuario = inputNombreEquipo.value.trim() || "Mis Cracks FC";
             lblClub.innerText = nombreEquipoUsuario;
             lblRating.innerText = equipoRatingGlobal;
-
             vistaDraft.style.display = "none";
             vistaSimulacion.style.display = "block";
         });
@@ -1111,8 +1431,11 @@
             let derrotas = 0;
             let puntos = 0;
             let recordPerfecto = true;
+            
+            const modoDificil = chkHardMode.checked;
+            const poolRivales = modoDificil ? rivalesEpoca : rivalesLigaMX;
 
-            let calendarioRegular = [...rivalesLigaMX].sort(() => Math.random() - 0.5);
+            let calendarioRegular = [...poolRivales].sort(() => Math.random() - 0.5);
 
             function procesarSiguientePartido() {
                 if (partidoActual <= 24) {
@@ -1125,11 +1448,10 @@
                         if (puntos >= 35) posicionTabla = 1;
                         else if (puntos >= 32) posicionTabla = 3;
                         else if (puntos >= 27) posicionTabla = 5; 
-                        else if (puntos >= 24) posicionTabla = 7; 
+                        else if (puntos >= 24) posicionTabla = 7;
                         else posicionTabla = 9;
 
                         lblPos.innerText = posicionTabla <= 8 ? `${posicionTabla}° Lugar` : "No calificó (9°+)";
-
                         if (posicionTabla === 9) {
                             const filaLog = document.createElement("div");
                             filaLog.className = "log-row loss";
@@ -1140,14 +1462,27 @@
                             return;
                         }
 
-                        let posiblesParaLiguilla = [...rivalesLigaMX].sort(() => Math.random() - 0.5).slice(0, 8);
-                        let posicionesDisponibles = [1,2,3,4,5,6,7,8].filter(p => p !== posicionTabla).sort(() => Math.random() - 0.5);
-                        
-                        misRivalesLiguilla = [
-                            { data: posiblesParaLiguilla[0], pos: posicionesDisponibles[0] }, // Cuartos
-                            { data: posiblesParaLiguilla[1], pos: posicionesDisponibles[1] }, // Semis
-                            { data: posiblesParaLiguilla[2], pos: posicionesDisponibles[2] }  // Final
-                        ];
+                        // Calcular la probabilidad de liguilla (los mejores llegan más fácil)
+                        let simulacionTabla = poolRivales.map(r => ({
+                            data: r,
+                            puntosSim: (r.rating - 70) * 2 + (Math.random() * 20) // Base de rating + Random
+                        })).sort((a, b) => b.puntosSim - a.puntosSim);
+
+                        let posicionesOcupadas = [posicionTabla];
+                        let indexPosicion = 1;
+                        let rivalesSeleccionados = [];
+
+                        // Asignamos a los 3 rivales de liguilla posiciones de la tabla fuertes
+                        for (let i = 0; i < simulacionTabla.length && rivalesSeleccionados.length < 3; i++) {
+                            while (posicionesOcupadas.includes(indexPosicion)) {
+                                indexPosicion++;
+                            }
+                            rivalesSeleccionados.push({ data: simulacionTabla[i].data, pos: indexPosicion });
+                            posicionesOcupadas.push(indexPosicion);
+                            indexPosicion++;
+                        }
+
+                        misRivalesLiguilla = rivalesSeleccionados;
                     }
 
                     if (partidoActual <= 18) {
@@ -1178,7 +1513,6 @@
                     }
 
                     const { golesUser, golesRival } = simularMarcador(equipoRatingGlobal, rivalRating);
-
                     if (partidoActual > 18) {
                         golesGlobalUser += golesUser;
                         golesGlobalRival += golesRival;
@@ -1209,9 +1543,11 @@
                     filaLog.className = `log-row ${resultadoClase}`;
                     let marcadorConGlobal = `${golesUser} - ${golesRival}`;
                     if (partidoActual > 18) marcadorConGlobal += ` (Global: ${golesGlobalUser}-${golesGlobalRival})`;
+                    
+                    const strRatingRival = modoDificil ? "?? OVR" : `${rivalRating} OVR`;
 
                     filaLog.innerHTML = `
-                        <div><b>[${tipoPartido}]</b> ${nombreEquipoUsuario} <span>${marcadorConGlobal}</span> ${rivalNombre} <small style="color: var(--text-muted)">(${rivalRating} OVR)</small></div>
+                        <div><b>[${tipoPartido}]</b> ${nombreEquipoUsuario} <span>${marcadorConGlobal}</span> ${rivalNombre} <small style="color: var(--text-muted)">(${strRatingRival})</small></div>
                         <span class="badge-res badge-${resultadoClase}">${resTexto}</span>
                     `;
                     logsBox.appendChild(filaLog);
@@ -1220,21 +1556,18 @@
                     lblPj.innerText = `${partidoActual} / 24`;
                     lblRecord.innerText = `${victorias} - ${empates} - ${derrotas}`;
                     lblPts.innerText = `${puntos} pts`;
-
                     if (!recordPerfecto) {
                         perfectBadge.className = "perfect-status status-perfect-broken";
                         perfectBadge.innerHTML = "❌ Récord Perfecto Roto (Ya no es 24-0)";
                     }
 
                     let continuaFase = true;
-
                     if (partidoActual === 20 || partidoActual === 22 || partidoActual === 24) {
                         const filaGlobal = document.createElement("div");
                         filaGlobal.style.fontWeight = "bold";
                         filaGlobal.style.padding = "0.5rem 1rem";
                         filaGlobal.style.borderRadius = "6px";
                         filaGlobal.style.marginTop = "4px";
-
                         if (golesGlobalUser > golesGlobalRival) {
                             filaGlobal.style.background = "rgba(22, 163, 74, 0.2)";
                             filaGlobal.style.color = "#4ade80";
@@ -1292,8 +1625,11 @@
                         }
                     }
 
+                    // Atrasar el ritmo de simulación cuando es Liguilla
+                    let msDelay = partidoActual >= 19 ? 2000 : 400;
+
                     partidoActual++;
-                    setTimeout(procesarSiguientePartido, 400);
+                    setTimeout(procesarSiguientePartido, msDelay);
                 }
             }
 
@@ -1307,7 +1643,6 @@
             bannerFinal.style.padding = "1rem";
             bannerFinal.style.fontWeight = "bold";
             bannerFinal.style.marginTop = "1rem";
-
             if (esCampeon && totalVictorias === 24) {
                 bannerFinal.style.color = "#4ade80";
                 bannerFinal.innerHTML = "🎉 ¡HAZAÑA DE LEYENDA! Lograste el 24-0 invicto absoluto y eres Campeón de la Liga MX! 🏆";
@@ -1332,6 +1667,7 @@
             golesGlobalUser = 0;
             golesGlobalRival = 0;
             misRivalesLiguilla = [];
+            resorteosRestantes = 2;
 
             lblPj.innerText = "0 / 24";
             lblRecord.innerText = "0 - 0 - 0";
@@ -1343,7 +1679,11 @@
             botonReiniciar.style.display = "none";
             botonIniciarSim.disabled = false;
             botonRandom.disabled = false;
+            botonReroll.style.display = "none";
+            botonReroll.innerText = `🔄 Resortear (${resorteosRestantes})`;
             botonPasarSim.disabled = true;
+            chkHardMode.disabled = false;
+
             bannerInfo.innerHTML = `🎲 Presiona el botón azul para comenzar a crear tu club`;
             panelOpciones.innerHTML = `<p class="no-selection-msg">Presiona "Obtener Jugadores" para desplegar opciones inmediatas en este panel.</p>`;
             
