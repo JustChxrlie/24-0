@@ -54,7 +54,7 @@
 
         .app-container {
             flex: 1;
-            max-width: 1200px;
+            max-width: 1300px;
             width: 100%;
             margin: 0 auto;
             padding: 1rem 1.5rem;
@@ -86,8 +86,10 @@
             text-transform: uppercase;
             vertical-align: middle;
         }
-        .status-activo { background: var(--success); color: white; }
-        .status-extinto { background: var(--danger); color: white; }
+        .status-activo { background: var(--success); color: white;
+        }
+        .status-extinto { background: var(--danger); color: white;
+        }
 
         /* CONTROLES */
         .setup-controls {
@@ -178,9 +180,12 @@
         }
 
         @media (max-width: 900px) {
-            .draft-workspace { grid-template-columns: 1fr; }
-            .setup-controls > div.actions-container { width: 100%; justify-content: stretch; }
-            .setup-controls > div.actions-container > button { flex: 1; margin: 0; }
+            .draft-workspace { grid-template-columns: 1fr;
+            }
+            .setup-controls > div.actions-container { width: 100%; justify-content: stretch;
+            }
+            .setup-controls > div.actions-container > button { flex: 1;
+            margin: 0; }
         }
 
         /* CANCHA */
@@ -302,10 +307,12 @@
             padding-right: 5px;
         }
 
-        /* Custom Scrollbar para el panel de opciones */
-        .options-container::-webkit-scrollbar { width: 6px; }
-        .options-container::-webkit-scrollbar-track { background: #151e2b; border-radius: 4px; }
-        .options-container::-webkit-scrollbar-thumb { background: #334661; border-radius: 4px; }
+        .options-container::-webkit-scrollbar { width: 6px;
+        }
+        .options-container::-webkit-scrollbar-track { background: #151e2b; border-radius: 4px;
+        }
+        .options-container::-webkit-scrollbar-thumb { background: #334661; border-radius: 4px;
+        }
 
         .no-selection-msg {
             color: var(--text-muted);
@@ -328,10 +335,20 @@
             transition: all 0.2s ease;
         }
 
-        .choice-card:hover {
+        .choice-card:hover:not(.disabled) {
             border-color: #38bdf8;
             transform: translateX(5px);
             box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+        }
+
+        /* TARJETAS DESHABILITADAS */
+        .choice-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #1e293b;
+            transform: none;
+            box-shadow: none;
+            filter: grayscale(80%);
         }
 
         .choice-rating {
@@ -368,59 +385,75 @@
         }
 
         /* ==========================================================================
-           PANTALLA DE SIMULACIÓN
+           PANTALLA DE SIMULACIÓN MODIFICADA
            ========================================================================== */
-        .simulation-container {
+        .simulation-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            grid-template-columns: 1fr 1fr 1.2fr;
+            gap: 1.5rem;
             background: var(--bg-card);
             border-radius: 16px;
             padding: 2rem;
             border: 1px solid #243145;
         }
 
-        @media (max-width: 800px) {
-            .simulation-container { grid-template-columns: 1fr; }
+        @media (max-width: 1050px) {
+            .simulation-grid { grid-template-columns: 1fr 1fr;
+            }
+            .sim-right-col { grid-column: 1 / -1;
+            }
+        }
+        @media (max-width: 768px) {
+            .simulation-grid { grid-template-columns: 1fr;
+            }
         }
 
         .sim-stats-panel {
             background: #0f172a;
-            padding: 1.5rem;
+            padding: 1rem 1.5rem;
             border-radius: 12px;
             border: 1px solid #1e293b;
         }
 
         .sim-metric {
-            font-size: 1.1rem;
-            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
             display: flex;
             justify-content: space-between;
         }
-        .sim-metric b { color: var(--accent); }
+        .sim-metric b { color: var(--accent);
+        }
 
         .perfect-status {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 800;
             text-align: center;
-            padding: 1rem;
+            padding: 0.8rem;
             border-radius: 8px;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
             text-transform: uppercase;
         }
-        .status-perfect-ok { background: rgba(22, 163, 74, 0.2); color: #4ade80; border: 1px solid #22c55e;}
-        .status-perfect-broken { background: rgba(220, 38, 38, 0.2); color: #f87171; border: 1px solid #ef4444;}
+        .status-perfect-ok { background: rgba(22, 163, 74, 0.2); color: #4ade80;
+        border: 1px solid #22c55e;}
+        .status-perfect-broken { background: rgba(220, 38, 38, 0.2); color: #f87171;
+        border: 1px solid #ef4444;}
 
         .match-logs-box {
             background: #0f172a;
             border-radius: 12px;
             padding: 1rem;
-            height: 440px;
+            height: 550px;
             overflow-y: auto;
             border: 1px solid #1e293b;
             display: flex;
             flex-direction: column;
             gap: 0.6rem;
+        }
+        .match-logs-box::-webkit-scrollbar { width: 6px;
+        }
+        .match-logs-box::-webkit-scrollbar-track { background: #151e2b; border-radius: 4px;
+        }
+        .match-logs-box::-webkit-scrollbar-thumb { background: #334661; border-radius: 4px;
         }
 
         .log-row {
@@ -431,28 +464,79 @@
             padding: 0.75rem 1rem;
             border-radius: 8px;
             border-left: 4px solid #64748b;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             animation: fadeIn 0.3s ease forwards;
         }
 
-        .log-row.win { border-left-color: var(--success); }
-        .log-row.draw { border-left-color: var(--warning); }
-        .log-row.loss { border-left-color: var(--danger); }
-
-        .badge-res {
-            font-size: 0.75rem;
-            font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
+        .log-row.win { border-left-color: var(--success);
         }
-        .badge-win { background: var(--success); color: white; }
-        .badge-draw { background: var(--warning); color: black; }
-        .badge-loss { background: var(--danger); color: white; }
+        .log-row.draw { border-left-color: var(--warning);
+        }
+        .log-row.loss { border-left-color: var(--danger);
+        }
+
+        .llaves-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px dashed var(--warning);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        .llaves-box h4 { color: var(--warning); margin-bottom: 10px; text-transform: uppercase;
+        letter-spacing: 1px;}
+        .llaves-box .matchup-row { margin-bottom: 6px; font-weight: 600;
+        font-size: 0.9rem;}
+
+        /* TABLA DE POSICIONES */
+        .table-box {
+            background: #0f172a;
+            border-radius: 12px;
+            border: 1px solid #1e293b;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .table-box h3 {
+            background: #1e293b;
+            padding: 0.8rem; text-align: center; font-size: 1rem; color: #fff;
+        }
+        .standings-table {
+            width: 100%;
+            border-collapse: collapse; font-size: 0.75rem; text-align: center;
+        }
+        .standings-table th { background: #1e293b;
+        padding: 8px 4px; color: var(--accent); }
+        .standings-table td { padding: 8px 4px;
+        border-bottom: 1px solid #1e293b; }
+        .standings-table tr:nth-child(even) { background: rgba(255,255,255,0.02);
+        }
+        .standings-table tr.user-row { background: rgba(56, 189, 248, 0.15); font-weight: bold;
+        border-left: 3px solid #38bdf8;}
+        .standings-table tr.top-8 td:first-child { border-left: 3px solid var(--success);
+        }
+
+        /* NOTICIAS ESPN */
+        .news-box {
+            background: linear-gradient(to right, #0f172a, #1a222f);
+            border: 1px solid #38bdf8; 
+            border-radius: 8px; 
+            padding: 1.2rem;
+            font-style: italic; 
+            color: #f8f9fa; 
+            font-size: 0.95rem; 
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border-left: 4px solid #38bdf8;
+            line-height: 1.4;
+        }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0;
+            transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0);
+            }
         }
 
         .app-footer {
@@ -524,32 +608,53 @@
         </section>
 
         <section id="view-simulation" class="game-view" style="display: none;">
-            <div class="setup-controls">
+            <div class="setup-controls" style="flex-wrap: nowrap; justify-content: space-between;">
                 <h2>📈 Centro de Simulación en Vivo</h2>
-                <button id="btn-start-simulation" class="btn-primary" style="margin-left: auto; background: #22c55e; color: white;">⚡ Ejecutar Torneo</button>
-                <button id="btn-restart-game" class="btn-random" style="display: none; background: #64748b; color: white;">🔄 Intentar de Nuevo</button>
+                <div style="display: flex; gap: 1rem;">
+                    <button id="btn-start-simulation" class="btn-primary" style="background: #22c55e; color: white;">⚽ Iniciar Torneo</button>
+                    <button id="btn-sim-all-regular" class="btn-random" style="background: #eab308; color: black; display: none;">⏩ Simular Temporada Regular Completa</button>
+                    <button id="btn-restart-game" class="btn-random" style="display: none; background: #64748b; color: white;">🔄 Intentar de Nuevo</button>
+                </div>
             </div>
 
-            <div class="simulation-container">
-                <div class="sim-stats-panel">
-                    <h3 style="margin-bottom: 1.2rem; text-transform: uppercase;">Tu Rendimiento</h3>
-                    <div class="sim-metric">Tu Equipo: <span id="lbl-sim-club" style="font-weight: bold; color: #38bdf8;">-</span></div>
-                    <div class="sim-metric">Valoración de Plantilla: <b id="lbl-sim-rating">0</b></div>
-                    <div class="sim-metric">Posición Final en Tabla: <span id="lbl-sim-pos" style="font-weight: bold; color: var(--warning);">-</span></div>
-                    <hr style="border: 0; border-top: 1px solid #1e293b; margin: 1rem 0;">
-                    <div class="sim-metric">Partidos Jugados: <span id="lbl-sim-pj">0 / 24</span></div>
-                    <div class="sim-metric">Récord (G - E - P): <span id="lbl-sim-record" style="font-weight: bold;">0 - 0 - 0</span></div>
-                    <div class="sim-metric">Puntos en Liga: <span id="lbl-sim-pts" style="color: #38bdf8; font-weight: bold;">0 pts</span></div>
-                    
-                    <div id="perfect-badge" class="perfect-status status-perfect-ok">
+            <div class="simulation-grid">
+                <div class="sim-left-col">
+                    <div id="sim-pitch-wrapper" style="transform: scale(0.85); transform-origin: top center; margin-bottom: 0;">
+                        </div>
+                    <div id="news-box" class="news-box">
+                        📰 <b>ESPN:</b> Esperando el inicio del torneo.
+                    </div>
+                    <div id="perfect-badge" class="perfect-status status-perfect-ok" style="margin-top: 0;">
                         ✨ Récord Perfecto Activo (24-0)
                     </div>
                 </div>
 
-                <div>
-                    <h3 style="margin-bottom: 0.6rem; text-transform: uppercase; font-size: 1rem; color: var(--text-muted)">Historial de Encuentros</h3>
+                <div class="sim-center-col">
+                    <div class="sim-stats-panel" style="margin-bottom: 1.5rem;">
+                        <div class="sim-metric" style="font-size: 1.1rem; border-bottom: 1px solid #1e293b; padding-bottom:0.5rem; margin-bottom:0.8rem;">
+                            Club: <span id="lbl-sim-club" style="color: #38bdf8; font-weight:bold;">-</span>
+                        </div>
+                        <div class="sim-metric">Global OVR: <b id="lbl-sim-rating">0</b></div>
+                        <div class="sim-metric">Récord (V-E-D): <span id="lbl-sim-record" style="font-weight:bold;">0 - 0 - 0</span></div>
+                        <div class="sim-metric">Jornada: <span id="lbl-sim-pj">0 / 24</span></div>
+                    </div>
+
+                    <div class="table-box">
+                        <h3>TABLA GENERAL LIGA MX</h3>
+                        <table class="standings-table">
+                            <thead>
+                                <tr><th>#</th><th style="text-align:left;">Club</th><th>J</th><th>V</th><th>E</th><th>D</th><th>DIF</th><th>PTS</th></tr>
+                            </thead>
+                            <tbody id="standings-body">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="sim-right-col">
+                    <h3 style="margin-bottom: 0.6rem; text-transform: uppercase; font-size: 1rem; color: var(--text-muted)">Historial de Simulación</h3>
                     <div id="simulation-logs" class="match-logs-box">
-                        <p class="no-selection-msg">Presiona "Ejecutar Torneo" para ver rodar el balón.</p>
+                        <p class="no-selection-msg">Presiona el botón verde para avanzar la simulación partido a partido.</p>
                     </div>
                 </div>
             </div>
@@ -576,573 +681,203 @@
                     { nombre: "J. Herrera", pos: "DC", rating: 81 }, { nombre: "V. Ruiz", pos: "DC", rating: 78 }
                 ]},
                 {nombre: "Toluca de Cardozo y Compañia",estado: "activo",figuras: [
-                { nombre: "M. Albarrán", pos: "POR", rating: 85 },
-                { nombre: "A. Núñez", pos: "LD", rating: 81 },
-                { nombre: "A. Macías", pos: "DFC", rating: 83 },
-                { nombre: "O. Blanco", pos: "DFC", rating: 82 },
-                { nombre: "A. Taboada", pos: "LI", rating: 80 },
-                { nombre: "D. Rangel", pos: "MC", rating: 84 },
-                { nombre: "V. Ruiz", pos: "MC", rating: 89 },
-                { nombre: "F. Estay", pos: "MC", rating: 88 },
-                { nombre: "E. Alfaro", pos: "ED", rating: 82 },
-                { nombre: "J.M. Abundis", pos: "EI", rating: 86 },
-                { nombre: "J.S. Cardozo", pos: "DC", rating: 95 },
-                { nombre: "C.M. Morales", pos: "DC", rating: 84 },
-                { nombre: "E. García de Dios", pos: "MC", rating: 78 },
-                { nombre: "D. Vukić", pos: "MC", rating: 79 }
-                ]
-                },
-
-                {    nombre: "Santos de Maturano",
-    estado: "activo",
-    figuras: [
-        // Portero
-        { nombre: "J.A. Silva", pos: "POR", rating: 79 },
-
-        // Defensas
-        { nombre: "R. Ramírez", pos: "LD", rating: 78 },
-        { nombre: "J.I. Rivero", pos: "DFC", rating: 77 },
-        { nombre: "F. Davino", pos: "DFC", rating: 80 },
-        { nombre: "M.A. Herrera", pos: "LI", rating: 76 },
-
-        // Mediocampistas
-        { nombre: "R. Rodas", pos: "MC", rating: 79 },
-        { nombre: "H. Guerra", pos: "MC", rating: 81 },
-        { nombre: "G. Zaldívar", pos: "MC", rating: 77 },
-
-        // Delanteros
-        { nombre: "R. Zambrano", pos: "ED", rating: 80 },
-        { nombre: "D. Guzmán", pos: "DC", rating: 82 },
-        { nombre: "N. Ramírez", pos: "EI", rating: 78 },
-
-        // Cambios / Revulsivos
-        { nombre: "J.C. Razo", pos: "MC", rating: 74 },
-        { nombre: "H. Ovelar", pos: "DC", rating: 75 },
-        { nombre: "J. Rodríguez", pos: "DFC", rating: 73 }
-    ]
-},
-{
-    nombre: "Reboceros de La Piedad Campeón 2001",
-    estado: "histórico",
-    figuras: [
-        // Portero
-        { nombre: "J.A. Flores", pos: "POR", rating: 78 },
-
-        // Defensas
-        { nombre: "A. Sánchez", pos: "LD", rating: 77 },
-        { nombre: "G. Rizo", pos: "DFC", rating: 79 },
-        { nombre: "R. Murguía", pos: "DFC", rating: 76 },
-        { nombre: "R. Chávez", pos: "LI", rating: 75 },
-
-        // Mediocampistas
-        { nombre: "P. Chávez", pos: "MC", rating: 80 },
-        { nombre: "C. Morales", pos: "MC", rating: 82 },
-        { nombre: "J. Damasceno", pos: "MC", rating: 81 },
-        { nombre: "R. Valenzuela", pos: "MC", rating: 78 },
-
-        // Delanteros
-        { nombre: "C. Amaral", pos: "DC", rating: 84 },
-        { nombre: "S. Almaguer", pos: "DC", rating: 80 },
-
-        // Cambios / Revulsivos
-        { nombre: "M. Capria", pos: "MC", rating: 77 },
-        { nombre: "H. Ovelar", pos: "DC", rating: 76 },
-        { nombre: "J. L. Malibrán", pos: "DFC", rating: 74 }
-    ]
-},
+                { nombre: "M. Albarrán", pos: "POR", rating: 85 }, { nombre: "A. Núñez", pos: "LD", rating: 81 }, { nombre: "A. Macías", pos: "DFC", rating: 83 },
+                { nombre: "O. Blanco", pos: "DFC", rating: 82 }, { nombre: "A. Taboada", pos: "LI", rating: 80 }, { nombre: "D. Rangel", pos: "MC", rating: 84 },
+                { nombre: "V. Ruiz", pos: "MC", rating: 89 }, { nombre: "F. Estay", pos: "MC", rating: 88 }, { nombre: "E. Alfaro", pos: "ED", rating: 82 },
+                { nombre: "J.M. Abundis", pos: "EI", rating: 86 }, { nombre: "J.S. Cardozo", pos: "DC", rating: 95 }, { nombre: "C.M. Morales", pos: "DC", rating: 84 }
+                ]},
+                { nombre: "Santos de Maturano", estado: "activo", figuras: [
+                    { nombre: "J.A. Silva", pos: "POR", rating: 79 }, { nombre: "R. Ramírez", pos: "LD", rating: 78 }, { nombre: "J.I. Rivero", pos: "DFC", rating: 77 },
+                    { nombre: "F. Davino", pos: "DFC", rating: 80 }, { nombre: "M.A. Herrera", pos: "LI", rating: 76 }, { nombre: "R. Rodas", pos: "MC", rating: 79 },
+                    { nombre: "H. Guerra", pos: "MC", rating: 81 }, { nombre: "G. Zaldívar", pos: "MC", rating: 77 }, { nombre: "R. Zambrano", pos: "ED", rating: 80 },
+                    { nombre: "D. Guzmán", pos: "DC", rating: 82 }, { nombre: "N. Ramírez", pos: "EI", rating: 78 }
+                ]},
+                { nombre: "Reboceros de La Piedad Campeón 2001", estado: "histórico", figuras: [
+                    { nombre: "J.A. Flores", pos: "POR", rating: 78 }, { nombre: "A. Sánchez", pos: "LD", rating: 77 }, { nombre: "G. Rizo", pos: "DFC", rating: 79 },
+                    { nombre: "R. Murguía", pos: "DFC", rating: 76 }, { nombre: "R. Chávez", pos: "LI", rating: 75 }, { nombre: "P. Chávez", pos: "MC", rating: 80 },
+                    { nombre: "C. Morales", pos: "MC", rating: 82 }, { nombre: "J. Damasceno", pos: "MC", rating: 81 }, { nombre: "C. Amaral", pos: "DC", rating: 84 },
+                    { nombre: "S. Almaguer", pos: "DC", rating: 80 }
+                ]},
                 { nombre: "Atlético Celaya 90s", estado: "extinto", figuras: [
                     { nombre: "H. Félix", pos: "POR", rating: 82 }, { nombre: "H. Quintero", pos: "POR", rating: 74 },
-                    { nombre: "I. Hurtado", pos: "DFC", rating: 85 }, { nombre: "J. Cruz", pos: "DFC", rating: 80 }, { nombre: "M. Díaz", pos: "DFC", rating: 78 },
-                    { nombre: "S. Almaguer", pos: "LI", rating: 83 }, { nombre: "A. Pavón", pos: "LD", rating: 80 },
-                    { nombre: "Míchel", pos: "MC", rating: 90 }, { nombre: "R. Martín", pos: "MC", rating: 84 }, { nombre: "C. Pavón", pos: "MC", rating: 82 },
-                    { nombre: "E. Butragueño", pos: "EI", rating: 88 }, { nombre: "F. Cruz", pos: "ED", rating: 80 },
-                    { nombre: "Hugo Sánchez", pos: "DC", rating: 90 }, { nombre: "E. Soto", pos: "DC", rating: 79 }
+                    { nombre: "I. Hurtado", pos: "DFC", rating: 85 }, { nombre: "J. Cruz", pos: "DFC", rating: 80 }, { nombre: "S. Almaguer", pos: "LI", rating: 83 },
+                    { nombre: "A. Pavón", pos: "LD", rating: 80 }, { nombre: "Míchel", pos: "MC", rating: 90 }, { nombre: "R. Martín", pos: "MC", rating: 84 },
+                    { nombre: "C. Pavón", pos: "MC", rating: 82 }, { nombre: "E. Butragueño", pos: "EI", rating: 88 }, { nombre: "F. Cruz", pos: "ED", rating: 80 },
+                    { nombre: "Hugo Sánchez", pos: "DC", rating: 90 }
                 ]},
                 {nombre: "Atlas de los Niños Heroes",estado: "activo",figuras: [
-                    { nombre: "E. Cabuto", pos: "POR", rating: 83 },
-                    { nombre: "M. Méndez", pos: "LD", rating: 82 },
-                    { nombre: "H. López", pos: "DFC", rating: 84 },
-                    { nombre: "R. Márquez", pos: "DFC", rating: 90 },
-                    { nombre: "P. Lavallén", pos: "LI", rating: 81 },
-                    { nombre: "J. Estrada", pos: "MC", rating: 79 },
-                    { nombre: "J.P. Rodríguez", pos: "MC", rating: 85 },
-                    { nombre: "M. Zepeda", pos: "MC", rating: 84 },
-                    { nombre: "C. Andrade", pos: "EI", rating: 80 },
-                    { nombre: "D. Osorno", pos: "ED", rating: 83 },
-                    { nombre: "H.N. Castillo", pos: "DC", rating: 86 },
-                    { nombre: "J. Almirón", pos: "MC", rating: 78 },
-                    { nombre: "G. Torres", pos: "MC", rating: 77 },
-                    { nombre: "J.L. González", pos: "EI", rating: 76 }
+                    { nombre: "E. Cabuto", pos: "POR", rating: 83 }, { nombre: "M. Méndez", pos: "LD", rating: 82 }, { nombre: "H. López", pos: "DFC", rating: 84 },
+                    { nombre: "R. Márquez", pos: "DFC", rating: 90 }, { nombre: "P. Lavallén", pos: "LI", rating: 81 }, { nombre: "J. Estrada", pos: "MC", rating: 79 },
+                    { nombre: "J.P. Rodríguez", pos: "MC", rating: 85 }, { nombre: "M. Zepeda", pos: "MC", rating: 84 }, { nombre: "C. Andrade", pos: "EI", rating: 80 },
+                    { nombre: "D. Osorno", pos: "ED", rating: 83 }, { nombre: "H.N. Castillo", pos: "DC", rating: 86 }
                 ]},
                 { nombre: "Necaxa de los 90s", estado: "activo", figuras: [
-                    { nombre: "N. Navarro", pos: "POR", rating: 87 }, { nombre: "H. Pineda", pos: "POR", rating: 81 },
-                    { nombre: "J. Higareda", pos: "DFC", rating: 84 }, { nombre: "M. Esquivel", pos: "DFC", rating: 82 }, { nombre: "S. Almaguer", pos: "DFC", rating: 85 },
-                    { nombre: "G. Montes de Oca", pos: "LI", rating: 80 }, { nombre: "E. Vilches", pos: "LD", rating: 86 },
-                    { nombre: "A. Aguinaga", pos: "MC", rating: 93 }, { nombre: "I. Ambriz", pos: "MC", rating: 88 }, { nombre: "A. García Aspe", pos: "MC", rating: 90 },
-                    { nombre: "S. Zárate", pos: "EI", rating: 89 }, { nombre: "L. Hernández", pos: "ED", rating: 87 },
-                    { nombre: "R. Peláez", pos: "DC", rating: 88 }, { nombre: "I. Vázquez", pos: "DC", rating: 83 }
+                    { nombre: "N. Navarro", pos: "POR", rating: 87 }, { nombre: "H. Pineda", pos: "POR", rating: 81 }, { nombre: "J. Higareda", pos: "DFC", rating: 84 },
+                    { nombre: "M. Esquivel", pos: "DFC", rating: 82 }, { nombre: "S. Almaguer", pos: "DFC", rating: 85 }, { nombre: "G. Montes de Oca", pos: "LI", rating: 80 },
+                    { nombre: "E. Vilches", pos: "LD", rating: 86 }, { nombre: "A. Aguinaga", pos: "MC", rating: 93 }, { nombre: "I. Ambriz", pos: "MC", rating: 88 },
+                    { nombre: "A. García Aspe", pos: "MC", rating: 90 }, { nombre: "S. Zárate", pos: "EI", rating: 89 }, { nombre: "L. Hernández", pos: "ED", rating: 87 },
+                    { nombre: "R. Peláez", pos: "DC", rating: 88 }
                 ]},
                 { nombre: "Tecos de la UAG 90s", estado: "extinto", figuras: [
-                    { nombre: "C. Briones", pos: "POR", rating: 83 }, { nombre: "A. Alanis", pos: "POR", rating: 78 },
-                    { nombre: "D. Davino", pos: "DFC", rating: 89 }, { nombre: "R. Parks", pos: "DFC", rating: 84 }, { nombre: "M. Trejo", pos: "DFC", rating: 80 },
-                    { nombre: "G. Gómez", pos: "LI", rating: 79 }, { nombre: "P. Hernández", pos: "LD", rating: 81 },
-                    { nombre: "J.C. Leaño", pos: "MC", rating: 82 }, { nombre: "A. Bautista", pos: "MC", rating: 86 }, { nombre: "M. Garcés", pos: "MC", rating: 80 },
-                    { nombre: "E. Lillingston", pos: "EI", rating: 81 }, { nombre: "Z. Muf", pos: "ED", rating: 85 },
-                    { nombre: "S. Abreu", pos: "DC", rating: 88 }, { nombre: "H. Rosas", pos: "DC", rating: 77 }
+                    { nombre: "C. Briones", pos: "POR", rating: 83 }, { nombre: "D. Davino", pos: "DFC", rating: 89 }, { nombre: "R. Parks", pos: "DFC", rating: 84 },
+                    { nombre: "G. Gómez", pos: "LI", rating: 79 }, { nombre: "P. Hernández", pos: "LD", rating: 81 }, { nombre: "J.C. Leaño", pos: "MC", rating: 82 },
+                    { nombre: "A. Bautista", pos: "MC", rating: 86 }, { nombre: "M. Garcés", pos: "MC", rating: 80 }, { nombre: "E. Lillingston", pos: "EI", rating: 81 },
+                    { nombre: "Z. Muf", pos: "ED", rating: 85 }, { nombre: "S. Abreu", pos: "DC", rating: 88 }
                 ]}
             ],
             "2001-2006": [
                 { nombre: "Colibríes de Morelos 2000s", estado: "extinto", figuras: [
-                    { nombre: "A. Vences", pos: "POR", rating: 77 }, { nombre: "R. Orozco", pos: "POR", rating: 72 },
-                    { nombre: "C. Da Silva", pos: "DFC", rating: 82 }, { nombre: "M. Grana", pos: "DFC", rating: 80 }, { nombre: "F. Davino", pos: "DFC", rating: 76 },
-                    { nombre: "J. Flores", pos: "LI", rating: 74 }, { nombre: "A. Ramírez", pos: "LD", rating: 75 },
-                    { nombre: "L. Arango", pos: "MC", rating: 78 }, { nombre: "R. Gutiérrez", pos: "MC", rating: 76 }, { nombre: "J. Hernández", pos: "MC", rating: 73 },
-                    { nombre: "M. Pérez", pos: "EI", rating: 75 }, { nombre: "J. Rodríguez", pos: "ED", rating: 74 },
-                    { nombre: "Claudinho", pos: "DC", rating: 86 }, { nombre: "R. Gómez", pos: "DC", rating: 78 }
+                    { nombre: "A. Vences", pos: "POR", rating: 77 }, { nombre: "C. Da Silva", pos: "DFC", rating: 82 }, { nombre: "M. Grana", pos: "DFC", rating: 80 },
+                    { nombre: "J. Flores", pos: "LI", rating: 74 }, { nombre: "A. Ramírez", pos: "LD", rating: 75 }, { nombre: "L. Arango", pos: "MC", rating: 78 },
+                    { nombre: "R. Gutiérrez", pos: "MC", rating: 76 }, { nombre: "M. Pérez", pos: "EI", rating: 75 }, { nombre: "J. Rodríguez", pos: "ED", rating: 74 },
+                    { nombre: "Claudinho", pos: "DC", rating: 86 }
                 ]},
                 { nombre: "Jaguares de Chiapas 2003", estado: "extinto", figuras: [
-                    { nombre: "O. Ortiz", pos: "POR", rating: 84 }, { nombre: "A. Pérez", pos: "POR", rating: 76 },
-                    { nombre: "M. Brown", pos: "DFC", rating: 82 }, { nombre: "I. Fuentes", pos: "DFC", rating: 80 }, { nombre: "E. Sánchez", pos: "DFC", rating: 78 },
-                    { nombre: "A. Mora", pos: "LI", rating: 79 }, { nombre: "O. Rojas", pos: "LD", rating: 81 },
-                    { nombre: "D. Dirceu", pos: "MC", rating: 83 }, { nombre: "J. Hernández", pos: "MC", rating: 79 }, { nombre: "C. Ochoa", pos: "MC", rating: 80 },
-                    { nombre: "L. Filomeno", pos: "EI", rating: 82 }, { nombre: "T. Moreno", pos: "ED", rating: 85 },
-                    { nombre: "S. Cabañas", pos: "DC", rating: 91 }, { nombre: "L. Ochoa", pos: "DC", rating: 81 }
+                    { nombre: "O. Ortiz", pos: "POR", rating: 84 }, { nombre: "M. Brown", pos: "DFC", rating: 82 }, { nombre: "I. Fuentes", pos: "DFC", rating: 80 },
+                    { nombre: "A. Mora", pos: "LI", rating: 79 }, { nombre: "O. Rojas", pos: "LD", rating: 81 }, { nombre: "D. Dirceu", pos: "MC", rating: 83 },
+                    { nombre: "J. Hernández", pos: "MC", rating: 79 }, { nombre: "L. Filomeno", pos: "EI", rating: 82 }, { nombre: "T. Moreno", pos: "ED", rating: 85 },
+                    { nombre: "S. Cabañas", pos: "DC", rating: 91 }
                 ]},
                 { nombre: "Veracruz 2004", estado: "extinto", figuras: [
-                    { nombre: "J. Bernal", pos: "POR", rating: 85 }, { nombre: "A. Ruiz", pos: "POR", rating: 75 },
-                    { nombre: "I. Terrazas", pos: "DFC", rating: 81 }, { nombre: "P. Quatrocchi", pos: "DFC", rating: 83 }, { nombre: "J. Sánchez", pos: "DFC", rating: 78 },
-                    { nombre: "R. Briseño", pos: "LI", rating: 79 }, { nombre: "M. Pérez", pos: "LD", rating: 80 },
-                    { nombre: "Cuauhtémoc Blanco", pos: "MC", rating: 90 }, { nombre: "B. Arce", pos: "MC", rating: 84 }, { nombre: "J. L. González", pos: "MC", rating: 81 },
-                    { nombre: "C. Giménez", pos: "EI", rating: 88 }, { nombre: "W. Pezzolano", pos: "ED", rating: 82 },
-                    { nombre: "Kléber Boas", pos: "DC", rating: 89 }, { nombre: "G. Biscayzacú", pos: "DC", rating: 87 }
+                    { nombre: "J. Bernal", pos: "POR", rating: 85 }, { nombre: "I. Terrazas", pos: "DFC", rating: 81 }, { nombre: "P. Quatrocchi", pos: "DFC", rating: 83 },
+                    { nombre: "R. Briseño", pos: "LI", rating: 79 }, { nombre: "M. Pérez", pos: "LD", rating: 80 }, { nombre: "Cuauhtémoc Blanco", pos: "MC", rating: 90 },
+                    { nombre: "B. Arce", pos: "MC", rating: 84 }, { nombre: "J. L. González", pos: "MC", rating: 81 }, { nombre: "C. Giménez", pos: "EI", rating: 88 },
+                    { nombre: "W. Pezzolano", pos: "ED", rating: 82 }, { nombre: "Kléber Boas", pos: "DC", rating: 89 }, { nombre: "G. Biscayzacú", pos: "DC", rating: 87 }
                 ]},
                 {nombre: "Pumas Bicampeón",estado: "activo",figuras: [
-                    { nombre: "S. Bernal", pos: "POR", rating: 86 },
-                    { nombre: "J. Beltrán", pos: "DFC", rating: 84 },
-                    { nombre: "D. Verón", pos: "DFC", rating: 88 },
-                    { nombre: "I. Castro", pos: "LD", rating: 83 },
-                    { nombre: "G. Pineda", pos: "LI", rating: 82 },
-                    { nombre: "J. Lozano", pos: "MC", rating: 85 },
-                    { nombre: "L. Augusto", pos: "MC", rating: 87 },
-                    { nombre: "G. Galindo", pos: "MC", rating: 81 },
-                    { nombre: "F. Fonseca", pos: "DC", rating: 86 },
-                    { nombre: "J. Botero", pos: "DC", rating: 83 },
-                    { nombre: "A. da Silva", pos: "ED", rating: 85 },
-                    { nombre: "I. Íñiguez", pos: "EI", rating: 80 },
-                    { nombre: "J.L. López", pos: "ED", rating: 79 },
-                    { nombre: "D. Toledo", pos: "MC", rating: 78 }
+                    { nombre: "S. Bernal", pos: "POR", rating: 86 }, { nombre: "J. Beltrán", pos: "DFC", rating: 84 }, { nombre: "D. Verón", pos: "DFC", rating: 88 },
+                    { nombre: "I. Castro", pos: "LD", rating: 83 }, { nombre: "G. Pineda", pos: "LI", rating: 82 }, { nombre: "J. Lozano", pos: "MC", rating: 85 },
+                    { nombre: "L. Augusto", pos: "MC", rating: 87 }, { nombre: "G. Galindo", pos: "MC", rating: 81 }, { nombre: "F. Fonseca", pos: "DC", rating: 86 },
+                    { nombre: "J. Botero", pos: "DC", rating: 83 }, { nombre: "A. da Silva", pos: "ED", rating: 85 }, { nombre: "I. Íñiguez", pos: "EI", rating: 80 }
                 ]},
                 {nombre: "Pachuca de la Sudamericana",estado: "activo",figuras: [
-                    { nombre: "M. Calero", pos: "POR", rating: 90 },
-                    { nombre: "P. Aguilar", pos: "LD", rating: 85 },
-                    { nombre: "L. López", pos: "DFC", rating: 86 },
-                    { nombre: "A. Mosquera", pos: "DFC", rating: 87 },
-                    { nombre: "F. Pinto", pos: "LI", rating: 84 },
-                    { nombre: "F. Salazar", pos: "MC", rating: 81 },
-                    { nombre: "J. Correa", pos: "MC", rating: 84 },
-                    { nombre: "G. Caballero", pos: "MC", rating: 83 },
-                    { nombre: "A. Chitiva", pos: "EI", rating: 85 },
-                    { nombre: "C. Giménez", pos: "ED", rating: 87 },
-                    { nombre: "J.C. Cacho", pos: "DC", rating: 89 },
-                    { nombre: "G. Rodríguez", pos: "LI", rating: 84 },
-                    { nombre: "D. Álvarez", pos: "EI", rating: 85 },
-                    { nombre: "I. Franco", pos: "DC", rating: 79 }
+                    { nombre: "M. Calero", pos: "POR", rating: 90 }, { nombre: "P. Aguilar", pos: "LD", rating: 85 }, { nombre: "L. López", pos: "DFC", rating: 86 },
+                    { nombre: "A. Mosquera", pos: "DFC", rating: 87 }, { nombre: "F. Pinto", pos: "LI", rating: 84 }, { nombre: "F. Salazar", pos: "MC", rating: 81 },
+                    { nombre: "J. Correa", pos: "MC", rating: 84 }, { nombre: "A. Chitiva", pos: "EI", rating: 85 }, { nombre: "C. Giménez", pos: "ED", rating: 87 },
+                    { nombre: "J.C. Cacho", pos: "DC", rating: 89 }, { nombre: "D. Álvarez", pos: "EI", rating: 85 }
                 ]},
                 { nombre: "Monarcas Morelia 2000s", estado: "extinto", figuras: [
-                    { nombre: "M. Muñoz", pos: "POR", rating: 86 }, { nombre: "A. Álvarez", pos: "POR", rating: 78 },
-                    { nombre: "D. Franco", pos: "DFC", rating: 85 }, { nombre: "O. Trujillo", pos: "DFC", rating: 83 }, { nombre: "E. Loeschbor", pos: "DFC", rating: 81 },
-                    { nombre: "C. Morales", pos: "LI", rating: 84 }, { nombre: "H. Altamirano", pos: "LD", rating: 82 },
-                    { nombre: "J. Almirón", pos: "MC", rating: 86 }, { nombre: "R. Noriega", pos: "MC", rating: 80 }, { nombre: "H. Álvarez", pos: "MC", rating: 79 },
-                    { nombre: "M. Ruiz", pos: "EI", rating: 83 }, { nombre: "J. Lozano", pos: "ED", rating: 81 },
-                    { nombre: "A. Fernandes", pos: "DC", rating: 89 }, { nombre: "R. Palacios", pos: "DC", rating: 82 }
+                    { nombre: "M. Muñoz", pos: "POR", rating: 86 }, { nombre: "D. Franco", pos: "DFC", rating: 85 }, { nombre: "O. Trujillo", pos: "DFC", rating: 83 },
+                    { nombre: "C. Morales", pos: "LI", rating: 84 }, { nombre: "H. Altamirano", pos: "LD", rating: 82 }, { nombre: "J. Almirón", pos: "MC", rating: 86 },
+                    { nombre: "R. Noriega", pos: "MC", rating: 80 }, { nombre: "M. Ruiz", pos: "EI", rating: 83 }, { nombre: "J. Lozano", pos: "ED", rating: 81 },
+                    { nombre: "A. Fernandes", pos: "DC", rating: 89 }
                 ]}
             ],
             "2006-2011": [
                 { nombre: "Atlante ", estado: "activo", figuras: [
-                    { nombre: "F. Vilar", pos: "POR", rating: 88 }, { nombre: "O. Patiño", pos: "POR", rating: 76 },
-                    { nombre: "J. Mustafá", pos: "DFC", rating: 83 }, { nombre: "G. Cervantes", pos: "DFC", rating: 81 }, { nombre: "M. Carevic", pos: "DFC", rating: 80 },
-                    { nombre: "C. Bermúdez", pos: "LI", rating: 86 }, { nombre: "A. Muñoz", pos: "LD", rating: 82 },
-                    { nombre: "G. Pereyra", pos: "MC", rating: 85 }, { nombre: "D. Toledo", pos: "MC", rating: 82 }, { nombre: "A. Ovalle", pos: "MC", rating: 79 },
-                    { nombre: "J. Guerrero", pos: "EI", rating: 84 }, { nombre: "A. Rey", pos: "ED", rating: 85 },
-                    { nombre: "G. Maldonado", pos: "DC", rating: 89 }, { nombre: "C. Suárez", pos: "DC", rating: 81 }
+                    { nombre: "F. Vilar", pos: "POR", rating: 88 }, { nombre: "J. Mustafá", pos: "DFC", rating: 83 }, { nombre: "G. Cervantes", pos: "DFC", rating: 81 },
+                    { nombre: "C. Bermúdez", pos: "LI", rating: 86 }, { nombre: "A. Muñoz", pos: "LD", rating: 82 }, { nombre: "G. Pereyra", pos: "MC", rating: 85 },
+                    { nombre: "D. Toledo", pos: "MC", rating: 82 }, { nombre: "J. Guerrero", pos: "EI", rating: 84 }, { nombre: "A. Rey", pos: "ED", rating: 85 },
+                    { nombre: "G. Maldonado", pos: "DC", rating: 89 }
                 ]},
-                {
-    nombre: "Chivas Campeón 2006",
-    estado: "activo",
-    figuras: [
-        // Portero
-        { nombre: "O. Sánchez", pos: "POR", rating: 90 },
-
-        // Defensas
-        { nombre: "D. Martínez", pos: "LD", rating: 80 },
-        { nombre: "F.J. Rodríguez", pos: "DFC", rating: 84 },
-        { nombre: "H. Reynoso", pos: "DFC", rating: 83 },
-        { nombre: "J. Magallón", pos: "DFC", rating: 82 },
-
-        // Mediocampistas
-        { nombre: "P. Araujo", pos: "MC", rating: 79 },
-        { nombre: "G. Pineda", pos: "MC", rating: 81 },
-        { nombre: "R. Morales", pos: "MC", rating: 85 },
-
-        // Delanteros
-        { nombre: "A. Medina", pos: "ED", rating: 83 },
-        { nombre: "O. Bravo", pos: "DC", rating: 87 },
-        { nombre: "A. Bautista", pos: "EI", rating: 86 },
-
-        // Cambios / Revulsivos
-        { nombre: "S. Santana", pos: "DC", rating: 81 },
-        { nombre: "M. Sol", pos: "MC", rating: 78 },
-        { nombre: "O. Esparza", pos: "LD", rating: 77 }
-    ]
-},
-{
-    nombre: "Monterrey de Chupeteeeeeeee",
-    estado: "activo",
-    figuras: [
-        // Portero
-        { nombre: "J. Orozco", pos: "POR", rating: 87 },
-
-        // Defensas
-        { nombre: "R. Osorio", pos: "LD", rating: 83 },
-        { nombre: "J.M. Basanta", pos: "DFC", rating: 85 },
-        { nombre: "H. Mier", pos: "DFC", rating: 84 },
-        { nombre: "W. Ayoví", pos: "LI", rating: 82 },
-
-        // Mediocampistas
-        { nombre: "O. Martínez", pos: "MC", rating: 81 },
-        { nombre: "J. Zavala", pos: "MC", rating: 82 },
-        { nombre: "L.E. Pérez", pos: "MC", rating: 84 },
-
-        // Delanteros
-        { nombre: "H. Suazo", pos: "DC", rating: 91 },
-        { nombre: "A. de Nigris", pos: "DC", rating: 86 },
-        { nombre: "N. Cardozo", pos: "EI", rating: 83 },
-
-        // Cambios / Revulsivos
-        { nombre: "S. Santana", pos: "DC", rating: 80 },
-        { nombre: "D. Chávez", pos: "LI", rating: 78 },
-        { nombre: "G. Galindo", pos: "MC", rating: 77 }
-    ]
-},
+                { nombre: "Chivas Campeón 2006", estado: "activo", figuras: [
+                    { nombre: "O. Sánchez", pos: "POR", rating: 90 }, { nombre: "D. Martínez", pos: "LD", rating: 80 }, { nombre: "F.J. Rodríguez", pos: "DFC", rating: 84 },
+                    { nombre: "H. Reynoso", pos: "DFC", rating: 83 }, { nombre: "P. Araujo", pos: "MC", rating: 79 }, { nombre: "G. Pineda", pos: "MC", rating: 81 },
+                    { nombre: "R. Morales", pos: "MC", rating: 85 }, { nombre: "A. Medina", pos: "ED", rating: 83 }, { nombre: "O. Bravo", pos: "DC", rating: 87 },
+                    { nombre: "A. Bautista", pos: "EI", rating: 86 }
+                ]},
+                { nombre: "Monterrey de Chupete", estado: "activo", figuras: [
+                    { nombre: "J. Orozco", pos: "POR", rating: 87 }, { nombre: "R. Osorio", pos: "LD", rating: 83 }, { nombre: "J.M. Basanta", pos: "DFC", rating: 85 },
+                    { nombre: "H. Mier", pos: "DFC", rating: 84 }, { nombre: "W. Ayoví", pos: "LI", rating: 82 }, { nombre: "O. Martínez", pos: "MC", rating: 81 },
+                    { nombre: "J. Zavala", pos: "MC", rating: 82 }, { nombre: "L.E. Pérez", pos: "MC", rating: 84 }, { nombre: "H. Suazo", pos: "DC", rating: 91 },
+                    { nombre: "A. de Nigris", pos: "DC", rating: 86 }, { nombre: "N. Cardozo", pos: "EI", rating: 83 }
+                ]},
                 { nombre: "Indios de Ciudad Juárez RIP", estado: "extinto", figuras: [
-                    { nombre: "C. Saucedo", pos: "POR", rating: 83 }, { nombre: "H. Hernández", pos: "POR", rating: 75 },
-                    { nombre: "J. C. Mosqueda", pos: "DFC", rating: 79 }, { nombre: "H. Gómez", pos: "DFC", rating: 78 }, { nombre: "S. Martínez", pos: "DFC", rating: 76 },
-                    { nombre: "M. Pérez", pos: "LI", rating: 77 }, { nombre: "T. Campos", pos: "LD", rating: 80 },
-                    { nombre: "J. C. Silva", pos: "MC", rating: 82 }, { nombre: "E. Frías", pos: "MC", rating: 78 }, { nombre: "D. de la Torre", pos: "MC", rating: 77 },
-                    { nombre: "T. Moreno", pos: "EI", rating: 84 }, { nombre: "R. Gómez", pos: "ED", rating: 81 },
-                    { nombre: "E. Maggiolo", pos: "DC", rating: 85 }, { nombre: "J. Maleno", pos: "DC", rating: 80 }
+                    { nombre: "C. Saucedo", pos: "POR", rating: 83 }, { nombre: "J. C. Mosqueda", pos: "DFC", rating: 79 }, { nombre: "H. Gómez", pos: "DFC", rating: 78 },
+                    { nombre: "M. Pérez", pos: "LI", rating: 77 }, { nombre: "T. Campos", pos: "LD", rating: 80 }, { nombre: "J. C. Silva", pos: "MC", rating: 82 },
+                    { nombre: "E. Frías", pos: "MC", rating: 78 }, { nombre: "T. Moreno", pos: "EI", rating: 84 }, { nombre: "R. Gómez", pos: "ED", rating: 81 },
+                    { nombre: "E. Maggiolo", pos: "DC", rating: 85 }
                 ]},
-                { nombre: "San Luis se queda, San Luis se queda ", estado: "extinto", figuras: [
-                    { nombre: "A. Martínez", pos: "POR", rating: 84 }, { nombre: "C. Trejo", pos: "POR", rating: 77 },
-                    { nombre: "O. Mascorro", pos: "DFC", rating: 82 }, { nombre: "M. Pérez", pos: "DFC", rating: 80 }, { nombre: "C. Sánchez", pos: "DFC", rating: 79 },
-                    { nombre: "L. González", pos: "LI", rating: 81 }, { nombre: "R. Salinas", pos: "LD", rating: 80 },
-                    { nombre: "B. Luna", pos: "MC", rating: 86 }, { nombre: "E. Coudet", pos: "MC", rating: 85 }, { nombre: "M. Maya", pos: "MC", rating: 78 },
-                    { nombre: "M. Arroyo", pos: "EI", rating: 85 }, { nombre: "V. Lojero", pos: "ED", rating: 80 },
-                    { nombre: "A. Moreno", pos: "DC", rating: 88 }, { nombre: "M. de la Torre", pos: "DC", rating: 82 }
+                { nombre: "San Luis se queda", estado: "extinto", figuras: [
+                    { nombre: "A. Martínez", pos: "POR", rating: 84 }, { nombre: "O. Mascorro", pos: "DFC", rating: 82 }, { nombre: "M. Pérez", pos: "DFC", rating: 80 },
+                    { nombre: "L. González", pos: "LI", rating: 81 }, { nombre: "R. Salinas", pos: "LD", rating: 80 }, { nombre: "B. Luna", pos: "MC", rating: 86 },
+                    { nombre: "E. Coudet", pos: "MC", rating: 85 }, { nombre: "M. Arroyo", pos: "EI", rating: 85 }, { nombre: "V. Lojero", pos: "ED", rating: 80 },
+                    { nombre: "A. Moreno", pos: "DC", rating: 88 }
                 ]}
             ],
             "2011-2016": [
                 { nombre: "Xolos de Tijuana", estado: "activo", figuras: [
-                    { nombre: "C. Saucedo", pos: "POR", rating: 85 }, { nombre: "A. Zermeño", pos: "POR", rating: 76 },
-                    { nombre: "J. Gandolfi", pos: "DFC", rating: 87 }, { nombre: "P. Aguilar", pos: "DFC", rating: 84 }, { nombre: "E. Castillo", pos: "DFC", rating: 80 },
-                    { nombre: "J. Núñez", pos: "LI", rating: 82 }, { nombre: "R. Ruiz", pos: "LD", rating: 83 },
-                    { nombre: "C. Pellerano", pos: "MC", rating: 86 }, { nombre: "F. Arce", pos: "MC", rating: 85 }, { nombre: "L. Silva", pos: "MC", rating: 81 },
-                    { nombre: "F. Martínez", pos: "EI", rating: 84 }, { nombre: "R. Enríquez", pos: "ED", rating: 80 },
+                    { nombre: "C. Saucedo", pos: "POR", rating: 85 }, { nombre: "J. Gandolfi", pos: "DFC", rating: 87 }, { nombre: "P. Aguilar", pos: "DFC", rating: 84 },
+                    { nombre: "J. Núñez", pos: "LI", rating: 82 }, { nombre: "R. Ruiz", pos: "LD", rating: 83 }, { nombre: "C. Pellerano", pos: "MC", rating: 86 },
+                    { nombre: "F. Arce", pos: "MC", rating: 85 }, { nombre: "F. Martínez", pos: "EI", rating: 84 }, { nombre: "R. Enríquez", pos: "ED", rating: 80 },
                     { nombre: "D. Moreno", pos: "DC", rating: 88 }, { nombre: "D. Riascos", pos: "DC", rating: 87 }
                 ]},
                 { nombre: "Leones Negros de la UDG", estado: "activo", figuras: [
-                    { nombre: "H. Hernández", pos: "POR", rating: 80 }, { nombre: "M. Alatorre", pos: "LD", rating: 76 },
-                    { nombre: "F. Araujo", pos: "DFC", rating: 75 }, { nombre: "L. Cufré", pos: "DFC", rating: 81 },
-                    { nombre: "J. González", pos: "LI", rating: 74 }, { nombre: "M. Crosas", pos: "MC", rating: 79 },
-                    { nombre: "J. Hernández", pos: "MC", rating: 77 }, { nombre: "L. Télles", pos: "MC", rating: 73 },
-                    { nombre: "J. González", pos: "ED", rating: 75 }, { nombre: "F. Martínez", pos: "EI", rating: 82 },
-                    { nombre: "J. Vázquez", pos: "DC", rating: 74 }, { nombre: "R. Vilchis", pos: "ED", rating: 72 },
-                    { nombre: "J. Barraza", pos: "DC", rating: 71 }, { nombre: "C. Díaz", pos: "DFC", rating: 70 }
+                    { nombre: "H. Hernández", pos: "POR", rating: 80 }, { nombre: "M. Alatorre", pos: "LD", rating: 76 }, { nombre: "F. Araujo", pos: "DFC", rating: 75 },
+                    { nombre: "L. Cufré", pos: "DFC", rating: 81 }, { nombre: "J. González", pos: "LI", rating: 74 }, { nombre: "M. Crosas", pos: "MC", rating: 79 },
+                    { nombre: "J. Hernández", pos: "MC", rating: 77 }, { nombre: "J. González", pos: "ED", rating: 75 }, { nombre: "F. Martínez", pos: "EI", rating: 82 },
+                    { nombre: "J. Vázquez", pos: "DC", rating: 74 }
                 ]},
-                {
-    nombre: "Querétaro de Ronaldinho",
-    estado: "activo",
-    figuras: [
-        // Portero
-        { nombre: "T. Volpi", pos: "POR", rating: 85 },
-
-        // Defensas
-        { nombre: "G. Corral", pos: "LD", rating: 77 },
-        { nombre: "M. Martínez", pos: "DFC", rating: 78 },
-        { nombre: "Y. Corona", pos: "DFC", rating: 79 },
-        { nombre: "J.R. Chávez", pos: "LI", rating: 76 },
-
-        // Mediocampistas
-        { nombre: "D. Villalva", pos: "MC", rating: 78 },
-        { nombre: "M. Osuna", pos: "MC", rating: 80 },
-        { nombre: "R. Güémez", pos: "MC", rating: 79 },
-        { nombre: "Ronaldinho", pos: "MC", rating: 91 },
-
-        // Delanteros
-        { nombre: "E. Villa", pos: "DC", rating: 82 },
-        { nombre: "C. Sanvezzo", pos: "DC", rating: 83 },
-
-        // Cambios / Revulsivos
-        { nombre: "A. Sepúlveda", pos: "ED", rating: 77 },
-        { nombre: "P. Da Silva", pos: "DFC", rating: 75 },
-        { nombre: "O. Pineda", pos: "MC", rating: 74 }
-    ]
-},
+                { nombre: "Querétaro de Ronaldinho", estado: "activo", figuras: [
+                    { nombre: "T. Volpi", pos: "POR", rating: 85 }, { nombre: "G. Corral", pos: "LD", rating: 77 }, { nombre: "M. Martínez", pos: "DFC", rating: 78 },
+                    { nombre: "Y. Corona", pos: "DFC", rating: 79 }, { nombre: "J.R. Chávez", pos: "LI", rating: 76 }, { nombre: "M. Osuna", pos: "MC", rating: 80 },
+                    { nombre: "R. Güémez", pos: "MC", rating: 79 }, { nombre: "Ronaldinho", pos: "MC", rating: 91 }, { nombre: "E. Villa", pos: "DC", rating: 82 },
+                    { nombre: "C. Sanvezzo", pos: "DC", rating: 83 }, { nombre: "A. Sepúlveda", pos: "ED", rating: 77 }
+                ]},
                 { nombre: "León de Matosas", estado: "activo", figuras: [
-                    { nombre: "W. Yarbrough", pos: "POR", rating: 86 }, { nombre: "C. Martínez", pos: "POR", rating: 78 },
-                    { nombre: "R. Márquez", pos: "DFC", rating: 89 }, { nombre: "J. I. González", pos: "DFC", rating: 85 }, { nombre: "J. Magallón", pos: "DFC", rating: 83 },
-                    { nombre: "E. Hernández", pos: "LI", rating: 84 }, { nombre: "J. Pineda", pos: "LD", rating: 82 },
-                    { nombre: "L. Montes", pos: "MC", rating: 88 }, { nombre: "C. Peña", pos: "MC", rating: 87 }, { nombre: "J. Vázquez", pos: "MC", rating: 86 },
-                    { nombre: "H. Burbano", pos: "EI", rating: 85 }, { nombre: "F. Arizala", pos: "ED", rating: 83 },
-                    { nombre: "M. Boselli", pos: "DC", rating: 90 }, { nombre: "M. Britos", pos: "DC", rating: 84 }
+                    { nombre: "W. Yarbrough", pos: "POR", rating: 86 }, { nombre: "R. Márquez", pos: "DFC", rating: 89 }, { nombre: "J. I. González", pos: "DFC", rating: 85 },
+                    { nombre: "E. Hernández", pos: "LI", rating: 84 }, { nombre: "J. Pineda", pos: "LD", rating: 82 }, { nombre: "L. Montes", pos: "MC", rating: 88 },
+                    { nombre: "C. Peña", pos: "MC", rating: 87 }, { nombre: "J. Vázquez", pos: "MC", rating: 86 }, { nombre: "H. Burbano", pos: "EI", rating: 85 },
+                    { nombre: "F. Arizala", pos: "ED", rating: 83 }, { nombre: "M. Boselli", pos: "DC", rating: 90 }, { nombre: "M. Britos", pos: "DC", rating: 84 }
                 ]},
-    
                 {nombre: "Cruz Azul Era Boing",estado: "activo",figuras: [
-        // Portero
-        { nombre: "J. Corona", pos: "POR", rating: 88 },
-
-        // Defensas
-        { nombre: "O. Mendoza", pos: "LD", rating: 78 },
-        { nombre: "J.C. Domínguez", pos: "DFC", rating: 80 },
-        { nombre: "E. Roco", pos: "DFC", rating: 79 },
-        { nombre: "J.C. García", pos: "LI", rating: 76 },
-
-        // Mediocampistas
-        { nombre: "R. Baca", pos: "MC", rating: 81 },
-        { nombre: "F. Silva", pos: "MC", rating: 80 },
-        { nombre: "J. Rojas", pos: "ED", rating: 79 },
-        { nombre: "C. Giménez", pos: "MC", rating: 82 },
-
-        // Delanteros
-        { nombre: "J. Guerrón", pos: "EI", rating: 81 },
-        { nombre: "J. Benítez", pos: "DC", rating: 83 },
-
-        // Cambios / Revulsivos
-        { nombre: "R. Ruiz", pos: "LD", rating: 75 },
-        { nombre: "M. Vuoso", pos: "DC", rating: 77 },
-        { nombre: "A.L. Ramírez", pos: "MC", rating: 78 }
-    ]
-}
+                    { nombre: "J. Corona", pos: "POR", rating: 88 }, { nombre: "O. Mendoza", pos: "LD", rating: 78 }, { nombre: "J.C. Domínguez", pos: "DFC", rating: 80 },
+                    { nombre: "E. Roco", pos: "DFC", rating: 79 }, { nombre: "J.C. García", pos: "LI", rating: 76 }, { nombre: "R. Baca", pos: "MC", rating: 81 },
+                    { nombre: "F. Silva", pos: "MC", rating: 80 }, { nombre: "J. Rojas", pos: "ED", rating: 79 }, { nombre: "C. Giménez", pos: "MC", rating: 82 },
+                    { nombre: "J. Guerrón", pos: "EI", rating: 81 }, { nombre: "J. Benítez", pos: "DC", rating: 83 }
+                ]}
             ],
             "2016-2022": [
                 { nombre: "Tigres del Tuca", estado: "activo", figuras: [
-                    { nombre: "N. Guzmán", pos: "POR", rating: 89 }, { nombre: "E. Fernández", pos: "POR", rating: 78 },
-                    { nombre: "Juninho", pos: "DFC", rating: 87 }, { nombre: "H. Ayala", pos: "DFC", rating: 86 }, { nombre: "F. Meza", pos: "DFC", rating: 82 },
-                    { nombre: "J. Torres Nilo", pos: "LI", rating: 83 }, { nombre: "L. Rodríguez", pos: "LD", rating: 84 },
-                    { nombre: "G. Pizarro", pos: "MC", rating: 88 }, { nombre: "R. Carioca", pos: "MC", rating: 87 }, { nombre: "J. Dueñas", pos: "MC", rating: 84 },
-                    { nombre: "J. Aquino", pos: "EI", rating: 86 }, { nombre: "J. Damm", pos: "ED", rating: 81 },
-                    { nombre: "A. Gignac", pos: "DC", rating: 92 }, { nombre: "E. Vargas", pos: "DC", rating: 85 }
+                    { nombre: "N. Guzmán", pos: "POR", rating: 89 }, { nombre: "Juninho", pos: "DFC", rating: 87 }, { nombre: "H. Ayala", pos: "DFC", rating: 86 },
+                    { nombre: "J. Torres Nilo", pos: "LI", rating: 83 }, { nombre: "L. Rodríguez", pos: "LD", rating: 84 }, { nombre: "G. Pizarro", pos: "MC", rating: 88 },
+                    { nombre: "R. Carioca", pos: "MC", rating: 87 }, { nombre: "J. Dueñas", pos: "MC", rating: 84 }, { nombre: "J. Aquino", pos: "EI", rating: 86 },
+                    { nombre: "J. Damm", pos: "ED", rating: 81 }, { nombre: "A. Gignac", pos: "DC", rating: 92 }, { nombre: "E. Vargas", pos: "DC", rating: 85 }
                 ]},
-                {
-    nombre: "Morelia de Ruidíaz",
-    estado: "activo",
-    figuras: [
-        // Portero
-        { nombre: "C. Sosa", pos: "POR", rating: 83 },
-
-        // Defensas
-        { nombre: "E. Loeschbor", pos: "DFC", rating: 79 },
-        { nombre: "G. Achilier", pos: "DFC", rating: 80 },
-        { nombre: "E. Vegas", pos: "LD", rating: 77 },
-        { nombre: "S. Vegas", pos: "LI", rating: 78 },
-
-        // Mediocampistas
-        { nombre: "D. Valdés", pos: "MC", rating: 82 },
-        { nombre: "J.P. Rodríguez", pos: "MC", rating: 80 },
-        { nombre: "M. Osuna", pos: "MC", rating: 79 },
-
-        // Delanteros
-        { nombre: "R. Ruidíaz", pos: "DC", rating: 90 },
-        { nombre: "Á. Sepúlveda", pos: "ED", rating: 78 },
-        { nombre: "H. Mancilla", pos: "DC", rating: 77 },
-
-        // Cambios / Revulsivos
-        { nombre: "A. Polo", pos: "ED", rating: 76 },
-        { nombre: "J. Cuero", pos: "EI", rating: 75 },
-        { nombre: "M. Sansores", pos: "DC", rating: 74 }
-    ]
-},
-{
-    nombre: "Veracruz del Último Torneo",
-    estado: "extinto",
-    figuras: [
-        // Portero
-        { nombre: "S. Jurado", pos: "POR", rating: 78 },
-
-        // Defensas
-        { nombre: "L. Noya", pos: "DFC", rating: 72 },
-        { nombre: "C. Salcido", pos: "DFC", rating: 73 },
-        { nombre: "J. Paganoni", pos: "LD", rating: 71 },
-        { nombre: "B. Carrasco", pos: "LI", rating: 70 },
-
-        // Mediocampistas
-        { nombre: "G. Flores", pos: "MC", rating: 71 },
-        { nombre: "J. Vázquez", pos: "MC", rating: 70 },
-        { nombre: "A. López", pos: "MC", rating: 69 },
-
-        // Delanteros
-        { nombre: "C. Kazim-Richards", pos: "DC", rating: 73 },
-        { nombre: "D. Villalva", pos: "EI", rating: 72 },
-        { nombre: "I. López", pos: "ED", rating: 71 },
-
-        // Cambios / Revulsivos
-        { nombre: "E. Gularte", pos: "DFC", rating: 69 },
-        { nombre: "R. Sandoval", pos: "MC", rating: 68 },
-        { nombre: "P. Rivas", pos: "DC", rating: 67 }
-    ]
-},
-                {
-    nombre: "Lobos BUAP de Quiñones-Advíncula",
-    estado: "activo",
-    figuras: [
-        // Portero
-        { nombre: "J. Villalpando", pos: "POR", rating: 77 },
-
-        // Defensas
-        { nombre: "L. Advíncula", pos: "LD", rating: 83 },
-        { nombre: "F. Rodríguez", pos: "DFC", rating: 78 },
-        { nombre: "C. Cercado", pos: "DFC", rating: 76 },
-        { nombre: "H. Olascoaga", pos: "LI", rating: 75 },
-
-        // Mediocampistas
-        { nombre: "P. Aquino", pos: "MC", rating: 80 },
-        { nombre: "J. Medina", pos: "MC", rating: 77 },
-        { nombre: "J. Canales", pos: "MC", rating: 76 },
-
-        // Delanteros
-        { nombre: "J. Quiñones", pos: "EI", rating: 85 },
-        { nombre: "A. Quiñones", pos: "ED", rating: 82 },
-        { nombre: "L. Jiménez", pos: "DC", rating: 79 },
-
-        // Cambios / Revulsivos
-        { nombre: "M. Escoto", pos: "DC", rating: 74 },
-        { nombre: "I. Ibarra", pos: "DFC", rating: 73 },
-        { nombre: "B. Rabello", pos: "MC", rating: 75 }
-    ]
-},
-{
-    nombre: "Veracruz campeón de Copa MX",
-    estado: "activo",
-    figuras: [
-        // Portero
-        { nombre: "M. Hernández", pos: "POR", rating: 78 },
-
-        // Defensas
-        { nombre: "L. López", pos: "DFC", rating: 80 },
-        { nombre: "R. Noya", pos: "DFC", rating: 76 },
-        { nombre: "H. Cid", pos: "DFC", rating: 74 },
-        { nombre: "J. Paganoni", pos: "LD", rating: 77 },
-        { nombre: "E. Garcia", pos: "LI", rating: 77 },
-
-        // Mediocampistas
-        { nombre: "A. Zamora", pos: "MC", rating: 75 },
-        { nombre: "G. Peñalba", pos: "MC", rating: 80 },
-        { nombre: "F. Meneses", pos: "ED", rating: 78 },
-        { nombre: "E.G. Lugo", pos: "MC", rating: 77 },
-
-        // Delanteros
-        { nombre: "J.C. Furch", pos: "DC", rating: 82 },
-        { nombre: "D. Villalva", pos: "EI", rating: 79 },
-
-        // Cambios / Revulsivos
-        { nombre: "A. Zamora", pos: "MC", rating: 75 }, // Opción de equilibrio
-        { nombre: "E.G. Lugo", pos: "MC", rating: 77 }, // Opción creativa
-        { nombre: "F. Meneses", pos: "ED", rating: 78 }  // Opción de rotación
-    ]
-},
+                { nombre: "Morelia de Ruidíaz", estado: "activo", figuras: [
+                    { nombre: "C. Sosa", pos: "POR", rating: 83 }, { nombre: "E. Loeschbor", pos: "DFC", rating: 79 }, { nombre: "G. Achilier", pos: "DFC", rating: 80 },
+                    { nombre: "E. Vegas", pos: "LD", rating: 77 }, { nombre: "S. Vegas", pos: "LI", rating: 78 }, { nombre: "D. Valdés", pos: "MC", rating: 82 },
+                    { nombre: "J.P. Rodríguez", pos: "MC", rating: 80 }, { nombre: "M. Osuna", pos: "MC", rating: 79 }, { nombre: "R. Ruidíaz", pos: "DC", rating: 90 },
+                    { nombre: "Á. Sepúlveda", pos: "ED", rating: 78 }, { nombre: "J. Cuero", pos: "EI", rating: 75 }
+                ]},
+                { nombre: "Lobos BUAP de Quiñones-Advíncula", estado: "activo", figuras: [
+                    { nombre: "J. Villalpando", pos: "POR", rating: 77 }, { nombre: "L. Advíncula", pos: "LD", rating: 83 }, { nombre: "F. Rodríguez", pos: "DFC", rating: 78 },
+                    { nombre: "C. Cercado", pos: "DFC", rating: 76 }, { nombre: "H. Olascoaga", pos: "LI", rating: 75 }, { nombre: "P. Aquino", pos: "MC", rating: 80 },
+                    { nombre: "J. Medina", pos: "MC", rating: 77 }, { nombre: "J. Quiñones", pos: "EI", rating: 85 }, { nombre: "A. Quiñones", pos: "ED", rating: 82 },
+                    { nombre: "L. Jiménez", pos: "DC", rating: 79 }
+                ]},
                 {nombre: "Puebla de Larcamon",estado: "activo",figuras: [
-                    { nombre: "A. Silva", pos: "POR", rating: 87 },
-                    { nombre: "I. Reyes", pos: "DFC", rating: 82 }, { nombre: "J.P. Segovia", pos: "DFC", rating: 80 }, { nombre: "M. Perg", pos: "DFC", rating: 78 },
-                    { nombre: "S. Reyes", pos: "LI", rating: 81 }, { nombre: "G. Ferrareis", pos: "LD", rating: 79 },
-                    { nombre: "D. de Buen", pos: "MC", rating: 79 }, { nombre: "J. Salas", pos: "MC", rating: 77 }, { nombre: "F. Mancuello", pos: "MC", rating: 82 },
-                    { nombre: "C. Tabó", pos: "EI", rating: 81 }, { nombre: "O. Fernández", pos: "ED", rating: 80 },
-                    { nombre: "S. Ormeño", pos: "DC", rating: 83 },
-                    { nombre: "E. Gularte", pos: "DFC", rating: 77 }, { nombre: "G. Corral", pos: "LD", rating: 76 }
+                    { nombre: "A. Silva", pos: "POR", rating: 87 }, { nombre: "I. Reyes", pos: "DFC", rating: 82 }, { nombre: "J.P. Segovia", pos: "DFC", rating: 80 },
+                    { nombre: "S. Reyes", pos: "LI", rating: 81 }, { nombre: "G. Ferrareis", pos: "LD", rating: 79 }, { nombre: "D. de Buen", pos: "MC", rating: 79 },
+                    { nombre: "J. Salas", pos: "MC", rating: 77 }, { nombre: "F. Mancuello", pos: "MC", rating: 82 }, { nombre: "C. Tabó", pos: "EI", rating: 81 },
+                    { nombre: "O. Fernández", pos: "ED", rating: 80 }, { nombre: "S. Ormeño", pos: "DC", rating: 83 }
                 ]},
                 { nombre: "Atlas Buicampeon de Cocca", estado: "activo", figuras: [
-                    { nombre: "C. Vargas", pos: "POR", rating: 91 },
-                    { nombre: "H. Nervo", pos: "DFC", rating: 86 }, { nombre: "A. Santamaría", pos: "DFC", rating: 84 }, { nombre: "E. Aguilera", pos: "DFC", rating: 82 },
-                    { nombre: "J. Abella", pos: "LD", rating: 81 }, { nombre: "A. Chalá", pos: "LI", rating: 80 },
-                    { nombre: "A. Rocha", pos: "MC", rating: 87 }, { nombre: "E. Zaldívar", pos: "MC", rating: 83 }, { nombre: "L. Reyes", pos: "MC", rating: 85 },
-                    { nombre: "J. Quiñones", pos: "EI", rating: 90 }, { nombre: "J. Furch", pos: "DC", rating: 88 },
-                    { nombre: "J. Torres", pos: "ED", rating: 84 }, { nombre: "O. Herrera", pos: "ED", rating: 82 }, { nombre: "B. Garnica", pos: "EI", rating: 79 }
+                    { nombre: "C. Vargas", pos: "POR", rating: 91 }, { nombre: "H. Nervo", pos: "DFC", rating: 86 }, { nombre: "A. Santamaría", pos: "DFC", rating: 84 },
+                    { nombre: "J. Abella", pos: "LD", rating: 81 }, { nombre: "A. Chalá", pos: "LI", rating: 80 }, { nombre: "A. Rocha", pos: "MC", rating: 87 },
+                    { nombre: "E. Zaldívar", pos: "MC", rating: 83 }, { nombre: "L. Reyes", pos: "MC", rating: 85 }, { nombre: "J. Quiñones", pos: "EI", rating: 90 },
+                    { nombre: "J. Furch", pos: "DC", rating: 88 }, { nombre: "J. Torres", pos: "ED", rating: 84 }
                 ]},
-                {
-    nombre: "Dorados de Maradona",
-    estado: "activo",
-    figuras: [
-        // Portero
-        { nombre: "G. Servio", pos: "POR", rating: 80 },
-
-        // Defensas
-        { nombre: "D. Barbosa", pos: "LD", rating: 77 },
-        { nombre: "J. Meza", pos: "DFC", rating: 76 },
-        { nombre: "G. Chávez", pos: "DFC", rating: 75 },
-        { nombre: "A. Sandoval", pos: "LI", rating: 74 },
-
-        // Mediocampistas
-        { nombre: "F. Arce", pos: "MC", rating: 78 },
-        { nombre: "E. Ferreira", pos: "MC", rating: 77 },
-        { nombre: "J. González", pos: "MC", rating: 76 },
-
-        // Delanteros
-        { nombre: "A. Escoto", pos: "EI", rating: 75 },
-        { nombre: "J. Córdoba", pos: "DC", rating: 79 },
-        { nombre: "V. Angulo", pos: "ED", rating: 81 },
-
-        // Cambios / Revulsivos
-        { nombre: "J. Gallegos", pos: "MC", rating: 74 },
-        { nombre: "A. López", pos: "ED", rating: 73 },
-        { nombre: "M. Manríquez", pos: "DFC", rating: 72 }
-    ]
-},
                 { nombre: "Rayados 2019", estado: "activo", figuras: [
-                    { nombre: "M. Barovero", pos: "POR", rating: 87 }, { nombre: "H. González", pos: "POR", rating: 80 },
-                    { nombre: "N. Sánchez", pos: "DFC", rating: 86 }, { nombre: "S. Medina", pos: "DFC", rating: 84 }, { nombre: "C. Montes", pos: "DFC", rating: 83 },
-                    { nombre: "J. Gallardo", pos: "LI", rating: 85 }, { nombre: "L. Vangioni", pos: "LD", rating: 82 },
-                    { nombre: "C. Ortiz", pos: "MC", rating: 86 }, { nombre: "C. Rodríguez", pos: "MC", rating: 85 }, { nombre: "J. González", pos: "MC", rating: 81 },
-                    { nombre: "M. Meza", pos: "EI", rating: 84 }, { nombre: "D. Pabón", pos: "ED", rating: 87 },
-                    { nombre: "R. Funes Mori", pos: "DC", rating: 89 }, { nombre: "V. Janssen", pos: "DC", rating: 84 }
+                    { nombre: "M. Barovero", pos: "POR", rating: 87 }, { nombre: "N. Sánchez", pos: "DFC", rating: 86 }, { nombre: "S. Medina", pos: "DFC", rating: 84 },
+                    { nombre: "J. Gallardo", pos: "LI", rating: 85 }, { nombre: "L. Vangioni", pos: "LD", rating: 82 }, { nombre: "C. Ortiz", pos: "MC", rating: 86 },
+                    { nombre: "C. Rodríguez", pos: "MC", rating: 85 }, { nombre: "J. González", pos: "MC", rating: 81 }, { nombre: "M. Meza", pos: "EI", rating: 84 },
+                    { nombre: "D. Pabón", pos: "ED", rating: 87 }, { nombre: "R. Funes Mori", pos: "DC", rating: 89 }, { nombre: "V. Janssen", pos: "DC", rating: 84 }
                 ]},
                 { nombre: "América 2018", estado: "activo", figuras: [
-                    { nombre: "A. Marchesín", pos: "POR", rating: 89 }, { nombre: "G. Ochoa", pos: "POR", rating: 87 },
-                    { nombre: "B. Valdez", pos: "DFC", rating: 86 }, { nombre: "E. Álvarez", pos: "DFC", rating: 85 }, { nombre: "E. Aguilera", pos: "DFC", rating: 83 },
-                    { nombre: "L. Reyes", pos: "LI", rating: 80 }, { nombre: "P. Aguilar", pos: "LD", rating: 85 },
-                    { nombre: "G. Rodríguez", pos: "MC", rating: 88 }, { nombre: "M. Uribe", pos: "MC", rating: 86 }, { nombre: "R. Sánchez", pos: "MC", rating: 85 },
-                    { nombre: "D. Lainez", pos: "EI", rating: 84 }, { nombre: "R. Ibarra", pos: "ED", rating: 86 },
+                    { nombre: "A. Marchesín", pos: "POR", rating: 89 }, { nombre: "B. Valdez", pos: "DFC", rating: 86 }, { nombre: "E. Álvarez", pos: "DFC", rating: 85 },
+                    { nombre: "L. Reyes", pos: "LI", rating: 80 }, { nombre: "P. Aguilar", pos: "LD", rating: 85 }, { nombre: "G. Rodríguez", pos: "MC", rating: 88 },
+                    { nombre: "M. Uribe", pos: "MC", rating: 86 }, { nombre: "D. Lainez", pos: "EI", rating: 84 }, { nombre: "R. Ibarra", pos: "ED", rating: 86 },
                     { nombre: "O. Peralta", pos: "DC", rating: 88 }, { nombre: "H. Martín", pos: "DC", rating: 88 }
                 ]}
             ],
             "2023-2026": [
-                {
-    nombre: "América Tricampeón",
-    estado: "activo",
-    figuras: [
-        // Portero
-        { nombre: "L. Malagón", pos: "POR", rating: 89 },
-
-        // Defensas
-        { nombre: "I. Reyes", pos: "LD", rating: 88 },
-        { nombre: "R. Juárez", pos: "DFC", rating: 85 },
-        { nombre: "S. Cáceres", pos: "DFC", rating: 86 },
-        { nombre: "C. Calderón", pos: "LI", rating: 81 },
-
-        // Mediocampistas
-        { nombre: "J. dos Santos", pos: "MC", rating: 85 },
-        { nombre: "Á. Fidalgo", pos: "MC", rating: 90 },
-        { nombre: "D. Valdés", pos: "MCO", rating: 87 },
-        { nombre: "A. Zendejas", pos: "ED", rating: 84 },
-
-        // Delanteros
-        { nombre: "J. Quiñones", pos: "EI", rating: 87 },
-        { nombre: "H. Martín", pos: "DC", rating: 88 },
-
-        // Cambios / Revulsivos
-        { nombre: "B. Rodríguez", pos: "EI", rating: 89 },
-        { nombre: "R. Sánchez", pos: "MC", rating: 88 },
-        { nombre: "I. Lichnovsky", pos: "DFC", rating: 83 }
-    ]
-}, 
+                {nombre: "América Tricampeón", estado: "activo", figuras: [
+                    { nombre: "L. Malagón", pos: "POR", rating: 89 }, { nombre: "I. Reyes", pos: "LD", rating: 88 }, { nombre: "R. Juárez", pos: "DFC", rating: 85 },
+                    { nombre: "S. Cáceres", pos: "DFC", rating: 86 }, { nombre: "C. Calderón", pos: "LI", rating: 81 }, { nombre: "J. dos Santos", pos: "MC", rating: 85 },
+                    { nombre: "Á. Fidalgo", pos: "MC", rating: 90 }, { nombre: "A. Zendejas", pos: "ED", rating: 84 }, { nombre: "J. Quiñones", pos: "EI", rating: 87 },
+                    { nombre: "H. Martín", pos: "DC", rating: 88 }, { nombre: "B. Rodríguez", pos: "EI", rating: 89 }
+                ]}
             ]
         };
         
@@ -1150,7 +885,7 @@
         const rivalesLigaMX = [
             { nombre: "Pumas UNAM", rating: 88 }, { nombre: "Chivas", rating: 89 }, { nombre: "América", rating: 87 },
             { nombre: "Cruz Azul", rating: 91 }, { nombre: "Tigres UANL", rating: 84 }, { nombre: "Monterrey", rating: 84 },
-            { nombre: "Toluca", rating: 83 }, { nombre: "León", rating: 82 }, { nombre: "Atlas", rating: 80 },
+            { nombre: "Toluca", rating: 85 }, { nombre: "León", rating: 82 }, { nombre: "Atlas", rating: 84 },
             { nombre: "Pachuca", rating: 80 }, { nombre: "Santos Laguna", rating: 79 }, { nombre: "Necaxa", rating: 77 },
             { nombre: "Puebla", rating: 76 }, { nombre: "Querétaro", rating: 74 }, { nombre: "Tijuana", rating: 74 },
             { nombre: "Atlante", rating: 70}, { nombre: "Atlético San Luis", rating: 73 }, { nombre: "FC Juárez", rating: 72 }
@@ -1168,7 +903,6 @@
             { nombre: "Atlante 2007", rating: 88 }, { nombre: "Puebla 2021", rating: 87 },
             { nombre: "Tecos 1994", rating: 86 }, { nombre: "Cruz Azul 1997", rating: 90 }
         ];
-
         const esquemasTacticos = {
             "4-3-3": [
                 { id: 0, pos: "POR", top: 88, left: 50 }, { id: 1, pos: "LI",  top: 70, left: 15 },
@@ -1192,18 +926,20 @@
                 { id: 8, pos: "ED",  top: 46, left: 85 }, { id: 9, pos: "DC",  top: 20, left: 33 }, { id: 10, pos: "DC", top: 20, left: 67 }
             ]
         };
-
-        // Estado global
+        // Estado global del Draft
         let clubSeleccionado = null;
         let plantillaGuardada = {};
         let equipoRatingGlobal = 0;
         let nombreEquipoUsuario = "Mis Cracks FC";
-        let posicionTabla = 1;
-        let golesGlobalUser = 0;
-        let golesGlobalRival = 0;
-        let misRivalesLiguilla = [];
         let resorteosRestantes = 2;
         let equiposYaSalidos = [];
+        // Estado de Simulación
+        let partidoActual = 1;
+        let recordPerfecto = true;
+        let btnState = "REGULAR"; // REGULAR, SHOW_LIGUILLA, LIGUILLA_IDA, LIGUILLA_VUELTA, END
+        let equiposLiga = [];
+        let calendarioUsuario = [];
+        let llavesLiguilla = [];
 
         // Elementos DOM Draft
         const selectorFormacion = document.getElementById("formation-select");
@@ -1215,22 +951,25 @@
         const panelOpciones = document.getElementById("options-panel-content");
         const botonPasarSim = document.getElementById("btn-go-to-sim");
         const chkHardMode = document.getElementById("chk-hard-mode");
-
         // Elementos DOM Simulación
         const vistaDraft = document.getElementById("view-draft");
         const vistaSimulacion = document.getElementById("view-simulation");
         const botonIniciarSim = document.getElementById("btn-start-simulation");
+        const botonSimularTodo = document.getElementById("btn-sim-all-regular");
         const botonReiniciar = document.getElementById("btn-restart-game");
         const logsBox = document.getElementById("simulation-logs");
         
         const lblClub = document.getElementById("lbl-sim-club");
         const lblRating = document.getElementById("lbl-sim-rating");
-        const lblPos = document.getElementById("lbl-sim-pos");
         const lblPj = document.getElementById("lbl-sim-pj");
         const lblRecord = document.getElementById("lbl-sim-record");
-        const lblPts = document.getElementById("lbl-sim-pts");
         const perfectBadge = document.getElementById("perfect-badge");
+        const tbodyTabla = document.getElementById("standings-body");
+        const newsBox = document.getElementById("news-box");
 
+        // ==========================================================================
+        // DRAFT LOGIC
+        // ==========================================================================
         selectorFormacion.addEventListener("change", () => {
             plantillaGuardada = {};
             botonPasarSim.disabled = true;
@@ -1239,12 +978,10 @@
             resorteosRestantes = 2;
             renderizarCancha();
         });
-
         chkHardMode.addEventListener("change", () => {
             renderizarCancha();
             if(clubSeleccionado) desplegarOpcionesInmediatas();
         });
-
         botonRandom.addEventListener("click", ejecutarRandomizador);
         
         botonReroll.addEventListener("click", () => {
@@ -1253,23 +990,18 @@
                 ejecutarRandomizador();
             }
         });
-
         renderizarCancha();
 
         function ejecutarRandomizador() {
             let todosLosEquipos = [];
-            Object.values(baseDeDatosRetro).forEach(periodo => {
-            todosLosEquipos = todosLosEquipos.concat(periodo);
-            });
+            Object.values(baseDeDatosRetro).forEach(periodo => { todosLosEquipos = todosLosEquipos.concat(periodo); });
             let equiposDisponibles = todosLosEquipos.filter(eq => !equiposYaSalidos.includes(eq.nombre));
-    
             if (equiposDisponibles.length === 0) {
                 equiposYaSalidos = [];
                 equiposDisponibles = todosLosEquipos;
-                }
+            }
 
             clubSeleccionado = equiposDisponibles[Math.floor(Math.random() * equiposDisponibles.length)];
-    
             equiposYaSalidos.push(clubSeleccionado.nombre);
 
             const badgeClass = clubSeleccionado.estado === "activo" ? "status-activo" : "status-extinto";
@@ -1289,13 +1021,9 @@
             panelOpciones.innerHTML = "";
             const esquemaActual = esquemasTacticos[selectorFormacion.value];
 
-            // 1. Contabilizar cuántas posiciones requiere el esquema actual
             let posicionesRequeridas = {};
-            esquemaActual.forEach(slot => {
-                posicionesRequeridas[slot.pos] = (posicionesRequeridas[slot.pos] || 0) + 1;
-            });
-
-            // 2. Contabilizar cuántas posiciones de ese tipo ya hemos llenado y qué jugadores ya tenemos
+            esquemaActual.forEach(slot => { posicionesRequeridas[slot.pos] = (posicionesRequeridas[slot.pos] || 0) + 1; });
+            
             let posicionesLlenas = {};
             let nombresEnPlantilla = [];
             Object.values(plantillaGuardada).forEach(jugador => {
@@ -1303,34 +1031,38 @@
                 nombresEnPlantilla.push(jugador.nombre);
             });
 
-            // 3. Obtener TODOS los jugadores del equipo que coincidan con los huecos aún disponibles
-            let jugadoresDisponibles = clubSeleccionado.figuras.filter(jugador => {
-                let requeridos = posicionesRequeridas[jugador.pos] || 0;
-                let llenos = posicionesLlenas[jugador.pos] || 0;
-                let faltan = requeridos - llenos;
-                
-                // Mostrar si aún faltan cupos en su posición y no ha sido elegido previamente
-                return faltan > 0 && !nombresEnPlantilla.includes(jugador.nombre);
+            let jugadoresMostrados = [...clubSeleccionado.figuras];
+            
+            let contadorCanteranos = 1;
+            esquemaActual.forEach(slot => {
+                if(!plantillaGuardada[slot.id]) {
+                    let jugPosDisponibles = clubSeleccionado.figuras.filter(j => j.pos === slot.pos && !nombresEnPlantilla.includes(j.nombre));
+                    if(jugPosDisponibles.length === 0) {
+                        jugadoresMostrados.push({ nombre: "Canterano " + slot.pos + " " + contadorCanteranos++, pos: slot.pos, rating: 60 });
+                    }
+                }
             });
 
-            // Fallback de emergencia por si la DB se queda corta para la formación pedida
-            if(jugadoresDisponibles.length === 0) {
-                esquemaActual.forEach(slot => {
-                    if(!plantillaGuardada[slot.id]) {
-                        jugadoresDisponibles.push({ nombre: "Canterano " + slot.pos, pos: slot.pos, rating: 60 });
-                    }
-                });
-                // Evitar imprimir duplicados innecesarios de comodines de cantera
-                jugadoresDisponibles = jugadoresDisponibles.filter((v,i,a)=>a.findIndex(t=>(t.pos===v.pos && t.nombre===v.nombre))===i);
-            }
+            // Eliminar duplicados exactos en visualización
+            jugadoresMostrados = jugadoresMostrados.filter((v,i,a)=>a.findIndex(t=>(t.pos===v.pos && t.nombre===v.nombre))===i);
 
             const modoDificil = chkHardMode.checked;
+            jugadoresMostrados.forEach(jugadorSeleccionado => {
+                let requeridos = posicionesRequeridas[jugadorSeleccionado.pos] || 0;
+                let llenos = posicionesLlenas[jugadorSeleccionado.pos] || 0;
+                let faltan = requeridos - llenos;
+                let estaEnPlantilla = nombresEnPlantilla.includes(jugadorSeleccionado.nombre);
 
-            // 4. Renderizar absolutamente TODAS las opciones válidas del equipo
-            jugadoresDisponibles.forEach(jugadorSeleccionado => {
+                // No mostramos al que exactamente ya tenemos seleccionado en esta tirada
+                if (estaEnPlantilla) return; 
+
+                // Si ya no nos falta nadie en esta posición, deshabilitamos la opción
+                let esSeleccionable = faltan > 0;
+
                 const tarjetaChoice = document.createElement("div");
                 tarjetaChoice.className = "choice-card";
-                
+                if (!esSeleccionable) tarjetaChoice.classList.add("disabled");
+
                 const displayRating = modoDificil ? "?" : jugadorSeleccionado.rating;
 
                 tarjetaChoice.innerHTML = `
@@ -1341,25 +1073,24 @@
                     </div>
                 `;
 
-                tarjetaChoice.addEventListener("click", () => {
-                    // Buscar el primer hueco vacío de su respectiva posición
-                    let slotDestino = esquemaActual.find(slot => slot.pos === jugadorSeleccionado.pos && !plantillaGuardada[slot.id]);
-                    
-                    if (slotDestino) {
-                        plantillaGuardada[slotDestino.id] = { nombre: jugadorSeleccionado.nombre, rating: jugadorSeleccionado.rating, pos: jugadorSeleccionado.pos };
-                        renderizarCancha();
-                        verificarDraftTerminado();
-
-                        if (Object.keys(plantillaGuardada).length < esquemaActual.length) {
-                            botonRandom.disabled = false;
-                            botonReroll.disabled = true; // El resorteo es para brincar el equipo. Si eliges, tienes tirada gratis.
-                            panelOpciones.innerHTML = `<p class="no-selection-msg" style="color: #38bdf8;">🔄 ¡Jugador fichado!<br><b>Oprime el botón azul</b> para seguir buscando talento retro.</p>`;
-                        } else {
-                            botonReroll.disabled = true;
-                            panelOpciones.innerHTML = `<p class="no-selection-msg" style="color: var(--accent);">🏆 ¡Alineación completada! Ponle nombre a tu club e inicia el torneo.</p>`;
+                if (esSeleccionable) {
+                    tarjetaChoice.addEventListener("click", () => {
+                        let slotDestino = esquemaActual.find(slot => slot.pos === jugadorSeleccionado.pos && !plantillaGuardada[slot.id]);
+                        if (slotDestino) {
+                            plantillaGuardada[slotDestino.id] = { nombre: jugadorSeleccionado.nombre, rating: jugadorSeleccionado.rating, pos: jugadorSeleccionado.pos };
+                            renderizarCancha();
+                            verificarDraftTerminado();
+                            if (Object.keys(plantillaGuardada).length < esquemaActual.length) {
+                                botonRandom.disabled = false;
+                                botonReroll.disabled = true; 
+                                panelOpciones.innerHTML = `<p class="no-selection-msg" style="color: #38bdf8;">🔄 ¡Jugador fichado!<br><b>Oprime el botón azul</b> para seguir buscando talento retro.</p>`;
+                            } else {
+                                botonReroll.disabled = true;
+                                panelOpciones.innerHTML = `<p class="no-selection-msg" style="color: var(--accent);">🏆 ¡Alineación completada! Ponle nombre a tu club e inicia el torneo.</p>`;
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 panelOpciones.appendChild(tarjetaChoice);
             });
         }
@@ -1404,250 +1135,351 @@
         }
 
         // ==========================================================================
-        // MOTOR DE SIMULACIÓN AVANZADO
+        // SIMULACIÓN AVANZADA
         // ==========================================================================
         botonPasarSim.addEventListener("click", () => {
             let suma = 0;
             const llaves = Object.keys(plantillaGuardada);
-            
             llaves.forEach(k => suma += plantillaGuardada[k].rating);
+    
             equipoRatingGlobal = Math.round(suma / llaves.length);
 
             nombreEquipoUsuario = inputNombreEquipo.value.trim() || "Mis Cracks FC";
             lblClub.innerText = nombreEquipoUsuario;
             lblRating.innerText = equipoRatingGlobal;
+            
+            // Setup visual
+            document.getElementById("sim-pitch-wrapper").innerHTML = "";
+            document.getElementById("sim-pitch-wrapper").appendChild(contenedorCancha.cloneNode(true));
             vistaDraft.style.display = "none";
             vistaSimulacion.style.display = "block";
+            iniciarVariablesTorneo();
         });
 
-        function simularMarcador(ratingUsuario, ratingRival) {
-            let userBase = ratingUsuario / 24;
-            let rivalBase = ratingRival / 24;
+        function iniciarVariablesTorneo() {
+            partidoActual = 1;
+            recordPerfecto = true;
+            btnState = "REGULAR";
+            llavesLiguilla = [];
+            
+            const poolRivales = chkHardMode.checked ? rivalesEpoca : rivalesLigaMX;
+            equiposLiga = poolRivales.map(r => ({...r, pts:0, pj:0, pg:0, pe:0, pp:0, gf:0, gc:0, dif:0, isUser: false}));
+            equiposLiga.push({nombre: nombreEquipoUsuario, rating: equipoRatingGlobal, pts:0, pj:0, pg:0, pe:0, pp:0, gf:0, gc:0, dif:0, isUser: true});
+            calendarioUsuario = [...poolRivales].sort(() => Math.random() - 0.5);
 
-            let userGoles = Math.max(0, Math.floor(userBase + (Math.random() * 4 - 2)));
-            let rivalGoles = Math.max(0, Math.floor(rivalBase + (Math.random() * 4 - 2)));
-
-            const diferencia = ratingUsuario - ratingRival;
-            if (diferencia > 4 && userGoles <= rivalGoles && Math.random() < 0.5) userGoles++;
-            if (diferencia < -4 && rivalGoles <= userGoles && Math.random() < 0.3) rivalGoles++;
-
-            return { golesUser: userGoles, golesRival: rivalGoles };
+            renderTabla();
+            
+            lblPj.innerText = "0 / 24";
+            lblRecord.innerText = "0 - 0 - 0";
+            perfectBadge.className = "perfect-status status-perfect-ok";
+            perfectBadge.innerHTML = "✨ Récord Perfecto Activo (24-0)";
+            logsBox.innerHTML = '<p class="no-selection-msg">Presiona "Simular Jornada 1" para ver rodar el balón o "Simular Temporada Regular Completa" para jugar las 18 jornadas.</p>';
+            newsBox.innerHTML = `📰 <b>ESPN:</b> Arranca la liga. ¡Gran expectativa por ver a ${nombreEquipoUsuario} en acción tras comprar una plaza en primera división!`;
+            
+            botonIniciarSim.style.display = "block";
+            botonIniciarSim.innerText = "⚽ Simular Jornada 1";
+            botonSimularTodo.style.display = "block";
+            botonReiniciar.style.display = "none";
         }
 
-        botonIniciarSim.addEventListener("click", () => {
-            botonIniciarSim.disabled = true;
-            logsBox.innerHTML = "";
+        function simularMarcador(ratingA, ratingB) {
+            let baseA = ratingA / 24;
+            let baseB = ratingB / 24;
 
-            let partidoActual = 1;
-            let victorias = 0;
-            let empates = 0;
-            let derrotas = 0;
-            let puntos = 0;
-            let recordPerfecto = true;
+            let golesA = Math.max(0, Math.floor(baseA + (Math.random() * 4 - 2)));
+            let golesB = Math.max(0, Math.floor(baseB + (Math.random() * 4 - 2)));
+
+            const dif = ratingA - ratingB;
+            if (dif > 4 && golesA <= golesB && Math.random() < 0.5) golesA++;
+            if (dif < -4 && golesB <= golesA && Math.random() < 0.3) golesB++;
+
+            return { golesA, golesB };
+        }
+
+        function actualizarStatsLiga(equipo, gf, gc) {
+            equipo.pj++;
+            equipo.gf += gf;
+            equipo.gc += gc;
+            equipo.dif = equipo.gf - equipo.gc;
+            if (gf > gc) { equipo.pg++; equipo.pts += 3;
+            }
+            else if (gf === gc) { equipo.pe++;
+            equipo.pts += 1; }
+            else { equipo.pp++;
+            }
+        }
+
+        function sortTabla(a, b) {
+            if(b.pts !== a.pts) return b.pts - a.pts;
+            if(b.dif !== a.dif) return b.dif - a.dif;
+            return b.gf - a.gf;
+        }
+
+        function renderTabla() {
+            tbodyTabla.innerHTML = "";
+            equiposLiga.sort(sortTabla);
+            equiposLiga.forEach((e, idx) => {
+                let tr = document.createElement("tr");
+                if (e.isUser) tr.classList.add("user-row");
+                if (idx < 8) tr.classList.add("top-8");
+                
+                let shortName = e.nombre.length > 15 ? e.nombre.substring(0, 14) + "." : e.nombre;
+                tr.innerHTML = `
+                    <td>${idx+1}</td>
+                    <td style="text-align:left">${shortName}</td>
+                    <td>${e.pj}</td>
+                    <td>${e.pg}</td>
+                    <td>${e.pe}</td>
+                    <td>${e.pp}</td>
+                    <td>${e.dif > 0 ? '+'+e.dif : e.dif}</td>
+                    <td><b>${e.pts}</b></td>
+                `;
+                tbodyTabla.appendChild(tr);
+            });
+        }
+
+        function romperRecordPerfecto() {
+            if(recordPerfecto) {
+                recordPerfecto = false;
+                perfectBadge.className = "perfect-status status-perfect-broken";
+                perfectBadge.innerHTML = "❌ Récord Perfecto Roto (Ya no es 24-0)";
+            }
+        }
+
+        function simularJornadaRegular() {
+            if(partidoActual === 1) logsBox.innerHTML = "";
+
+            // Obtener Rival del Usuario
+            const rivalInfo = calendarioUsuario[partidoActual - 1];
+            let rivalUser = equiposLiga.find(e => e.nombre === rivalInfo.nombre);
+            let userObj = equiposLiga.find(e => e.isUser);
+
+            // Simular Partido de Usuario
+            let marc = simularMarcador(userObj.rating, rivalUser.rating);
+            actualizarStatsLiga(userObj, marc.golesA, marc.golesB);
+            actualizarStatsLiga(rivalUser, marc.golesB, marc.golesA);
+
+            // Imprimir Log de Usuario
+            let classRes = "draw"; let badge = "EMPATE";
+            if (marc.golesA > marc.golesB) { classRes = "win"; badge = "VICTORIA"; }
+            else if (marc.golesA < marc.golesB) { classRes = "loss"; badge = "DERROTA"; }
             
-            const modoDificil = chkHardMode.checked;
-            const poolRivales = modoDificil ? rivalesEpoca : rivalesLigaMX;
+            if(classRes !== "win") romperRecordPerfecto();
+            const logRow = document.createElement("div");
+            logRow.className = `log-row ${classRes}`;
+            logRow.innerHTML = `
+                <div><b>[Jornada ${partidoActual}]</b> ${userObj.nombre} <span>${marc.golesA} - ${marc.golesB}</span> ${rivalUser.nombre}</div>
+                <span class="badge-res badge-${classRes}" style="font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; color:#fff; text-transform:uppercase;">${badge}</span>
+            `;
+            logsBox.appendChild(logRow);
 
-            let calendarioRegular = [...poolRivales].sort(() => Math.random() - 0.5);
-
-            function procesarSiguientePartido() {
-                if (partidoActual <= 24) {
-                    let rivalNombre = "";
-                    let rivalRating = 0;
-                    let tipoPartido = "";
-                    let opponentPosition = 8;
-
-                    if (partidoActual === 19) {
-                        if (puntos >= 35) posicionTabla = 1;
-                        else if (puntos >= 32) posicionTabla = 3;
-                        else if (puntos >= 27) posicionTabla = 5; 
-                        else if (puntos >= 24) posicionTabla = 7;
-                        else posicionTabla = 9;
-
-                        lblPos.innerText = posicionTabla <= 8 ? `${posicionTabla}° Lugar` : "No calificó (9°+)";
-                        if (posicionTabla === 9) {
-                            const filaLog = document.createElement("div");
-                            filaLog.className = "log-row loss";
-                            filaLog.innerHTML = `<div>❌ <b>[ELIMINADO]</b> Conseguiste ${puntos} pts. Quedas fuera del Top 8. ¡No hay Liguilla!</div>`;
-                            logsBox.appendChild(filaLog);
-                            recordPerfecto = false;
-                            finalizarTorneo(false);
-                            return;
-                        }
-
-                        // Calcular la probabilidad de liguilla (los mejores llegan más fácil)
-                        let simulacionTabla = poolRivales.map(r => ({
-                            data: r,
-                            puntosSim: (r.rating - 70) * 2 + (Math.random() * 20) // Base de rating + Random
-                        })).sort((a, b) => b.puntosSim - a.puntosSim);
-
-                        let posicionesOcupadas = [posicionTabla];
-                        let indexPosicion = 1;
-                        let rivalesSeleccionados = [];
-
-                        // Asignamos a los 3 rivales de liguilla posiciones de la tabla fuertes
-                        for (let i = 0; i < simulacionTabla.length && rivalesSeleccionados.length < 3; i++) {
-                            while (posicionesOcupadas.includes(indexPosicion)) {
-                                indexPosicion++;
-                            }
-                            rivalesSeleccionados.push({ data: simulacionTabla[i].data, pos: indexPosicion });
-                            posicionesOcupadas.push(indexPosicion);
-                            indexPosicion++;
-                        }
-
-                        misRivalesLiguilla = rivalesSeleccionados;
-                    }
-
-                    if (partidoActual <= 18) {
-                        const rival = calendarioRegular[partidoActual - 1];
-                        rivalNombre = rival.nombre;
-                        rivalRating = rival.rating;
-                        tipoPartido = `Jornada ${partidoActual}`;
-                    } else {
-                        let faseIndex = 0;
-                        if (partidoActual === 19 || partidoActual === 20) {
-                            faseIndex = 0;
-                            tipoPartido = partidoActual === 19 ? "Cuartos - Ida" : "Cuartos - Vuelta";
-                            if (partidoActual === 19) { golesGlobalUser = 0; golesGlobalRival = 0; }
-                        } else if (partidoActual === 21 || partidoActual === 22) {
-                            faseIndex = 1;
-                            tipoPartido = partidoActual === 21 ? "Semis - Ida" : "Semis - Vuelta";
-                            if (partidoActual === 21) { golesGlobalUser = 0; golesGlobalRival = 0; }
-                        } else if (partidoActual === 23 || partidoActual === 24) {
-                            faseIndex = 2;
-                            tipoPartido = partidoActual === 23 ? "Final - Ida" : "Final - Vuelta";
-                            if (partidoActual === 23) { golesGlobalUser = 0; golesGlobalRival = 0; }
-                        }
-
-                        const rivalActual = misRivalesLiguilla[faseIndex];
-                        rivalNombre = rivalActual.data.nombre;
-                        rivalRating = rivalActual.data.rating;
-                        opponentPosition = rivalActual.pos;
-                    }
-
-                    const { golesUser, golesRival } = simularMarcador(equipoRatingGlobal, rivalRating);
-                    if (partidoActual > 18) {
-                        golesGlobalUser += golesUser;
-                        golesGlobalRival += golesRival;
-                    }
-
-                    let resultadoClase = "draw";
-                    let resTexto = "Empate";
-
-                    if (golesUser > golesRival) {
-                        victorias++;
-                        if (partidoActual <= 18) puntos += 3;
-                        resultadoClase = "win";
-                        resTexto = "Victoria";
-                    } else if (golesUser === golesRival) {
-                        empates++;
-                        if (partidoActual <= 18) puntos += 1;
-                    } else {
-                        derrotas++;
-                        resultadoClase = "loss";
-                        resTexto = "Derrota";
-                    }
-
-                    if (golesUser <= golesRival || (partidoActual > 18 && derrotas > 0)) {
-                        recordPerfecto = false;
-                    }
-
-                    const filaLog = document.createElement("div");
-                    filaLog.className = `log-row ${resultadoClase}`;
-                    let marcadorConGlobal = `${golesUser} - ${golesRival}`;
-                    if (partidoActual > 18) marcadorConGlobal += ` (Global: ${golesGlobalUser}-${golesGlobalRival})`;
-                    
-                    const strRatingRival = modoDificil ? "?? OVR" : `${rivalRating} OVR`;
-
-                    filaLog.innerHTML = `
-                        <div><b>[${tipoPartido}]</b> ${nombreEquipoUsuario} <span>${marcadorConGlobal}</span> ${rivalNombre} <small style="color: var(--text-muted)">(${strRatingRival})</small></div>
-                        <span class="badge-res badge-${resultadoClase}">${resTexto}</span>
-                    `;
-                    logsBox.appendChild(filaLog);
-                    logsBox.scrollTop = logsBox.scrollHeight;
-
-                    lblPj.innerText = `${partidoActual} / 24`;
-                    lblRecord.innerText = `${victorias} - ${empates} - ${derrotas}`;
-                    lblPts.innerText = `${puntos} pts`;
-                    if (!recordPerfecto) {
-                        perfectBadge.className = "perfect-status status-perfect-broken";
-                        perfectBadge.innerHTML = "❌ Récord Perfecto Roto (Ya no es 24-0)";
-                    }
-
-                    let continuaFase = true;
-                    if (partidoActual === 20 || partidoActual === 22 || partidoActual === 24) {
-                        const filaGlobal = document.createElement("div");
-                        filaGlobal.style.fontWeight = "bold";
-                        filaGlobal.style.padding = "0.5rem 1rem";
-                        filaGlobal.style.borderRadius = "6px";
-                        filaGlobal.style.marginTop = "4px";
-                        if (golesGlobalUser > golesGlobalRival) {
-                            filaGlobal.style.background = "rgba(22, 163, 74, 0.2)";
-                            filaGlobal.style.color = "#4ade80";
-                            filaGlobal.innerText = `📢 ¡Avanzas! Global final de ${golesGlobalUser}-${golesGlobalRival}.`;
-                        } else if (golesGlobalUser === golesGlobalRival) {
-                            if (partidoActual === 24) {
-                                let penalesUser = 0;
-                                let penalesRival = 0;
-                                while (penalesUser === penalesRival) {
-                                    penalesUser = Math.floor(Math.random() * 3) + 3; // 3 a 5
-                                    penalesRival = Math.floor(Math.random() * 3) + 3; // 3 a 5
-                                }
-                                
-                                if (penalesUser > penalesRival) {
-                                    filaGlobal.style.background = "rgba(22, 163, 74, 0.2)";
-                                    filaGlobal.style.color = "#4ade80";
-                                    filaGlobal.innerText = `🏆 ¡Empate global ${golesGlobalUser}-${golesGlobalRival}! Eres CAMPEÓN en Penales (${penalesUser}-${penalesRival}).`;
-                                    continuaFase = true;
-                                } else {
-                                    filaGlobal.style.background = "rgba(220, 38, 38, 0.2)";
-                                    filaGlobal.style.color = "#f87171";
-                                    filaGlobal.innerText = `❌ ¡Empate global ${golesGlobalUser}-${golesGlobalRival}! Perdiste la Final en Penales (${penalesUser}-${penalesRival}).`;
-                                    continuaFase = false;
-                                }
-                            } else {
-                                if (posicionTabla < opponentPosition) {
-                                    filaGlobal.style.background = "rgba(22, 163, 74, 0.2)";
-                                    filaGlobal.style.color = "#4ade80";
-                                    filaGlobal.innerText = `📢 ¡Empate global ${golesGlobalUser}-${golesGlobalRival}! Avanzas por mejor posición de tabla (Tú: ${posicionTabla}°, ${rivalNombre}: ${opponentPosition}°).`;
-                                } else {
-                                    filaGlobal.style.background = "rgba(220, 38, 38, 0.2)";
-                                    filaGlobal.style.color = "#f87171";
-                                    filaGlobal.innerText = `❌ ¡Empate global ${golesGlobalUser}-${golesGlobalRival}! Quedas ELIMINADO por peor posición de tabla (Tú: ${posicionTabla}°, ${rivalNombre}: ${opponentPosition}°).`;
-                                    continuaFase = false;
-                                }
-                            }
-                        } else {
-                            filaGlobal.style.background = "rgba(220, 38, 38, 0.2)";
-                            filaGlobal.style.color = "#f87171";
-                            filaGlobal.innerText = `❌ ¡Eliminado! Perdiste en el marcador global por ${golesGlobalUser}-${golesGlobalRival}.`;
-                            continuaFase = false;
-                        }
-
-                        logsBox.appendChild(filaGlobal);
-                        logsBox.scrollTop = logsBox.scrollHeight;
-
-                        if (!continuaFase) {
-                            finalizarTorneo(false);
-                            return;
-                        }
-
-                        if (partidoActual === 24 && continuaFase) {
-                            finalizarTorneo(true, victorias);
-                            return;
-                        }
-                    }
-
-                    // Atrasar el ritmo de simulación cuando es Liguilla
-                    let msDelay = partidoActual >= 19 ? 2000 : 400;
-
-                    partidoActual++;
-                    setTimeout(procesarSiguientePartido, msDelay);
-                }
+            // Generar Noticia Regular
+            if (classRes === "win") newsBox.innerHTML = `📰 <b>ESPN:</b> ¡Implacable! ${userObj.nombre} derrota a ${rivalUser.nombre} de forma contundente.`;
+            else if (classRes === "draw") newsBox.innerHTML = `📰 <b>ESPN:</b> Puntos divididos. ${userObj.nombre} se atora frente a un duro ${rivalUser.nombre}.`;
+            else newsBox.innerHTML = `📰 <b>ESPN:</b> ¡Sorpresa en la jornada! ${rivalUser.nombre} hace la maldad y le arrebata el invicto a ${userObj.nombre}.`;
+            
+            // Simular Resto de Partidos
+            let otrosEquipos = equiposLiga.filter(e => !e.isUser && e.nombre !== rivalUser.nombre);
+            otrosEquipos.sort(() => Math.random() - 0.5); // Mezclar
+            for (let i = 0; i < otrosEquipos.length - 1; i += 2) {
+                let t1 = otrosEquipos[i];
+                let t2 = otrosEquipos[i+1];
+                let m = simularMarcador(t1.rating, t2.rating);
+                actualizarStatsLiga(t1, m.golesA, m.golesB);
+                actualizarStatsLiga(t2, m.golesB, m.golesA);
             }
 
-            procesarSiguientePartido();
+            renderTabla();
+            logsBox.scrollTop = logsBox.scrollHeight;
+            lblPj.innerText = `${partidoActual} / 24`;
+            lblRecord.innerText = `${userObj.pg} - ${userObj.pe} - ${userObj.pp}`;
+            partidoActual++;
+
+            if (partidoActual > 18) {
+                btnState = "SHOW_LIGUILLA";
+                botonIniciarSim.innerText = "👀 Ver Llaves de Liguilla";
+                botonIniciarSim.style.background = "#eab308";
+                botonIniciarSim.style.color = "#000";
+                botonSimularTodo.style.display = "none";
+            } else {
+                botonIniciarSim.innerText = `⚽ Simular Jornada ${partidoActual}`;
+            }
+        }
+
+        botonSimularTodo.addEventListener("click", () => {
+            if (btnState === "REGULAR") {
+                while(partidoActual <= 18) {
+                    simularJornadaRegular();
+                }
+            }
         });
+
+        // MOTOR PRINCIPAL AL HACER CLICK
+        botonIniciarSim.addEventListener("click", () => {
+            if (btnState === "REGULAR") {
+                simularJornadaRegular();
+            } else if (btnState === "SHOW_LIGUILLA") {
+                let top8 = equiposLiga.slice(0, 8);
+                let userRank = top8.findIndex(c => c.isUser);
+                
+                const llavesHTML = document.createElement("div");
+                llavesHTML.className = "llaves-box";
+                llavesHTML.innerHTML = `<h4>🔥 Clasificados a Liguilla 🔥</h4>
+                    <div class="matchup-row">(1) ${top8[0].nombre} vs ${top8[7].nombre} (8)</div>
+                    <div class="matchup-row">(4) ${top8[3].nombre} vs ${top8[4].nombre} (5)</div>
+                    <div class="matchup-row">(2) ${top8[1].nombre} vs ${top8[6].nombre} (7)</div>
+                    <div class="matchup-row">(3) ${top8[2].nombre} vs ${top8[5].nombre} (6)</div>
+                `;
+                logsBox.appendChild(llavesHTML);
+                logsBox.scrollTop = logsBox.scrollHeight;
+
+                if (userRank === -1) {
+                    newsBox.innerHTML = `📰 <b>ESPN:</b> ¡Fracaso rotundo! ${nombreEquipoUsuario} no logró clasificar a liguilla. HUGO SANCHEZ SE OFRECE AL CARGO DE DT "Estoy listo para volver a dirigir" `;
+                    btnState = "END";
+                    botonIniciarSim.style.display = "none";
+                    finalizarTorneo(false);
+                } else {
+                    newsBox.innerHTML = `📰 <b>ESPN:</b> ¡Comienza la fiesta grande! ${nombreEquipoUsuario} entra como el #${userRank+1} general y buscara el trofeo.`;
+                    llavesLiguilla = [
+                        { tA: top8[0], tB: top8[7], glA: 0, glB: 0, pA: 1, pB: 8 },
+                        { tA: top8[3], tB: top8[4], glA: 0, glB: 0, pA: 4, pB: 5 },
+                        { tA: top8[1], tB: top8[6], glA: 0, glB: 0, pA: 2, pB: 7 },
+                        { tA: top8[2], tB: top8[5], glA: 0, glB: 0, pA: 3, pB: 6 }
+                    ];
+                    btnState = "LIGUILLA_IDA";
+                    botonIniciarSim.innerText = `⚽ Simular Cuartos de Final (Ida)`;
+                    botonIniciarSim.style.background = "#38bdf8";
+                }
+
+            } else if (btnState === "LIGUILLA_IDA") {
+                simularRondaLiguilla(false);
+                btnState = "LIGUILLA_VUELTA";
+                let faseStr = llavesLiguilla.length === 4 ? "Cuartos" : (llavesLiguilla.length === 2 ? "Semis" : "Final");
+                botonIniciarSim.innerText = `⚽ Simular ${faseStr} (Vuelta)`;
+                botonIniciarSim.style.background = "#fb8500";
+            } else if (btnState === "LIGUILLA_VUELTA") {
+                simularRondaLiguilla(true);
+                let userAlive = llavesLiguilla.some(ll => ll.ganador && ll.ganador.isUser);
+                
+                if (!userAlive) {
+                    btnState = "END";
+                    botonIniciarSim.style.display = "none";
+                    finalizarTorneo(false);
+                } else {
+                    if (llavesLiguilla.length === 1) { // Acaba de terminar la final
+                        btnState = "END";
+                        botonIniciarSim.style.display = "none";
+                        let objU = equiposLiga.find(e=>e.isUser);
+                        finalizarTorneo(true, objU.pg);
+                    } else {
+                        // Construir Siguiente Ronda (Re-siembra: Mejor vs Peor)
+                        let newLlaves = [];
+                        let ganadores = llavesLiguilla.map(ll => ll.ganador);
+                        
+                        // Ordenar a los ganadores según la tabla general (se mantiene intacta tras 18 jornadas)
+                        ganadores.sort(sortTabla);
+
+                        if (llavesLiguilla.length === 4) {
+                            // Semifinales
+                            newLlaves.push({ tA: ganadores[0], tB: ganadores[3], glA:0, glB:0, pA: equiposLiga.indexOf(ganadores[0])+1, pB: equiposLiga.indexOf(ganadores[3])+1 });
+                            newLlaves.push({ tA: ganadores[1], tB: ganadores[2], glA:0, glB:0, pA: equiposLiga.indexOf(ganadores[1])+1, pB: equiposLiga.indexOf(ganadores[2])+1 });
+                        } else if (llavesLiguilla.length === 2) {
+                            // Final
+                            newLlaves.push({ tA: ganadores[0], tB: ganadores[1], glA:0, glB:0, pA: equiposLiga.indexOf(ganadores[0])+1, pB: equiposLiga.indexOf(ganadores[1])+1 });
+                        }
+
+                        // Asegurar que tA sea mejor posicionado
+                        newLlaves.forEach(ll => {
+                            if(ll.pB < ll.pA) {
+                                let tmpT = ll.tA; ll.tA = ll.tB; ll.tB = tmpT;
+                                let tmpP = ll.pA; ll.pA = ll.pB; ll.pB = tmpP;
+                            }
+                        });
+                        
+                        llavesLiguilla = newLlaves;
+
+                        btnState = "LIGUILLA_IDA";
+                        let fStr = llavesLiguilla.length === 2 ? "Semifinales" : "Gran Final";
+                        botonIniciarSim.innerText = `⚽ Simular ${fStr} (Ida)`;
+                        botonIniciarSim.style.background = "#38bdf8";
+
+                        // Anunciar llaves
+                        const llavesHTML = document.createElement("div");
+                        llavesHTML.className = "llaves-box";
+                        llavesHTML.style.borderColor = "#38bdf8";
+                        llavesHTML.innerHTML = `<h4 style="color:#38bdf8">${fStr}</h4>`;
+                        llavesLiguilla.forEach(ll => {
+                            llavesHTML.innerHTML += `<div class="matchup-row">${ll.tA.nombre} vs ${ll.tB.nombre}</div>`;
+                        });
+                        logsBox.appendChild(llavesHTML);
+                        logsBox.scrollTop = logsBox.scrollHeight;
+                    }
+                }
+            }
+        });
+
+        function simularRondaLiguilla(esVuelta) {
+            let faseNombre = llavesLiguilla.length === 4 ? "Cuartos" : (llavesLiguilla.length === 2 ? "Semis" : "Final");
+            let tipoIda = esVuelta ? "Vuelta" : "Ida";
+            let sep = document.createElement("div");
+            sep.style.textAlign = "center"; sep.style.color = "#94a3b8"; sep.style.fontWeight = "bold"; sep.style.margin = "10px 0 5px";
+            sep.innerText = `--- ${faseNombre.toUpperCase()} (${tipoIda.toUpperCase()}) ---`;
+            logsBox.appendChild(sep);
+
+            llavesLiguilla.forEach(llave => {
+                let m = simularMarcador(llave.tA.rating, llave.tB.rating);
+                llave.glA += m.golesA;
+                llave.glB += m.golesB;
+
+                let isUserMatch = llave.tA.isUser || llave.tB.isUser;
+                let classRes = "draw";
+                if(isUserMatch) {
+                    let userG = llave.tA.isUser ? m.golesA : m.golesB;
+                    let rivG = llave.tA.isUser ? m.golesB : m.golesA;
+                    if(userG > rivG) classRes = "win";
+                    else if (userG < rivG) classRes = "loss";
+                    if(classRes !== "win") romperRecordPerfecto();
+                }
+
+                let lRow = document.createElement("div");
+                lRow.className = `log-row ${classRes}`;
+                lRow.innerHTML = `<div><b>[${faseNombre}]</b> ${llave.tA.nombre} <span>${m.golesA} - ${m.golesB}</span> ${llave.tB.nombre} <small style="color:var(--text-muted)">(Glb: ${llave.glA}-${llave.glB})</small></div>`;
+                logsBox.appendChild(lRow);
+
+                if(esVuelta) {
+                    if (llave.glA > llave.glB) llave.ganador = llave.tA;
+                    else if (llave.glB > llave.glA) llave.ganador = llave.tB;
+                    else { // Empate Global
+                        if (llavesLiguilla.length === 1) { // Final: Penales
+                            let pA = 0, pB = 0;
+                            while(pA === pB) { pA = Math.floor(Math.random()*4)+2; pB = Math.floor(Math.random()*4)+2; }
+                            llave.ganador = pA > pB ? llave.tA : llave.tB;
+                            let msg = document.createElement("div"); msg.style.textAlign="center"; msg.style.color="#38bdf8"; msg.style.fontSize="0.8rem";
+                            msg.innerText = `⭐ ¡Se decide en penales! ${llave.ganador.nombre} gana ${Math.max(pA,pB)}-${Math.min(pA,pB)} ⭐`;
+                            logsBox.appendChild(msg);
+                        } else { // Posicion en Tabla
+                            llave.ganador = llave.pA < llave.pB ? llave.tA : llave.tB;
+                            let msg = document.createElement("div"); msg.style.textAlign="center"; msg.style.color="#94a3b8"; msg.style.fontSize="0.8rem";
+                            msg.innerText = `Avanza ${llave.ganador.nombre} por mejor posición en tabla.`;
+                            logsBox.appendChild(msg);
+                        }
+                    }
+
+                    if(isUserMatch) {
+                        if(llave.ganador.isUser) newsBox.innerHTML = `📰 <b>ESPN:</b> ¡Locura total! ${nombreEquipoUsuario} sella su pase a la siguiente ronda.`;
+                        else newsBox.innerHTML = `📰 <b>ESPN:</b> ¡Se acabó el sueño! ${llave.ganador.nombre} despacha a ${nombreEquipoUsuario} de la Liguilla.`;
+                    }
+                }
+            });
+            if(isUserMatch=true && esVuelta === false) {
+                lblPj.innerText = `${partidoActual} / 24`;
+                partidoActual++;
+            } else if (isUserMatch=true && esVuelta === true) {
+                lblPj.innerText = `${partidoActual} / 24`;
+                partidoActual++;
+            }
+            logsBox.scrollTop = logsBox.scrollHeight;
+        }
 
         function finalizarTorneo(esCampeon, totalVictorias = 0) {
             botonReiniciar.style.display = "block";
@@ -1656,9 +1488,11 @@
             bannerFinal.style.padding = "1rem";
             bannerFinal.style.fontWeight = "bold";
             bannerFinal.style.marginTop = "1rem";
-            if (esCampeon && totalVictorias === 24) {
+            bannerFinal.style.fontSize = "1.1rem";
+            if (esCampeon && recordPerfecto) {
                 bannerFinal.style.color = "#4ade80";
                 bannerFinal.innerHTML = "🎉 ¡HAZAÑA DE LEYENDA! Lograste el 24-0 invicto absoluto y eres Campeón de la Liga MX! 🏆";
+                newsBox.innerHTML = `📰 <b>ESPN:</b> ¡HISTORIA PURA! ${nombreEquipoUsuario} es el único equipo en lograr el mítico 24-0.`;
             } else if (esCampeon) {
                 bannerFinal.style.color = "#38bdf8";
                 bannerFinal.innerHTML = "🏆 ¡Felicidades! Te coronaste Campeón de la Liga MX, aunque rompiste la racha invicta en el camino.";
@@ -1671,31 +1505,21 @@
             logsBox.scrollTop = logsBox.scrollHeight;
         }
 
-        // EVENTO PARA REINICIAR TODO EL JUEGO
         botonReiniciar.addEventListener("click", () => {
             clubSeleccionado = null;
             plantillaGuardada = {};
             equipoRatingGlobal = 0;
-            posicionTabla = 1;
-            golesGlobalUser = 0;
-            golesGlobalRival = 0;
-            misRivalesLiguilla = [];
             resorteosRestantes = 2;
 
-            lblPj.innerText = "0 / 24";
-            lblRecord.innerText = "0 - 0 - 0";
-            lblPts.innerText = "0 pts";
-            perfectBadge.className = "perfect-status status-perfect-ok";
-            perfectBadge.innerHTML = "✨ Récord Perfecto Activo (24-0)";
-            logsBox.innerHTML = '<p class="no-selection-msg">Presiona "Ejecutar Torneo" para ver al equipo que construiste.</p>';
-        
             botonReiniciar.style.display = "none";
             botonIniciarSim.disabled = false;
+            botonSimularTodo.style.display = "none";
             botonRandom.disabled = false;
             botonReroll.style.display = "none";
             botonReroll.innerText = `🔄 Resortear (${resorteosRestantes})`;
             botonPasarSim.disabled = true;
             chkHardMode.disabled = false;
+            botonIniciarSim.style.background = "#22c55e";
 
             bannerInfo.innerHTML = `🎲 Presiona el botón azul para comenzar a crear tu club`;
             panelOpciones.innerHTML = `<p class="no-selection-msg">Presiona "Obtener Jugadores" para desplegar opciones inmediatas en este panel.</p>`;
