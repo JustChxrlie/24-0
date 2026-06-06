@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24-0</title>
+    <style>
+        :root {
+            --bg-main: #0f141c;
+            --bg-card: #1a222f;       
+            --accent: #ffb703;        
+            --accent-hover: #fb8500;  
+            --text-main: #f8f9fa;     
+            --text-muted: #94a3b8;    
+            --pitch-green: #143626;   
+            --pitch-lines: rgba(255, 255, 255, 0.25); 
+            --success: #16a34a;
+            --warning: #eab308;
+            --danger: #dc2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-header {
+            text-align: center;
+            padding: 2.5rem 1rem 1.5rem;
+        }
+
+        .app-header h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .app-header p {
+            color: var(--text-muted);
+            margin-top: 0.4rem;
+            font-size: 1.1rem;
+        }
+
+        .app-container {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+        }
+
+        /* BANNER DE ÉPOCA Y EQUIPO */
+        .info-banner {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 2px solid #243145;
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .info-banner span {
+            color: var(--accent);
+        }
+
+        .info-banner .status-badge {
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+            text-transform: uppercase;
+            vertical-align: middle;
+        }
+        .status-activo { background: var(--success); color: white; }
+        .status-extinto { background: var(--danger); color: white; }
+
+        /* CONTROLES */
+        .setup-controls {
+            display: flex;
+            gap: 1.5rem;
+            background: var(--bg-card);
+            padding: 1.2rem;
+            border-radius: 14px;
+            margin-bottom: 2rem;
+            align-items: center;
+            border: 1px solid #243145;
+            flex-wrap: wrap;
+        }
+
+        .setup-controls .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .setup-controls label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .setup-controls select, .setup-controls input[type="text"] {
+            background: var(--bg-main);
+            color: var(--text-main);
+            border: 1px solid #2e3d52;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            outline: none;
+            font-weight: 600;
+        }
+
+        .setup-controls input[type="text"] {
+            min-width: 200px;
+        }
+
+        .btn-primary, .btn-random {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 0.9rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary:hover:not(:disabled), .btn-random:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(251, 133, 0, 0.3);
+        }
+
+        .btn-random {
+            background: #38bdf8;
+            color: #0f172a;
+            margin-left: auto;
+        }
+        .btn-random:hover:not(:disabled) {
+            background: #0ea5e9;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+        }
+
+        .btn-random:disabled, .btn-primary:disabled {
+            background: #1e293b;
+            color: #64748b;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            border: 1px solid #334155;
+        }
+
+        /* WORKSPACE DISTRIBUIDO (CANCHA + OPCIONES) */
+        .draft-workspace {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .draft-workspace { grid-template-columns: 1fr; }
+            .btn-random { margin-left: 0; width: 100%; }
+        }
+
+        /* CANCHA */
+        .pitch {
+            background-color: var(--pitch-green);
+            background-image: 
+                linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.12) 50%),
+                linear-gradient(to right, var(--pitch-lines) 1.5px, transparent 1.5px),
+                linear-gradient(to bottom, var(--pitch-lines) 1.5px, transparent 1.5px);
+            background-size: 100% 50px, 100% 50%, 50% 100%;
+            border: 4px solid var(--pitch-lines);
+            border-radius: 20px;
+            aspect-ratio: 3 / 4;
+            position: relative;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.6), 0 10px 30px rgba(0,0,0,0.4);
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .pitch::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30%;
+            height: 22%;
+            border: 2px solid var(--pitch-lines);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .player-slot {
+            position: absolute;
+            width: 95px;
+            text-align: center;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .slot-badge {
+            width: 52px;
+            height: 52px;
+            background: rgba(15, 20, 28, 0.95);
+            border: 2px dashed var(--accent);
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        .player-slot.filled .slot-badge {
+            border-style: solid;
+            background: #1e293b;
+            border-color: var(--accent);
+        }
+
+        .slot-pos {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--text-muted);
+        }
+
+        .slot-rating {
+            font-size: 0.95rem;
+            font-weight: 900;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .slot-name {
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(15, 20, 28, 0.95);
+            color: #fff;
+            padding: 4px 6px;
+            border-radius: 6px;
+            margin-top: 5px;
+            white-space: nowrap;
+            display: block;
+            border: 1px solid #243145;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        /* PANEL LATERAL DE OPCIONES SELECCIONABLES */
+        .selection-pool {
+            background: var(--bg-card);
+            border-radius: 18px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #243145;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            height: 100%;
+        }
+
+        .selection-pool h3 {
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #243145;
+            padding-bottom: 0.6rem;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            flex: 1;
+            justify-content: flex-start;
+            overflow-y: auto;
+            max-height: 600px;
+            padding-right: 5px;
+        }
+
+        /* Custom Scrollbar para el panel de opciones */
+        .options-container::-webkit-scrollbar { width: 6px; }
+        .options-container::-webkit-scrollbar-track { background: #151e2b; border-radius: 4px; }
+        .options-container::-webkit-scrollbar-thumb { background: #334661; border-radius: 4px; }
+
+        .no-selection-msg {
+            color: var(--text-muted);
+            text-align: center;
+            font-style: italic;
+            font-size: 0.95rem;
+            padding: 2rem;
+            line-height: 1.4;
+        }
+
+        .choice-card {
+            background: linear-gradient(135deg, #243145 0%, #151e2b 100%);
+            border: 2px solid #334661;
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .choice-card:hover {
+            border-color: #38bdf8;
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .choice-rating {
+            background: var(--accent);
+            color: #000;
+            font-size: 1.3rem;
+            font-weight: 900;
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .choice-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .choice-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .choice-pos {
+            font-size: 0.75rem;
+            color: #38bdf8;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        /* ==========================================================================
+           PANTALLA DE SIMULACIÓN
+           ========================================================================== */
+        .simulation-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid #243145;
+        }
+
+        @media (max-width: 800px) {
+            .simulation-container { grid-template-columns: 1fr; }
+        }
+
+        .sim-stats-panel {
+            background: #0f172a;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #1e293b;
+        }
+
+        .sim-metric {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .sim-metric b { color: var(--accent); }
+
+        .perfect-status {
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            text-transform: uppercase;
+        }
+        .status-perfect-ok { background: rgba(22, 163, 74, 0.2); color: #4ade80; border: 1px solid #22c55e;}
+        .status-perfect-broken { background: rgba(220, 38, 38, 0.2); color: #f87171; border: 1px solid #ef4444;}
+
+        .match-logs-box {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 1rem;
+            height: 440px;
+            overflow-y: auto;
+            border: 1px solid #1e293b;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .log-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #64748b;
+            font-size: 0.9rem;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .log-row.win { border-left-color: var(--success); }
+        .log-row.draw { border-left-color: var(--warning); }
+        .log-row.loss { border-left-color: var(--danger); }
+
+        .badge-res {
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .badge-win { background: var(--success); color: white; }
+        .badge-draw { background: var(--warning); color: black; }
+        .badge-loss { background: var(--danger); color: white; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .app-footer {
+            text-align: center;
+            padding: 2.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid #1a222f;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <h1>⚽ ¿Puedes quedar 24-0 en la Liga Mexicana?</h1>
+        <p>Arma tu 11 de ensueño y conquista el Torneo Regular y la Liguilla</p>
+    </header>
+
+    <main class="app-container">
+
+        <div id="active-team-banner" class="info-banner">
+            🎲 Presiona el botón azul para generar un club base y extraer sus figuras de diferentes épocas
+        </div>
+
+        <section id="view-draft" class="game-view">
+            
+            <div class="setup-controls">
+                <div class="control-group">
+                    <label for="formation-select">Formación</label>
+                    <select id="formation-select">
+                        <option value="4-3-3">4-3-3</option>
+                        <option value="4-4-2">4-4-2</option>
+                        <option value="3-5-2">3-5-2</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="input-team-name">Nombre de Tu Equipo</label>
+                    <input type="text" id="input-team-name" value="" placeholder="Ej. Real Troncos">
+                </div>
+
+                <button id="btn-random-team" class="btn-random">🎲 Obtener Jugadores</button>
+            </div>
+
+            <div class="draft-workspace">
+                <div id="pitch-display" class="pitch"></div>
+
+                <aside class="selection-pool">
+                    <h3>Opciones del Draft</h3>
+                    <div id="options-panel-content" class="options-container">
+                        <p class="no-selection-msg">Presiona "Obtener Jugadores" para desplegar opciones inmediatas en este panel.</p>
+                    </div>
+                </aside>
+            </div>
+
+            <button id="btn-go-to-sim" class="btn-primary" disabled>Iniciar Simulación del Torneo ➔</button>
+        </section>
+
+        <section id="view-simulation" class="game-view" style="display: none;">
+            <div class="setup-controls">
+                <h2>📈 Centro de Simulación en Vivo</h2>
+                <button id="btn-start-simulation" class="btn-primary" style="margin-left: auto; background: #22c55e; color: white;">⚡ Ejecutar Torneo</button>
+                <button id="btn-restart-game" class="btn-random" style="display: none; background: #64748b; color: white;">🔄 Intentar de Nuevo</button>
+            </div>
+
+            <div class="simulation-container">
+                <div class="sim-stats-panel">
+                    <h3 style="margin-bottom: 1.2rem; text-transform: uppercase;">Tu Rendimiento</h3>
+                    <div class="sim-metric">Tu Equipo: <span id="lbl-sim-club" style="font-weight: bold; color: #38bdf8;">-</span></div>
+                    <div class="sim-metric">Valoración de Plantilla: <b id="lbl-sim-rating">0</b></div>
+                    <div class="sim-metric">Posición Final en Tabla: <span id="lbl-sim-pos" style="font-weight: bold; color: var(--warning);">-</span></div>
+                    <hr style="border: 0; border-top: 1px solid #1e293b; margin: 1rem 0;">
+                    <div class="sim-metric">Partidos Jugados: <span id="lbl-sim-pj">0 / 24</span></div>
+                    <div class="sim-metric">Récord (G - E - P): <span id="lbl-sim-record" style="font-weight: bold;">0 - 0 - 0</span></div>
+                    <div class="sim-metric">Puntos en Liga: <span id="lbl-sim-pts" style="color: #38bdf8; font-weight: bold;">0 pts</span></div>
+                    
+                    <div id="perfect-badge" class="perfect-status status-perfect-ok">
+                        ✨ Récord Perfecto Activo (24-0)
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="margin-bottom: 0.6rem; text-transform: uppercase; font-size: 1rem; color: var(--text-muted)">Historial de Encuentros</h3>
+                    <div id="simulation-logs" class="match-logs-box">
+                        <p class="no-selection-msg">Presiona "Ejecutar Torneo" para ver rodar el balón.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="app-footer">
+        Liga MX Retro Manager v3.0 - Rivales de Liguilla 100% Dinámicos
+    </footer>
+
+    <script>
+        // ==========================================================================
+        // BASE DE DATOS RETRO INTEGRADA (14 Jugadores por Equipo para Cubrir Posiciones)
+        // Posiciones soportadas: POR, DFC, LI, LD, MC, EI, ED, DC
+        // ==========================================================================
+        const baseDeDatosRetro = {
+            "1996-2001": [
+                { nombre: "Toros Neza", estado: "extinto", figuras: [
+                    { nombre: "P. Larios", pos: "POR", rating: 88 }, { nombre: "J. Gutiérrez", pos: "POR", rating: 75 },
+                    { nombre: "F. Lussenhoff", pos: "DFC", rating: 86 }, { nombre: "C. Romero", pos: "DFC", rating: 80 }, { nombre: "M. López", pos: "DFC", rating: 78 },
+                    { nombre: "G. Vázquez", pos: "LI", rating: 81 }, { nombre: "E. Soto", pos: "LD", rating: 79 },
+                    { nombre: "A. Mohamed", pos: "MC", rating: 92 }, { nombre: "R. Ruiz", pos: "MC", rating: 89 }, { nombre: "G. Arangio", pos: "MC", rating: 84 },
+                    { nombre: "M. Nidelson", pos: "EI", rating: 85 }, { nombre: "P. Osorio", pos: "ED", rating: 82 },
+                    { nombre: "J. Herrera", pos: "DC", rating: 81 }, { nombre: "V. Ruiz", pos: "DC", rating: 78 }
+                ]},
+                {nombre: "Toluca (Era Meza)",estado: "activo",figuras: [
+                { nombre: "M. Albarrán", pos: "POR", rating: 85 },
+
+                { nombre: "A. Núñez", pos: "LD", rating: 81 },
+                { nombre: "A. Macías", pos: "DFC", rating: 83 },
+                { nombre: "O. Blanco", pos: "DFC", rating: 82 },
+                { nombre: "A. Taboada", pos: "LI", rating: 80 },
+                { nombre: "D. Rangel", pos: "MC", rating: 84 },
+                { nombre: "V. Ruiz", pos: "MC", rating: 89 },
+                { nombre: "F. Estay", pos: "MC", rating: 88 },
+                { nombre: "E. Alfaro", pos: "ED", rating: 82 },
+                { nombre: "J.M. Abundis", pos: "EI", rating: 86 },
+                { nombre: "J.S. Cardozo", pos: "DC", rating: 95 },
+                { nombre: "C.M. Morales", pos: "DC", rating: 84 },
+                { nombre: "E. García de Dios", pos: "MC", rating: 78 },
+                { nombre: "D. Vukić", pos: "MC", rating: 79 }
+                ]
+                },
+                { nombre: "Atlético Celaya", estado: "extinto", figuras: [
+                    { nombre: "H. Félix", pos: "POR", rating: 82 }, { nombre: "H. Quintero", pos: "POR", rating: 74 },
+                    { nombre: "I. Hurtado", pos: "DFC", rating: 85 }, { nombre: "J. Cruz", pos: "DFC", rating: 80 }, { nombre: "M. Díaz", pos: "DFC", rating: 78 },
+                    { nombre: "S. Almaguer", pos: "LI", rating: 83 }, { nombre: "A. Pavón", pos: "LD", rating: 80 },
+                    { nombre: "Míchel", pos: "MC", rating: 90 }, { nombre: "R. Martín", pos: "MC", rating: 84 }, { nombre: "C. Pavón", pos: "MC", rating: 82 },
+                    { nombre: "E. Butragueño", pos: "EI", rating: 91 }, { nombre: "F. Cruz", pos: "ED", rating: 80 },
+                    { nombre: "Hugo Sánchez", pos: "DC", rating: 93 }, { nombre: "E. Soto", pos: "DC", rating: 79 }
+                ]},
+                { nombre: "Necaxa", estado: "activo", figuras: [
+                    { nombre: "N. Navarro", pos: "POR", rating: 87 }, { nombre: "H. Pineda", pos: "POR", rating: 81 },
+                    { nombre: "J. Higareda", pos: "DFC", rating: 84 }, { nombre: "M. Esquivel", pos: "DFC", rating: 82 }, { nombre: "S. Almaguer", pos: "DFC", rating: 85 },
+                    { nombre: "G. Montes de Oca", pos: "LI", rating: 80 }, { nombre: "E. Vilches", pos: "LD", rating: 86 },
+                    { nombre: "A. Aguinaga", pos: "MC", rating: 93 }, { nombre: "I. Ambriz", pos: "MC", rating: 88 }, { nombre: "A. García Aspe", pos: "MC", rating: 90 },
+                    { nombre: "S. Zárate", pos: "EI", rating: 89 }, { nombre: "L. Hernández", pos: "ED", rating: 87 },
+                    { nombre: "R. Peláez", pos: "DC", rating: 88 }, { nombre: "I. Vázquez", pos: "DC", rating: 83 }
+                ]},
+                { nombre: "Tecos UAG", estado: "extinto", figuras: [
+                    { nombre: "C. Briones", pos: "POR", rating: 83 }, { nombre: "A. Alanis", pos: "POR", rating: 78 },
+                    { nombre: "D. Davino", pos: "DFC", rating: 89 }, { nombre: "R. Parks", pos: "DFC", rating: 84 }, { nombre: "M. Trejo", pos: "DFC", rating: 80 },
+                    { nombre: "G. Gómez", pos: "LI", rating: 79 }, { nombre: "P. Hernández", pos: "LD", rating: 81 },
+                    { nombre: "J.C. Leaño", pos: "MC", rating: 82 }, { nombre: "A. Bautista", pos: "MC", rating: 86 }, { nombre: "M. Garcés", pos: "MC", rating: 80 },
+                    { nombre: "E. Lillingston", pos: "EI", rating: 81 }, { nombre: "Z. Muf", pos: "ED", rating: 85 },
+                    { nombre: "S. Abreu", pos: "DC", rating: 88 }, { nombre: "H. Rosas", pos: "DC", rating: 77 }
+                ]}
+            ],
+            "2001-2006": [
+                { nombre: "Colibríes", estado: "extinto", figuras: [
+                    { nombre: "A. Vences", pos: "POR", rating: 77 }, { nombre: "R. Orozco", pos: "POR", rating: 72 },
+                    { nombre: "C. Da Silva", pos: "DFC", rating: 82 }, { nombre: "M. Grana", pos: "DFC", rating: 80 }, { nombre: "F. Davino", pos: "DFC", rating: 76 },
+                    { nombre: "J. Flores", pos: "LI", rating: 74 }, { nombre: "A. Ramírez", pos: "LD", rating: 75 },
+                    { nombre: "L. Arango", pos: "MC", rating: 78 }, { nombre: "R. Gutiérrez", pos: "MC", rating: 76 }, { nombre: "J. Hernández", pos: "MC", rating: 73 },
+                    { nombre: "M. Pérez", pos: "EI", rating: 75 }, { nombre: "J. Rodríguez", pos: "ED", rating: 74 },
+                    { nombre: "Claudinho", pos: "DC", rating: 86 }, { nombre: "R. Gómez", pos: "DC", rating: 78 }
+                ]},
+                { nombre: "Jaguares de Chiapas", estado: "extinto", figuras: [
+                    { nombre: "O. Ortiz", pos: "POR", rating: 84 }, { nombre: "A. Pérez", pos: "POR", rating: 76 },
+                    { nombre: "M. Brown", pos: "DFC", rating: 82 }, { nombre: "I. Fuentes", pos: "DFC", rating: 80 }, { nombre: "E. Sánchez", pos: "DFC", rating: 78 },
+                    { nombre: "A. Mora", pos: "LI", rating: 79 }, { nombre: "O. Rojas", pos: "LD", rating: 81 },
+                    { nombre: "D. Dirceu", pos: "MC", rating: 83 }, { nombre: "J. Hernández", pos: "MC", rating: 79 }, { nombre: "C. Ochoa", pos: "MC", rating: 80 },
+                    { nombre: "L. Filomeno", pos: "EI", rating: 82 }, { nombre: "T. Moreno", pos: "ED", rating: 85 },
+                    { nombre: "S. Cabañas", pos: "DC", rating: 91 }, { nombre: "L. Ochoa", pos: "DC", rating: 81 }
+                ]},
+                { nombre: "Veracruz", estado: "extinto", figuras: [
+                    { nombre: "J. Bernal", pos: "POR", rating: 85 }, { nombre: "A. Ruiz", pos: "POR", rating: 75 },
+                    { nombre: "I. Terrazas", pos: "DFC", rating: 81 }, { nombre: "P. Quatrocchi", pos: "DFC", rating: 83 }, { nombre: "J. Sánchez", pos: "DFC", rating: 78 },
+                    { nombre: "R. Briseño", pos: "LI", rating: 79 }, { nombre: "M. Pérez", pos: "LD", rating: 80 },
+                    { nombre: "Cuauhtémoc Blanco", pos: "MC", rating: 93 }, { nombre: "B. Arce", pos: "MC", rating: 84 }, { nombre: "J. L. González", pos: "MC", rating: 81 },
+                    { nombre: "C. Giménez", pos: "EI", rating: 88 }, { nombre: "W. Pezzolano", pos: "ED", rating: 82 },
+                    { nombre: "Kléber Boas", pos: "DC", rating: 89 }, { nombre: "G. Biscayzacú", pos: "DC", rating: 87 }
+                ]},
+                { nombre: "Monarcas Morelia", estado: "extinto", figuras: [
+                    { nombre: "M. Muñoz", pos: "POR", rating: 86 }, { nombre: "A. Álvarez", pos: "POR", rating: 78 },
+                    { nombre: "D. Franco", pos: "DFC", rating: 85 }, { nombre: "O. Trujillo", pos: "DFC", rating: 83 }, { nombre: "E. Loeschbor", pos: "DFC", rating: 81 },
+                    { nombre: "C. Morales", pos: "LI", rating: 84 }, { nombre: "H. Altamirano", pos: "LD", rating: 82 },
+                    { nombre: "J. Almirón", pos: "MC", rating: 86 }, { nombre: "R. Noriega", pos: "MC", rating: 80 }, { nombre: "H. Álvarez", pos: "MC", rating: 79 },
+                    { nombre: "M. Ruiz", pos: "EI", rating: 83 }, { nombre: "J. Lozano", pos: "ED", rating: 81 },
+                    { nombre: "A. Fernandes", pos: "DC", rating: 89 }, { nombre: "R. Palacios", pos: "DC", rating: 82 }
+                ]}
+            ],
+            "2006-2011": [
+                { nombre: "Atlante", estado: "activo", figuras: [
+                    { nombre: "F. Vilar", pos: "POR", rating: 88 }, { nombre: "O. Patiño", pos: "POR", rating: 76 },
+                    { nombre: "J. Mustafá", pos: "DFC", rating: 83 }, { nombre: "G. Cervantes", pos: "DFC", rating: 81 }, { nombre: "M. Carevic", pos: "DFC", rating: 80 },
+                    { nombre: "C. Bermúdez", pos: "LI", rating: 86 }, { nombre: "A. Muñoz", pos: "LD", rating: 82 },
+                    { nombre: "G. Pereyra", pos: "MC", rating: 85 }, { nombre: "D. Toledo", pos: "MC", rating: 82 }, { nombre: "A. Ovalle", pos: "MC", rating: 79 },
+                    { nombre: "J. Guerrero", pos: "EI", rating: 84 }, { nombre: "A. Rey", pos: "ED", rating: 85 },
+                    { nombre: "G. Maldonado", pos: "DC", rating: 89 }, { nombre: "C. Suárez", pos: "DC", rating: 81 }
+                ]},
+                { nombre: "Indios de Ciudad Juárez", estado: "extinto", figuras: [
+                    { nombre: "C. Saucedo", pos: "POR", rating: 83 }, { nombre: "H. Hernández", pos: "POR", rating: 75 },
+                    { nombre: "J. C. Mosqueda", pos: "DFC", rating: 79 }, { nombre: "H. Gómez", pos: "DFC", rating: 78 }, { nombre: "S. Martínez", pos: "DFC", rating: 76 },
+                    { nombre: "M. Pérez", pos: "LI", rating: 77 }, { nombre: "T. Campos", pos: "LD", rating: 80 },
+                    { nombre: "J. C. Silva", pos: "MC", rating: 82 }, { nombre: "E. Frías", pos: "MC", rating: 78 }, { nombre: "D. de la Torre", pos: "MC", rating: 77 },
+                    { nombre: "T. Moreno", pos: "EI", rating: 84 }, { nombre: "R. Gómez", pos: "ED", rating: 81 },
+                    { nombre: "E. Maggiolo", pos: "DC", rating: 85 }, { nombre: "J. Maleno", pos: "DC", rating: 80 }
+                ]},
+                { nombre: "San Luis FC", estado: "extinto", figuras: [
+                    { nombre: "A. Martínez", pos: "POR", rating: 84 }, { nombre: "C. Trejo", pos: "POR", rating: 77 },
+                    { nombre: "O. Mascorro", pos: "DFC", rating: 82 }, { nombre: "M. Pérez", pos: "DFC", rating: 80 }, { nombre: "C. Sánchez", pos: "DFC", rating: 79 },
+                    { nombre: "L. González", pos: "LI", rating: 81 }, { nombre: "R. Salinas", pos: "LD", rating: 80 },
+                    { nombre: "B. Luna", pos: "MC", rating: 86 }, { nombre: "E. Coudet", pos: "MC", rating: 85 }, { nombre: "M. Maya", pos: "MC", rating: 78 },
+                    { nombre: "M. Arroyo", pos: "EI", rating: 85 }, { nombre: "V. Lojero", pos: "ED", rating: 80 },
+                    { nombre: "A. Moreno", pos: "DC", rating: 88 }, { nombre: "M. de la Torre", pos: "DC", rating: 82 }
+                ]}
+            ],
+            "2011-2016": [
+                { nombre: "Xolos de Tijuana", estado: "activo", figuras: [
+                    { nombre: "C. Saucedo", pos: "POR", rating: 85 }, { nombre: "A. Zermeño", pos: "POR", rating: 76 },
+                    { nombre: "J. Gandolfi", pos: "DFC", rating: 87 }, { nombre: "P. Aguilar", pos: "DFC", rating: 84 }, { nombre: "E. Castillo", pos: "DFC", rating: 80 },
+                    { nombre: "J. Núñez", pos: "LI", rating: 82 }, { nombre: "R. Ruiz", pos: "LD", rating: 83 },
+                    { nombre: "C. Pellerano", pos: "MC", rating: 86 }, { nombre: "F. Arce", pos: "MC", rating: 85 }, { nombre: "L. Silva", pos: "MC", rating: 81 },
+                    { nombre: "F. Martínez", pos: "EI", rating: 84 }, { nombre: "R. Enríquez", pos: "ED", rating: 80 },
+                    { nombre: "D. Moreno", pos: "DC", rating: 88 }, { nombre: "D. Riascos", pos: "DC", rating: 87 }
+                ]},
+                { 
+                nombre: "Leones Negros", estado: "activo", figuras: [
+                { nombre: "H. Hernández", pos: "POR", rating: 80 },
+                { nombre: "M. Alatorre", pos: "LD", rating: 76 },
+                { nombre: "F. Araujo", pos: "DFC", rating: 75 },
+                { nombre: "L. Cufré", pos: "DFC", rating: 81 },
+                { nombre: "J. González", pos: "LI", rating: 74 },
+                { nombre: "M. Crosas", pos: "MC", rating: 79 },
+                { nombre: "J. Hernández", pos: "MC", rating: 77 },
+                { nombre: "L. Télles", pos: "MC", rating: 73 },
+                { nombre: "J. González", pos: "ED", rating: 75 },
+                { nombre: "F. Martínez", pos: "EI", rating: 82 },
+                { nombre: "J. Vázquez", pos: "DC", rating: 74 },
+                { nombre: "R. Vilchis", pos: "ED", rating: 72 },
+                { nombre: "J. Barraza", pos: "DC", rating: 71 },
+                { nombre: "C. Díaz", pos: "DFC", rating: 70 }
+                ]
+                },
+                { nombre: "León", estado: "activo", figuras: [
+                    { nombre: "W. Yarbrough", pos: "POR", rating: 86 }, { nombre: "C. Martínez", pos: "POR", rating: 78 },
+                    { nombre: "R. Márquez", pos: "DFC", rating: 89 }, { nombre: "J. I. González", pos: "DFC", rating: 85 }, { nombre: "J. Magallón", pos: "DFC", rating: 83 },
+                    { nombre: "E. Hernández", pos: "LI", rating: 84 }, { nombre: "J. Pineda", pos: "LD", rating: 82 },
+                    { nombre: "L. Montes", pos: "MC", rating: 88 }, { nombre: "C. Peña", pos: "MC", rating: 87 }, { nombre: "J. Vázquez", pos: "MC", rating: 86 },
+                    { nombre: "H. Burbano", pos: "EI", rating: 85 }, { nombre: "F. Arizala", pos: "ED", rating: 83 },
+                    { nombre: "M. Boselli", pos: "DC", rating: 90 }, { nombre: "M. Britos", pos: "DC", rating: 84 }
+                ]}
+            ],
+            "2016-2023": [
+                { nombre: "Tigres UANL", estado: "activo", figuras: [
+                    { nombre: "N. Guzmán", pos: "POR", rating: 89 }, { nombre: "E. Fernández", pos: "POR", rating: 78 },
+                    { nombre: "Juninho", pos: "DFC", rating: 87 }, { nombre: "H. Ayala", pos: "DFC", rating: 86 }, { nombre: "F. Meza", pos: "DFC", rating: 82 },
+                    { nombre: "J. Torres Nilo", pos: "LI", rating: 83 }, { nombre: "L. Rodríguez", pos: "LD", rating: 84 },
+                    { nombre: "G. Pizarro", pos: "MC", rating: 88 }, { nombre: "R. Carioca", pos: "MC", rating: 87 }, { nombre: "J. Dueñas", pos: "MC", rating: 84 },
+                    { nombre: "J. Aquino", pos: "EI", rating: 86 }, { nombre: "J. Damm", pos: "ED", rating: 81 },
+                    { nombre: "A. Gignac", pos: "DC", rating: 92 }, { nombre: "E. Vargas", pos: "DC", rating: 85 }
+                ]},
+                { nombre: "Atlas ", estado: "activo", figuras: [
+                    { nombre: "C. Vargas", pos: "POR", rating: 91 },
+                    { nombre: "H. Nervo", pos: "DFC", rating: 86 },
+                    { nombre: "A. Santamaría", pos: "DFC", rating: 84 },
+                    { nombre: "E. Aguilera", pos: "DFC", rating: 82 },
+                    { nombre: "J. Abella", pos: "LD", rating: 81 },
+                    { nombre: "A. Chalá", pos: "LI", rating: 80 },
+                    { nombre: "A. Rocha", pos: "MC", rating: 87 },
+                    { nombre: "E. Zaldívar", pos: "MC", rating: 83 },
+                    { nombre: "L. Reyes", pos: "MC", rating: 85 },
+                    { nombre: "J. Quiñones", pos: "EI", rating: 90 },
+                    { nombre: "J. Furch", pos: "DC", rating: 88 },
+                    { nombre: "J. Torres", pos: "ED", rating: 84 },
+                    { nombre: "O. Herrera", pos: "ED", rating: 82 },
+                    { nombre: "B. Garnica", pos: "EI", rating: 79 }
+                ]
+                },
+                { nombre: "Monterrey", estado: "activo", figuras: [
+                    { nombre: "M. Barovero", pos: "POR", rating: 87 }, { nombre: "H. González", pos: "POR", rating: 80 },
+                    { nombre: "N. Sánchez", pos: "DFC", rating: 86 }, { nombre: "S. Medina", pos: "DFC", rating: 84 }, { nombre: "C. Montes", pos: "DFC", rating: 83 },
+                    { nombre: "J. Gallardo", pos: "LI", rating: 85 }, { nombre: "L. Vangioni", pos: "LD", rating: 82 },
+                    { nombre: "C. Ortiz", pos: "MC", rating: 86 }, { nombre: "C. Rodríguez", pos: "MC", rating: 85 }, { nombre: "J. González", pos: "MC", rating: 81 },
+                    { nombre: "M. Meza", pos: "EI", rating: 84 }, { nombre: "D. Pabón", pos: "ED", rating: 87 },
+                    { nombre: "R. Funes Mori", pos: "DC", rating: 89 }, { nombre: "V. Janssen", pos: "DC", rating: 84 }
+                ]},
+                { nombre: "América", estado: "activo", figuras: [
+                    { nombre: "A. Marchesín", pos: "POR", rating: 89 }, { nombre: "G. Ochoa", pos: "POR", rating: 87 },
+                    { nombre: "B. Valdez", pos: "DFC", rating: 86 }, { nombre: "E. Álvarez", pos: "DFC", rating: 85 }, { nombre: "E. Aguilera", pos: "DFC", rating: 83 },
+                    { nombre: "L. Reyes", pos: "LI", rating: 80 }, { nombre: "P. Aguilar", pos: "LD", rating: 85 },
+                    { nombre: "G. Rodríguez", pos: "MC", rating: 88 }, { nombre: "M. Uribe", pos: "MC", rating: 86 }, { nombre: "R. Sánchez", pos: "MC", rating: 85 },
+                    { nombre: "D. Lainez", pos: "EI", rating: 84 }, { nombre: "R. Ibarra", pos: "ED", rating: 86 },
+                    { nombre: "O. Peralta", pos: "DC", rating: 88 }, { nombre: "H. Martín", pos: "DC", rating: 88 }
+                ]}
+
+            ]
+        };
+        
+        // RIVALES DE LA LIGA (18 EQUIPOS EN TOTAL)
+        const rivalesLigaMX = [
+            { nombre: "Pumas UNAM", rating: 88 }, { nombre: "Chivas", rating: 89 }, { nombre: "América", rating: 87 },
+            { nombre: "Cruz Azul", rating: 91 }, { nombre: "Tigres UANL", rating: 84 }, { nombre: "Monterrey", rating: 84 },
+            { nombre: "Toluca", rating: 83 }, { nombre: "León", rating: 82 }, { nombre: "Atlas", rating: 80 },
+            { nombre: "Pachuca", rating: 80 }, { nombre: "Santos Laguna", rating: 79 }, { nombre: "Necaxa", rating: 77 },
+            { nombre: "Puebla", rating: 76 }, { nombre: "Querétaro", rating: 74 }, { nombre: "Tijuana", rating: 74 },
+            { nombre: "Atlante", rating: 70}, { nombre: "Atlético San Luis", rating: 73 }, { nombre: "FC Juárez", rating: 72 }
+        ];
+
+        const esquemasTacticos = {
+            "4-3-3": [
+                { id: 0, pos: "POR", top: 88, left: 50 }, { id: 1, pos: "LI",  top: 70, left: 15 },
+                { id: 2, pos: "DFC", top: 73, left: 37 }, { id: 3, pos: "DFC", top: 73, left: 63 },
+                { id: 4, pos: "LD",  top: 70, left: 85 }, { id: 5, pos: "MC",  top: 48, left: 25 },
+                { id: 6, pos: "MC",  top: 53, left: 50 }, { id: 7, pos: "MC",  top: 48, left: 75 },
+                { id: 8, pos: "EI",  top: 22, left: 18 }, { id: 9, pos: "DC",  top: 18, left: 50 }, { id: 10, pos: "ED", top: 22, left: 82 }
+            ],
+            "4-4-2": [
+                { id: 0, pos: "POR", top: 88, left: 50 }, { id: 1, pos: "LI",  top: 70, left: 15 },
+                { id: 2, pos: "DFC", top: 73, left: 37 }, { id: 3, pos: "DFC", top: 73, left: 63 },
+                { id: 4, pos: "LD",  top: 70, left: 85 }, { id: 5, pos: "EI",  top: 46, left: 15 },
+                { id: 6, pos: "MC",  top: 48, left: 38 }, { id: 7, pos: "MC",  top: 48, left: 62 },
+                { id: 8, pos: "ED",  top: 46, left: 85 }, { id: 9, pos: "DC",  top: 20, left: 33 }, { id: 10, pos: "DC", top: 20, left: 67 }
+            ],
+            "3-5-2": [
+                { id: 0, pos: "POR", top: 88, left: 50 }, { id: 1, pos: "DFC", top: 73, left: 25 },
+                { id: 2, pos: "DFC", top: 75, left: 50 }, { id: 3, pos: "DFC", top: 73, left: 75 },
+                { id: 4, pos: "EI",  top: 46, left: 15 }, { id: 5, pos: "MC",  top: 50, left: 34 },
+                { id: 6, pos: "MC",  top: 54, left: 50 }, { id: 7, pos: "MC",  top: 50, left: 66 },
+                { id: 8, pos: "ED",  top: 46, left: 85 }, { id: 9, pos: "DC",  top: 20, left: 33 }, { id: 10, pos: "DC", top: 20, left: 67 }
+            ]
+        };
+
+        // Estado global
+        let clubSeleccionado = null;
+        let plantillaGuardada = {};
+        let equipoRatingGlobal = 0;
+        let nombreEquipoUsuario = "Mis Cracks FC";
+        let posicionTabla = 1;
+        let golesGlobalUser = 0;
+        let golesGlobalRival = 0;
+        let misRivalesLiguilla = [];
+
+        // Elementos DOM Draft
+        const selectorFormacion = document.getElementById("formation-select");
+        const inputNombreEquipo = document.getElementById("input-team-name");
+        const contenedorCancha = document.getElementById("pitch-display");
+        const botonRandom = document.getElementById("btn-random-team");
+        const bannerInfo = document.getElementById("active-team-banner");
+        const panelOpciones = document.getElementById("options-panel-content");
+        const botonPasarSim = document.getElementById("btn-go-to-sim");
+
+        // Elementos DOM Simulación
+        const vistaDraft = document.getElementById("view-draft");
+        const vistaSimulacion = document.getElementById("view-simulation");
+        const botonIniciarSim = document.getElementById("btn-start-simulation");
+        const botonReiniciar = document.getElementById("btn-restart-game");
+        const logsBox = document.getElementById("simulation-logs");
+        
+        const lblClub = document.getElementById("lbl-sim-club");
+        const lblRating = document.getElementById("lbl-sim-rating");
+        const lblPos = document.getElementById("lbl-sim-pos");
+        const lblPj = document.getElementById("lbl-sim-pj");
+        const lblRecord = document.getElementById("lbl-sim-record");
+        const lblPts = document.getElementById("lbl-sim-pts");
+        const perfectBadge = document.getElementById("perfect-badge");
+
+        selectorFormacion.addEventListener("change", () => {
+            plantillaGuardada = {};
+            botonPasarSim.disabled = true;
+            botonRandom.disabled = false;
+            renderizarCancha();
+        });
+
+        botonRandom.addEventListener("click", ejecutarRandomizador);
+        renderizarCancha();
+
+        function ejecutarRandomizador() {
+            const periodos = Object.keys(baseDeDatosRetro);
+            const epoca = periodos[Math.floor(Math.random() * periodos.length)];
+            const listaEquipos = baseDeDatosRetro[epoca];
+            clubSeleccionado = listaEquipos[Math.floor(Math.random() * listaEquipos.length)];
+            const badgeClass = clubSeleccionado.estado === "activo" ? "status-activo" : "status-extinto";
+            const badgeText = clubSeleccionado.estado === "activo" ? "En Primera" : "Descendido/Extinto";
+            bannerInfo.innerHTML = `Opciones extraídas de: <span>${clubSeleccionado.nombre} (${epoca})</span> <span class="status-badge ${badgeClass}">${badgeText}</span>`;
+
+            botonRandom.disabled = true;
+            desplegarOpcionesInmediatas();
+        }
+
+        function desplegarOpcionesInmediatas() {
+            panelOpciones.innerHTML = "";
+            const esquemaActual = esquemasTacticos[selectorFormacion.value];
+
+            // 1. Contabilizar cuántas posiciones requiere el esquema actual
+            let posicionesRequeridas = {};
+            esquemaActual.forEach(slot => {
+                posicionesRequeridas[slot.pos] = (posicionesRequeridas[slot.pos] || 0) + 1;
+            });
+
+            // 2. Contabilizar cuántas posiciones de ese tipo ya hemos llenado y qué jugadores ya tenemos
+            let posicionesLlenas = {};
+            let nombresEnPlantilla = [];
+            Object.values(plantillaGuardada).forEach(jugador => {
+                posicionesLlenas[jugador.pos] = (posicionesLlenas[jugador.pos] || 0) + 1;
+                nombresEnPlantilla.push(jugador.nombre);
+            });
+
+            // 3. Obtener TODOS los jugadores del equipo que coincidan con los huecos aún disponibles
+            let jugadoresDisponibles = clubSeleccionado.figuras.filter(jugador => {
+                let requeridos = posicionesRequeridas[jugador.pos] || 0;
+                let llenos = posicionesLlenas[jugador.pos] || 0;
+                let faltan = requeridos - llenos;
+                
+                // Mostrar si aún faltan cupos en su posición y no ha sido elegido previamente
+                return faltan > 0 && !nombresEnPlantilla.includes(jugador.nombre);
+            });
+
+            // Fallback de emergencia por si la DB se queda corta para la formación pedida
+            if(jugadoresDisponibles.length === 0) {
+                esquemaActual.forEach(slot => {
+                    if(!plantillaGuardada[slot.id]) {
+                        jugadoresDisponibles.push({ nombre: "Canterano " + slot.pos, pos: slot.pos, rating: 60 });
+                    }
+                });
+                // Evitar imprimir duplicados innecesarios de comodines de cantera
+                jugadoresDisponibles = jugadoresDisponibles.filter((v,i,a)=>a.findIndex(t=>(t.pos===v.pos && t.nombre===v.nombre))===i);
+            }
+
+            // 4. Renderizar absolutamente TODAS las opciones válidas del equipo
+            jugadoresDisponibles.forEach(jugadorSeleccionado => {
+                const tarjetaChoice = document.createElement("div");
+                tarjetaChoice.className = "choice-card";
+                tarjetaChoice.innerHTML = `
+                    <div class="choice-rating">${jugadorSeleccionado.rating}</div>
+                    <div class="choice-info">
+                        <span class="choice-name">${jugadorSeleccionado.nombre}</span>
+                        <span class="choice-pos">${jugadorSeleccionado.pos}</span>
+                    </div>
+                `;
+
+                tarjetaChoice.addEventListener("click", () => {
+                    // Buscar el primer hueco vacío de su respectiva posición
+                    let slotDestino = esquemaActual.find(slot => slot.pos === jugadorSeleccionado.pos && !plantillaGuardada[slot.id]);
+                    
+                    if (slotDestino) {
+                        plantillaGuardada[slotDestino.id] = { nombre: jugadorSeleccionado.nombre, rating: jugadorSeleccionado.rating, pos: jugadorSeleccionado.pos };
+                        renderizarCancha();
+                        verificarDraftTerminado();
+
+                        if (Object.keys(plantillaGuardada).length < esquemaActual.length) {
+                            botonRandom.disabled = false;
+                            panelOpciones.innerHTML = `<p class="no-selection-msg" style="color: #38bdf8;">🔄 ¡Jugador fichado!<br><b>Oprime el botón azul</b> para seguir buscando talento retro.</p>`;
+                        } else {
+                            panelOpciones.innerHTML = `<p class="no-selection-msg" style="color: var(--accent);">🏆 ¡Alineación completada! Ponle nombre a tu club e inicia el torneo.</p>`;
+                        }
+                    }
+                });
+
+                panelOpciones.appendChild(tarjetaChoice);
+            });
+        }
+
+        function renderizarCancha() {
+            contenedorCancha.innerHTML = "";
+            const esquemaActual = esquemasTacticos[selectorFormacion.value];
+
+            esquemaActual.forEach((ranura) => {
+                const elementoSlot = document.createElement("div");
+                elementoSlot.className = "player-slot";
+                elementoSlot.style.top = `${ranura.top}%`;
+                elementoSlot.style.left = `${ranura.left}%`;
+
+                let nombreMostrado = "Vacante";
+                let ratingMostrado = "--";
+
+                if (plantillaGuardada[ranura.id]) {
+                    elementoSlot.classList.add("filled");
+                    nombreMostrado = plantillaGuardada[ranura.id].nombre;
+                    ratingMostrado = plantillaGuardada[ranura.id].rating;
+                }
+
+                elementoSlot.innerHTML = `
+                    <div class="slot-badge">
+                        <span class="slot-pos">${ranura.pos}</span>
+                        <span class="slot-rating">${ratingMostrado}</span>
+                    </div>
+                    <span class="slot-name">${nombreMostrado}</span>
+                `;
+                contenedorCancha.appendChild(elementoSlot);
+            });
+        }
+
+        function verificarDraftTerminado() {
+            const numeroTitulares = esquemasTacticos[selectorFormacion.value].length;
+            if (Object.keys(plantillaGuardada).length === numeroTitulares) {
+                botonPasarSim.disabled = false;
+                botonRandom.disabled = true;
+            }
+        }
+
+        // ==========================================================================
+        // MOTOR DE SIMULACIÓN AVANZADO
+        // ==========================================================================
+        botonPasarSim.addEventListener("click", () => {
+            let suma = 0;
+            const llaves = Object.keys(plantillaGuardada);
+            
+            llaves.forEach(k => suma += plantillaGuardada[k].rating);
+            equipoRatingGlobal = Math.round(suma / llaves.length);
+
+            nombreEquipoUsuario = inputNombreEquipo.value.trim() || "Mis Cracks FC";
+            lblClub.innerText = nombreEquipoUsuario;
+            lblRating.innerText = equipoRatingGlobal;
+
+            vistaDraft.style.display = "none";
+            vistaSimulacion.style.display = "block";
+        });
+
+        function simularMarcador(ratingUsuario, ratingRival) {
+            let userBase = ratingUsuario / 24;
+            let rivalBase = ratingRival / 24;
+
+            let userGoles = Math.max(0, Math.floor(userBase + (Math.random() * 4 - 2)));
+            let rivalGoles = Math.max(0, Math.floor(rivalBase + (Math.random() * 4 - 2)));
+
+            const diferencia = ratingUsuario - ratingRival;
+            if (diferencia > 4 && userGoles <= rivalGoles && Math.random() < 0.5) userGoles++;
+            if (diferencia < -4 && rivalGoles <= userGoles && Math.random() < 0.3) rivalGoles++;
+
+            return { golesUser: userGoles, golesRival: rivalGoles };
+        }
+
+        botonIniciarSim.addEventListener("click", () => {
+            botonIniciarSim.disabled = true;
+            logsBox.innerHTML = "";
+
+            let partidoActual = 1;
+            let victorias = 0;
+            let empates = 0;
+            let derrotas = 0;
+            let puntos = 0;
+            let recordPerfecto = true;
+
+            let calendarioRegular = [...rivalesLigaMX].sort(() => Math.random() - 0.5);
+
+            function procesarSiguientePartido() {
+                if (partidoActual <= 24) {
+                    let rivalNombre = "";
+                    let rivalRating = 0;
+                    let tipoPartido = "";
+                    let opponentPosition = 8;
+
+                    if (partidoActual === 19) {
+                        if (puntos >= 35) posicionTabla = 1;
+                        else if (puntos >= 32) posicionTabla = 3;
+                        else if (puntos >= 27) posicionTabla = 5; 
+                        else if (puntos >= 24) posicionTabla = 7; 
+                        else posicionTabla = 9;
+
+                        lblPos.innerText = posicionTabla <= 8 ? `${posicionTabla}° Lugar` : "No calificó (9°+)";
+
+                        if (posicionTabla === 9) {
+                            const filaLog = document.createElement("div");
+                            filaLog.className = "log-row loss";
+                            filaLog.innerHTML = `<div>❌ <b>[ELIMINADO]</b> Conseguiste ${puntos} pts. Quedas fuera del Top 8. ¡No hay Liguilla!</div>`;
+                            logsBox.appendChild(filaLog);
+                            recordPerfecto = false;
+                            finalizarTorneo(false);
+                            return;
+                        }
+
+                        let posiblesParaLiguilla = [...rivalesLigaMX].sort(() => Math.random() - 0.5).slice(0, 8);
+                        let posicionesDisponibles = [1,2,3,4,5,6,7,8].filter(p => p !== posicionTabla).sort(() => Math.random() - 0.5);
+                        
+                        misRivalesLiguilla = [
+                            { data: posiblesParaLiguilla[0], pos: posicionesDisponibles[0] }, // Cuartos
+                            { data: posiblesParaLiguilla[1], pos: posicionesDisponibles[1] }, // Semis
+                            { data: posiblesParaLiguilla[2], pos: posicionesDisponibles[2] }  // Final
+                        ];
+                    }
+
+                    if (partidoActual <= 18) {
+                        const rival = calendarioRegular[partidoActual - 1];
+                        rivalNombre = rival.nombre;
+                        rivalRating = rival.rating;
+                        tipoPartido = `Jornada ${partidoActual}`;
+                    } else {
+                        let faseIndex = 0;
+                        if (partidoActual === 19 || partidoActual === 20) {
+                            faseIndex = 0;
+                            tipoPartido = partidoActual === 19 ? "Cuartos - Ida" : "Cuartos - Vuelta";
+                            if (partidoActual === 19) { golesGlobalUser = 0; golesGlobalRival = 0; }
+                        } else if (partidoActual === 21 || partidoActual === 22) {
+                            faseIndex = 1;
+                            tipoPartido = partidoActual === 21 ? "Semis - Ida" : "Semis - Vuelta";
+                            if (partidoActual === 21) { golesGlobalUser = 0; golesGlobalRival = 0; }
+                        } else if (partidoActual === 23 || partidoActual === 24) {
+                            faseIndex = 2;
+                            tipoPartido = partidoActual === 23 ? "Final - Ida" : "Final - Vuelta";
+                            if (partidoActual === 23) { golesGlobalUser = 0; golesGlobalRival = 0; }
+                        }
+
+                        const rivalActual = misRivalesLiguilla[faseIndex];
+                        rivalNombre = rivalActual.data.nombre;
+                        rivalRating = rivalActual.data.rating;
+                        opponentPosition = rivalActual.pos;
+                    }
+
+                    const { golesUser, golesRival } = simularMarcador(equipoRatingGlobal, rivalRating);
+
+                    if (partidoActual > 18) {
+                        golesGlobalUser += golesUser;
+                        golesGlobalRival += golesRival;
+                    }
+
+                    let resultadoClase = "draw";
+                    let resTexto = "Empate";
+
+                    if (golesUser > golesRival) {
+                        victorias++;
+                        if (partidoActual <= 18) puntos += 3;
+                        resultadoClase = "win";
+                        resTexto = "Victoria";
+                    } else if (golesUser === golesRival) {
+                        empates++;
+                        if (partidoActual <= 18) puntos += 1;
+                    } else {
+                        derrotas++;
+                        resultadoClase = "loss";
+                        resTexto = "Derrota";
+                    }
+
+                    if (golesUser <= golesRival || (partidoActual > 18 && derrotas > 0)) {
+                        recordPerfecto = false;
+                    }
+
+                    const filaLog = document.createElement("div");
+                    filaLog.className = `log-row ${resultadoClase}`;
+                    let marcadorConGlobal = `${golesUser} - ${golesRival}`;
+                    if (partidoActual > 18) marcadorConGlobal += ` (Global: ${golesGlobalUser}-${golesGlobalRival})`;
+
+                    filaLog.innerHTML = `
+                        <div><b>[${tipoPartido}]</b> ${nombreEquipoUsuario} <span>${marcadorConGlobal}</span> ${rivalNombre} <small style="color: var(--text-muted)">(${rivalRating} OVR)</small></div>
+                        <span class="badge-res badge-${resultadoClase}">${resTexto}</span>
+                    `;
+                    logsBox.appendChild(filaLog);
+                    logsBox.scrollTop = logsBox.scrollHeight;
+
+                    lblPj.innerText = `${partidoActual} / 24`;
+                    lblRecord.innerText = `${victorias} - ${empates} - ${derrotas}`;
+                    lblPts.innerText = `${puntos} pts`;
+
+                    if (!recordPerfecto) {
+                        perfectBadge.className = "perfect-status status-perfect-broken";
+                        perfectBadge.innerHTML = "❌ Récord Perfecto Roto (Ya no es 24-0)";
+                    }
+
+                    let continuaFase = true;
+
+                    if (partidoActual === 20 || partidoActual === 22 || partidoActual === 24) {
+                        const filaGlobal = document.createElement("div");
+                        filaGlobal.style.fontWeight = "bold";
+                        filaGlobal.style.padding = "0.5rem 1rem";
+                        filaGlobal.style.borderRadius = "6px";
+                        filaGlobal.style.marginTop = "4px";
+
+                        if (golesGlobalUser > golesGlobalRival) {
+                            filaGlobal.style.background = "rgba(22, 163, 74, 0.2)";
+                            filaGlobal.style.color = "#4ade80";
+                            filaGlobal.innerText = `📢 ¡Avanzas! Global final de ${golesGlobalUser}-${golesGlobalRival}.`;
+                        } else if (golesGlobalUser === golesGlobalRival) {
+                            if (partidoActual === 24) {
+                                let penalesUser = 0;
+                                let penalesRival = 0;
+                                while (penalesUser === penalesRival) {
+                                    penalesUser = Math.floor(Math.random() * 3) + 3; // 3 a 5
+                                    penalesRival = Math.floor(Math.random() * 3) + 3; // 3 a 5
+                                }
+                                
+                                if (penalesUser > penalesRival) {
+                                    filaGlobal.style.background = "rgba(22, 163, 74, 0.2)";
+                                    filaGlobal.style.color = "#4ade80";
+                                    filaGlobal.innerText = `🏆 ¡Empate global ${golesGlobalUser}-${golesGlobalRival}! Eres CAMPEÓN en Penales (${penalesUser}-${penalesRival}).`;
+                                    continuaFase = true;
+                                } else {
+                                    filaGlobal.style.background = "rgba(220, 38, 38, 0.2)";
+                                    filaGlobal.style.color = "#f87171";
+                                    filaGlobal.innerText = `❌ ¡Empate global ${golesGlobalUser}-${golesGlobalRival}! Perdiste la Final en Penales (${penalesUser}-${penalesRival}).`;
+                                    continuaFase = false;
+                                }
+                            } else {
+                                if (posicionTabla < opponentPosition) {
+                                    filaGlobal.style.background = "rgba(22, 163, 74, 0.2)";
+                                    filaGlobal.style.color = "#4ade80";
+                                    filaGlobal.innerText = `📢 ¡Empate global ${golesGlobalUser}-${golesGlobalRival}! Avanzas por mejor posición de tabla (Tú: ${posicionTabla}°, ${rivalNombre}: ${opponentPosition}°).`;
+                                } else {
+                                    filaGlobal.style.background = "rgba(220, 38, 38, 0.2)";
+                                    filaGlobal.style.color = "#f87171";
+                                    filaGlobal.innerText = `❌ ¡Empate global ${golesGlobalUser}-${golesGlobalRival}! Quedas ELIMINADO por peor posición de tabla (Tú: ${posicionTabla}°, ${rivalNombre}: ${opponentPosition}°).`;
+                                    continuaFase = false;
+                                }
+                            }
+                        } else {
+                            filaGlobal.style.background = "rgba(220, 38, 38, 0.2)";
+                            filaGlobal.style.color = "#f87171";
+                            filaGlobal.innerText = `❌ ¡Eliminado! Perdiste en el marcador global por ${golesGlobalUser}-${golesGlobalRival}.`;
+                            continuaFase = false;
+                        }
+
+                        logsBox.appendChild(filaGlobal);
+                        logsBox.scrollTop = logsBox.scrollHeight;
+
+                        if (!continuaFase) {
+                            finalizarTorneo(false);
+                            return;
+                        }
+
+                        if (partidoActual === 24 && continuaFase) {
+                            finalizarTorneo(true, victorias);
+                            return;
+                        }
+                    }
+
+                    partidoActual++;
+                    setTimeout(procesarSiguientePartido, 400);
+                }
+            }
+
+            procesarSiguientePartido();
+        });
+
+        function finalizarTorneo(esCampeon, totalVictorias = 0) {
+            botonReiniciar.style.display = "block";
+            const bannerFinal = document.createElement("div");
+            bannerFinal.style.textAlign = "center";
+            bannerFinal.style.padding = "1rem";
+            bannerFinal.style.fontWeight = "bold";
+            bannerFinal.style.marginTop = "1rem";
+
+            if (esCampeon && totalVictorias === 24) {
+                bannerFinal.style.color = "#4ade80";
+                bannerFinal.innerHTML = "🎉 ¡HAZAÑA DE LEYENDA! Lograste el 24-0 invicto absoluto y eres Campeón de la Liga MX! 🏆";
+            } else if (esCampeon) {
+                bannerFinal.style.color = "#38bdf8";
+                bannerFinal.innerHTML = "🏆 ¡Felicidades! Te coronaste Campeón de la Liga MX, aunque rompiste la racha invicta en el camino.";
+            } else {
+                bannerFinal.style.color = "#f87171";
+                bannerFinal.innerHTML = `🏁 Fin del torneo. Te quedaste corto en el objetivo. ¡Ajusta tus piezas y vuelve a intentar!`;
+            }
+            
+            logsBox.appendChild(bannerFinal);
+            logsBox.scrollTop = logsBox.scrollHeight;
+        }
+
+        // EVENTO PARA REINICIAR TODO EL JUEGO
+        botonReiniciar.addEventListener("click", () => {
+            clubSeleccionado = null;
+            plantillaGuardada = {};
+            equipoRatingGlobal = 0;
+            posicionTabla = 1;
+            golesGlobalUser = 0;
+            golesGlobalRival = 0;
+            misRivalesLiguilla = [];
+
+            lblPj.innerText = "0 / 24";
+            lblRecord.innerText = "0 - 0 - 0";
+            lblPts.innerText = "0 pts";
+            perfectBadge.className = "perfect-status status-perfect-ok";
+            perfectBadge.innerHTML = "✨ Récord Perfecto Activo (24-0)";
+            logsBox.innerHTML = '<p class="no-selection-msg">Presiona "Ejecutar Torneo" para ver al equipo que construiste.</p>';
+        
+            botonReiniciar.style.display = "none";
+            botonIniciarSim.disabled = false;
+            botonRandom.disabled = false;
+            botonPasarSim.disabled = true;
+            bannerInfo.innerHTML = `🎲 Presiona el botón azul para comenzar a crear tu club`;
+            panelOpciones.innerHTML = `<p class="no-selection-msg">Presiona "Obtener Jugadores" para desplegar opciones inmediatas en este panel.</p>`;
+            
+            renderizarCancha();
+            vistaSimulacion.style.display = "none";
+            vistaDraft.style.display = "block";
+        });
+    </script>
+</body>
+</html>
