@@ -60,13 +60,50 @@
             padding: 1rem 1.5rem;
         }
 
+        /* HEADER STICKY PARA CONTROLES DE DRAFT */
+        .sticky-draft-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(15, 20, 28, 0.98);
+            padding: 15px 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #243145;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* HEADER STICKY PARA CONTROLES DE SIMULACIÓN */
+        .sticky-sim-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        }
+
+        @media (max-width: 900px) {
+            .sticky-draft-header {
+                padding: 15px 1.5rem;
+                margin: 0 -1.5rem 1.5rem -1.5rem; 
+            }
+            .sticky-draft-header .actions-container { width: 100%;
+                justify-content: stretch; }
+            .sticky-draft-header .actions-container > button { flex: 1;
+                margin: 0; }
+        }
+
+        .sticky-draft-header .actions-container {
+            display: flex;
+            gap: 0.8rem; 
+            justify-content: center;
+        }
+
         /* BANNER DE ÉPOCA Y EQUIPO */
         .info-banner {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border: 2px solid #243145;
             padding: 1.2rem;
             border-radius: 12px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 15px;
             text-align: center;
             font-size: 1.2rem;
             font-weight: 700;
@@ -98,7 +135,7 @@
             background: var(--bg-card);
             padding: 1.2rem;
             border-radius: 14px;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             align-items: center;
             border: 1px solid #243145;
             flex-wrap: wrap;
@@ -182,10 +219,6 @@
         @media (max-width: 900px) {
             .draft-workspace { grid-template-columns: 1fr;
             }
-            .setup-controls > div.actions-container { width: 100%; justify-content: stretch;
-            }
-            .setup-controls > div.actions-container > button { flex: 1;
-            margin: 0; }
         }
 
         /* CANCHA */
@@ -434,9 +467,9 @@
             text-transform: uppercase;
         }
         .status-perfect-ok { background: rgba(22, 163, 74, 0.2); color: #4ade80;
-        border: 1px solid #22c55e;}
+            border: 1px solid #22c55e;}
         .status-perfect-broken { background: rgba(220, 38, 38, 0.2); color: #f87171;
-        border: 1px solid #ef4444;}
+            border: 1px solid #ef4444;}
 
         .match-logs-box {
             background: #0f172a;
@@ -458,8 +491,8 @@
 
         .log-row {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
+            justify-content: center;
             background: var(--bg-card);
             padding: 0.75rem 1rem;
             border-radius: 8px;
@@ -485,11 +518,11 @@
             animation: fadeIn 0.5s ease forwards;
         }
         .llaves-box h4 { color: var(--warning); margin-bottom: 10px; text-transform: uppercase;
-        letter-spacing: 1px;}
+            letter-spacing: 1px;}
         .llaves-box .matchup-row { margin-bottom: 6px; font-weight: 600;
-        font-size: 0.9rem;}
+            font-size: 0.9rem;}
 
-        /* TABLA DE POSICIONES */
+        /* TABLA DE POSICIONES Y ESTADÍSTICAS */
         .table-box {
             background: #0f172a;
             border-radius: 12px;
@@ -507,17 +540,17 @@
             border-collapse: collapse; font-size: 0.75rem; text-align: center;
         }
         .standings-table th { background: #1e293b;
-        padding: 8px 4px; color: var(--accent); }
+            padding: 8px 4px; color: var(--accent); }
         .standings-table td { padding: 8px 4px;
-        border-bottom: 1px solid #1e293b; }
+            border-bottom: 1px solid #1e293b; }
         .standings-table tr:nth-child(even) { background: rgba(255,255,255,0.02);
         }
         .standings-table tr.user-row { background: rgba(56, 189, 248, 0.15); font-weight: bold;
-        border-left: 3px solid #38bdf8;}
+            border-left: 3px solid #38bdf8;}
         .standings-table tr.top-8 td:first-child { border-left: 3px solid var(--success);
         }
 
-        /* NOTICIAS ESPN */
+        /* NOTICIAS ESPN / MEDIOS */
         .news-box {
             background: linear-gradient(to right, #0f172a, #1a222f);
             border: 1px solid #38bdf8; 
@@ -534,7 +567,7 @@
 
         @keyframes fadeIn {
             from { opacity: 0;
-            transform: translateY(5px); }
+                transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0);
             }
         }
@@ -558,36 +591,42 @@
 
     <main class="app-container">
 
-        <div id="active-team-banner" class="info-banner">
-            🎲 Presiona el botón azul para generar un club base y extraer sus figuras de diferentes épocas
-        </div>
-
         <section id="view-draft" class="game-view">
             
             <div class="setup-controls">
+            
                 <div class="control-group">
                     <label for="formation-select">Formación</label>
                     <select id="formation-select">
                         <option value="4-3-3">4-3-3</option>
                         <option value="4-4-2">4-4-2</option>
+   
                         <option value="3-5-2">3-5-2</option>
                     </select>
                 </div>
 
                 <div class="control-group">
                     <label for="input-team-name">Nombre de Tu Equipo</label>
+ 
                     <input type="text" id="input-team-name" value="" placeholder="Ej. Real Samesta">
                 </div>
                 
                 <div class="control-group">
                     <label for="chk-hard-mode">Modo</label>
+     
                     <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.3rem;">
                         <input type="checkbox" id="chk-hard-mode" style="width: 18px; height: 18px; accent-color: var(--danger); cursor: pointer;">
                         <span style="font-size: 0.85rem; font-weight: 800; color: var(--danger); text-transform: uppercase;">Difícil</span>
                     </div>
                 </div>
+            </div>
 
-                <div class="actions-container" style="margin-left: auto; display: flex; gap: 0.8rem;">
+            <div class="sticky-draft-header" id="sticky-header-draft">
+                <div id="active-team-banner" class="info-banner">
+               
+                    🎲 Presiona el botón azul para generar un club base y extraer sus figuras
+                </div>
+                <div class="actions-container">
                     <button id="btn-reroll" class="btn-random" style="background: var(--warning); color: #000; display: none;">🔄 Resortear (2)</button>
                     <button id="btn-random-team" class="btn-random">🎲 Obtener Jugadores</button>
                 </div>
@@ -596,10 +635,12 @@
             <div class="draft-workspace">
                 <div id="pitch-display" class="pitch"></div>
 
+            
                 <aside class="selection-pool">
                     <h3>Opciones del Draft</h3>
                     <div id="options-panel-content" class="options-container">
                         <p class="no-selection-msg">Presiona "Obtener Jugadores" para desplegar opciones inmediatas en este panel.</p>
+                 
                     </div>
                 </aside>
             </div>
@@ -608,7 +649,7 @@
         </section>
 
         <section id="view-simulation" class="game-view" style="display: none;">
-            <div class="setup-controls" style="flex-wrap: nowrap; justify-content: space-between;">
+            <div class="setup-controls sticky-sim-header" style="flex-wrap: nowrap; justify-content: space-between;">
                 <h2>📈 Centro de Simulación en Vivo</h2>
                 <div style="display: flex; gap: 1rem;">
                     <button id="btn-start-simulation" class="btn-primary" style="background: #22c55e; color: white;">⚽ Iniciar Torneo</button>
@@ -620,15 +661,17 @@
             <div class="simulation-grid">
                 <div class="sim-left-col">
                     <div id="sim-pitch-wrapper" style="transform: scale(0.85); transform-origin: top center; margin-bottom: 0;">
-                        </div>
+                    </div>
                     <div id="news-box" class="news-box">
                         📰 <b>ESPN:</b> Esperando el inicio del torneo.
                     </div>
+    
                     <div id="perfect-badge" class="perfect-status status-perfect-ok" style="margin-top: 0;">
                         ✨ Récord Perfecto Activo (24-0)
                     </div>
                 </div>
 
+               
                 <div class="sim-center-col">
                     <div class="sim-stats-panel" style="margin-bottom: 1.5rem;">
                         <div class="sim-metric" style="font-size: 1.1rem; border-bottom: 1px solid #1e293b; padding-bottom:0.5rem; margin-bottom:0.8rem;">
@@ -636,26 +679,45 @@
                         </div>
                         <div class="sim-metric">Global OVR: <b id="lbl-sim-rating">0</b></div>
                         <div class="sim-metric">Récord (V-E-D): <span id="lbl-sim-record" style="font-weight:bold;">0 - 0 - 0</span></div>
+               
                         <div class="sim-metric">Jornada: <span id="lbl-sim-pj">0 / 24</span></div>
                     </div>
 
                     <div class="table-box">
                         <h3>TABLA GENERAL LIGA MX</h3>
+                  
                         <table class="standings-table">
                             <thead>
                                 <tr><th>#</th><th style="text-align:left;">Club</th><th>J</th><th>V</th><th>E</th><th>D</th><th>DIF</th><th>PTS</th></tr>
                             </thead>
+    
                             <tbody id="standings-body">
-                                </tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+   
+                    <div class="table-box" id="player-stats-box" style="margin-top:1.5rem;">
+                        <h3>ESTADÍSTICAS DEL EQUIPO</h3>
+                        <table class="standings-table">
+                            <thead>
+ 
+                                <tr><th style="text-align:left;">Jugador</th><th>POS</th><th>OVR</th><th>⚽</th><th>👟</th><th>🟨</th><th>🟥</th><th>🧤</th></tr>
+                            </thead>
+                            <tbody id="player-stats-body">
+           
+                            </tbody>
                         </table>
                     </div>
                 </div>
 
                 <div class="sim-right-col">
+  
                     <h3 style="margin-bottom: 0.6rem; text-transform: uppercase; font-size: 1rem; color: var(--text-muted)">Historial de Simulación</h3>
                     <div id="simulation-logs" class="match-logs-box">
                         <p class="no-selection-msg">Presiona el botón verde para avanzar la simulación partido a partido.</p>
                     </div>
+                
                 </div>
             </div>
         </section>
@@ -671,14 +733,41 @@
         // BASE DE DATOS RETRO INTEGRADA 
         // ==========================================================================
         const baseDeDatosRetro = {
+      
+            "1950-1980": [
+                { nombre: "Chivas Campeonísimo", estado: "activo", figuras: [
+                    { nombre: "J. Gómez", pos: "POR", rating: 91 }, { nombre: "A. Sepúlveda", pos: "DFC", rating: 90 }, { nombre: "J. Villegas", pos: "DFC", rating: 89 },
+                    { nombre: "C. Ponce", pos: "LI", rating: 86 }, { nombre: "J. Jasso", pos: "LD", rating: 86 }, { nombre: "S. Balcázar", pos: "MC", rating: 84 },
+                    { nombre: "S. Díaz", pos: "MC", rating: 88 }, { nombre: "I. Díaz", pos: "MC", rating: 87 }, { nombre: "C. Reyes", pos: "DC", rating: 95 },
+                    { nombre: "H. Hernández", pos: "ED", rating: 92 }, { nombre: "F. Arellano", pos: "EI", rating: 88 }, { nombre: "P. Herrada", pos: "DC", rating: 86 }
+                ]},
+                { nombre: "Atlas 1951", estado: "activo", figuras: [
+                    { nombre: "R. Córdoba", pos: "POR", rating: 86 }, { nombre: "E. Valdatti", pos: "DFC", rating: 88 }, { nombre: "J. Zetter", pos: "DFC", rating: 85 },
+                    { nombre: "F. Mújica", pos: "LI", rating: 83 }, { nombre: "G. Gómez", pos: "LD", rating: 86 }, { nombre: "E. Ornelas", pos: "MC", rating: 81 },
+                    { nombre: "J. Mercado", pos: "MC", rating: 80 }, { nombre: "L. Manzo", pos: "MC", rating: 88 }, { nombre: "E. Cubero", pos: "DC", rating: 92 },
+                    { nombre: "J. Novo", pos: "ED", rating: 85 }, { nombre: "A. Flores", pos: "EI", rating: 86 }
+                ]},
+                { nombre: "Cruz Azul 70s", estado: "activo", figuras: [
+                    { nombre: "M. Marín", pos: "POR", rating: 94 }, { nombre: "J. Guzmán", pos: "DFC", rating: 92 }, { nombre: "A. Quintano", pos: "DFC", rating: 89 },
+                    { nombre: "I. Pulido", pos: "LI", rating: 85 }, { nombre: "M. Cornero", pos: "LD", rating: 86 }, { nombre: "F. Bustos", pos: "MC", rating: 90 },
+                    { nombre: "C. Jara Saguier", pos: "MC", rating: 88 }, { nombre: "A. Alejándrez", pos: "MC", rating: 85 }, { nombre: "H. Pulido", pos: "MC", rating: 84 },
+                    { nombre: "E. Vera", pos: "DC", rating: 89 }, { nombre: "O. Muciño", pos: "DC", rating: 87 }, { nombre: "H. López", pos: "EI", rating: 88 }
+                ]},
+                { nombre: "América 70s", estado: "activo", figuras: [
+                    { nombre: "H. Zelada", pos: "POR", rating: 92 }, { nombre: "A. Trejo", pos: "DFC", rating: 88 }, { nombre: "M. Pérez", pos: "DFC", rating: 89 },
+                    { nombre: "R. Cárdenas", pos: "LI", rating: 84 }, { nombre: "V. Trujillo", pos: "LD", rating: 85 }, { nombre: "A. Reynoso", pos: "MC", rating: 90 },
+                    { nombre: "C. Reinoso", pos: "MC", rating: 95 }, { nombre: "J. Dirceu", pos: "MC", rating: 91 }, { nombre: "E. Borja", pos: "DC", rating: 92 },
+                    { nombre: "J. A. Valdéz", pos: "ED", rating: 86 }, { nombre: "O. Castro", pos: "EI", rating: 88 }
+                ]}
+            ],
             "1996-2001": [
                 { nombre: "Toros Neza 90s", estado: "extinto", figuras: [
                     { nombre: "P. Larios", pos: "POR", rating: 88 }, { nombre: "J. Gutiérrez", pos: "POR", rating: 75 },
                     { nombre: "F. Lussenhoff", pos: "DFC", rating: 86 }, { nombre: "C. Romero", pos: "DFC", rating: 80 }, { nombre: "M. López", pos: "DFC", rating: 78 },
-                    { nombre: "G. Vázquez", pos: "LI", rating: 81 }, { nombre: "E. Soto", pos: "LD", rating: 79 },
+                    { nombre: "G. Vázquez", pos: "LI", rating: 81 }, { nombre: "E. Soto", pos: "LD", rating: 81 },
                     { nombre: "A. Mohamed", pos: "MC", rating: 92 }, { nombre: "R. Ruiz", pos: "MC", rating: 89 }, { nombre: "G. Arangio", pos: "MC", rating: 84 },
                     { nombre: "M. Nidelson", pos: "EI", rating: 85 }, { nombre: "P. Osorio", pos: "ED", rating: 82 },
-                    { nombre: "J. Herrera", pos: "DC", rating: 81 }, { nombre: "V. Ruiz", pos: "DC", rating: 78 }
+                    { nombre: "J. Herrera", pos: "DC", rating: 81 }, { nombre: "V. Ruiz", pos: "DC", rating: 85 }
                 ]},
                 {nombre: "Toluca de Cardozo y Compañia",estado: "activo",figuras: [
                 { nombre: "M. Albarrán", pos: "POR", rating: 85 }, { nombre: "A. Núñez", pos: "LD", rating: 81 }, { nombre: "A. Macías", pos: "DFC", rating: 83 },
@@ -696,7 +785,7 @@
                     { nombre: "J.A. Flores", pos: "POR", rating: 78 }, { nombre: "A. Sánchez", pos: "LD", rating: 77 }, { nombre: "G. Rizo", pos: "DFC", rating: 79 },
                     { nombre: "R. Murguía", pos: "DFC", rating: 76 }, { nombre: "R. Chávez", pos: "LI", rating: 75 }, { nombre: "P. Chávez", pos: "MC", rating: 80 },
                     { nombre: "C. Morales", pos: "MC", rating: 82 }, { nombre: "J. Damasceno", pos: "MC", rating: 81 }, { nombre: "C. Amaral", pos: "DC", rating: 84 },
-                    { nombre: "S. Almaguer", pos: "DC", rating: 80 }
+                    { nombre: "S. Almaguer", pos: "DC", rating: 80, nombre: "O. Rojas", pos: "ED", rating: 85 }
                 ]},
                 { nombre: "Atlético Celaya 90s", estado: "extinto", figuras: [
                     { nombre: "H. Félix", pos: "POR", rating: 82 }, { nombre: "H. Quintero", pos: "POR", rating: 74 },
@@ -718,6 +807,35 @@
                     { nombre: "A. García Aspe", pos: "MC", rating: 90 }, { nombre: "S. Zárate", pos: "EI", rating: 89 }, { nombre: "L. Hernández", pos: "ED", rating: 87 },
                     { nombre: "R. Peláez", pos: "DC", rating: 88 }
                 ]},
+                {
+    nombre: "Cruz Azul Campeón Invierno 97",
+    estado: "activo",
+    figuras: [
+        // Portero
+        { nombre: "O. Pérez", pos: "POR", rating: 89 },
+
+        // Defensas
+        { nombre: "J. Guadalupe Castañeda", pos: "LD", rating: 81 },
+        { nombre: "J. Reynoso", pos: "DFC", rating: 86 },
+        { nombre: "G. Rizo", pos: "DFC", rating: 80 },
+        { nombre: "J.S. Campos", pos: "LI", rating: 80 },
+
+        // Mediocampistas
+        { nombre: "B. Galindo", pos: "MC", rating: 88 },
+        { nombre: "C. Barra", pos: "MC", rating: 86 },
+        { nombre: "J. Pintado", pos: "MC", rating: 84 },
+        { nombre: "H. Moreno", pos: "MC", rating: 83 },
+
+        // Delanteros
+        { nombre: "C. Hermosillo", pos: "DC", rating: 91 },
+        { nombre: "J. Palencia", pos: "DC", rating: 85 },
+
+        // Cambios / Revulsivos
+        { nombre: "A. Galdames", pos: "MC", rating: 77 },
+        { nombre: "M. Capria", pos: "MC", rating: 76 },
+        { nombre: "O. Rodríguez", pos: "DFC", rating: 75 }
+    ]
+},
                 { nombre: "Tecos de la UAG 90s", estado: "extinto", figuras: [
                     { nombre: "C. Briones", pos: "POR", rating: 83 }, { nombre: "D. Davino", pos: "DFC", rating: 89 }, { nombre: "R. Parks", pos: "DFC", rating: 84 },
                     { nombre: "G. Gómez", pos: "LI", rating: 79 }, { nombre: "P. Hernández", pos: "LD", rating: 81 }, { nombre: "J.C. Leaño", pos: "MC", rating: 82 },
@@ -727,7 +845,8 @@
             ],
             "2001-2006": [
                 { nombre: "Colibríes de Morelos 2000s", estado: "extinto", figuras: [
-                    { nombre: "A. Vences", pos: "POR", rating: 77 }, { nombre: "C. Da Silva", pos: "DFC", rating: 82 }, { nombre: "M. Grana", pos: "DFC", rating: 80 },
+                    
+ { nombre: "A. Vences", pos: "POR", rating: 77 }, { nombre: "C. Da Silva", pos: "DFC", rating: 82 }, { nombre: "M. Grana", pos: "DFC", rating: 80 },
                     { nombre: "J. Flores", pos: "LI", rating: 74 }, { nombre: "A. Ramírez", pos: "LD", rating: 75 }, { nombre: "L. Arango", pos: "MC", rating: 78 },
                     { nombre: "R. Gutiérrez", pos: "MC", rating: 76 }, { nombre: "M. Pérez", pos: "EI", rating: 75 }, { nombre: "J. Rodríguez", pos: "ED", rating: 74 },
                     { nombre: "Claudinho", pos: "DC", rating: 86 }
@@ -740,7 +859,7 @@
                 ]},
                 { nombre: "Veracruz 2004", estado: "extinto", figuras: [
                     { nombre: "J. Bernal", pos: "POR", rating: 85 }, { nombre: "I. Terrazas", pos: "DFC", rating: 81 }, { nombre: "P. Quatrocchi", pos: "DFC", rating: 83 },
-                    { nombre: "R. Briseño", pos: "LI", rating: 79 }, { nombre: "M. Pérez", pos: "LD", rating: 80 }, { nombre: "Cuauhtémoc Blanco", pos: "MC", rating: 90 },
+                    { nombre: "R. Briseño", pos: "LI", rating: 81 }, { nombre: "M. Pérez", pos: "LD", rating: 80 }, { nombre: "Cuauhtémoc Blanco", pos: "MC", rating: 89 },
                     { nombre: "B. Arce", pos: "MC", rating: 84 }, { nombre: "J. L. González", pos: "MC", rating: 81 }, { nombre: "C. Giménez", pos: "EI", rating: 88 },
                     { nombre: "W. Pezzolano", pos: "ED", rating: 82 }, { nombre: "Kléber Boas", pos: "DC", rating: 89 }, { nombre: "G. Biscayzacú", pos: "DC", rating: 87 }
                 ]},
@@ -772,7 +891,7 @@
                 ]},
                 { nombre: "Chivas Campeón 2006", estado: "activo", figuras: [
                     { nombre: "O. Sánchez", pos: "POR", rating: 90 }, { nombre: "D. Martínez", pos: "LD", rating: 80 }, { nombre: "F.J. Rodríguez", pos: "DFC", rating: 84 },
-                    { nombre: "H. Reynoso", pos: "DFC", rating: 83 }, { nombre: "P. Araujo", pos: "MC", rating: 79 }, { nombre: "G. Pineda", pos: "MC", rating: 81 },
+                    { nombre: "H. Reynoso", pos: "DFC", rating: 85 }, { nombre: "P. Araujo", pos: "MC", rating: 82 }, { nombre: "G. Pineda", pos: "MC", rating: 84 },
                     { nombre: "R. Morales", pos: "MC", rating: 85 }, { nombre: "A. Medina", pos: "ED", rating: 83 }, { nombre: "O. Bravo", pos: "DC", rating: 87 },
                     { nombre: "A. Bautista", pos: "EI", rating: 86 }
                 ]},
@@ -800,7 +919,7 @@
                     { nombre: "C. Saucedo", pos: "POR", rating: 85 }, { nombre: "J. Gandolfi", pos: "DFC", rating: 87 }, { nombre: "P. Aguilar", pos: "DFC", rating: 84 },
                     { nombre: "J. Núñez", pos: "LI", rating: 82 }, { nombre: "R. Ruiz", pos: "LD", rating: 83 }, { nombre: "C. Pellerano", pos: "MC", rating: 86 },
                     { nombre: "F. Arce", pos: "MC", rating: 85 }, { nombre: "F. Martínez", pos: "EI", rating: 84 }, { nombre: "R. Enríquez", pos: "ED", rating: 80 },
-                    { nombre: "D. Moreno", pos: "DC", rating: 88 }, { nombre: "D. Riascos", pos: "DC", rating: 87 }
+                    { nombre: "D. Moreno", pos: "DC", rating: 88 }, { nombre: "D. Riascos", pos: "DC", rating: 88 }
                 ]},
                 { nombre: "Leones Negros de la UDG", estado: "activo", figuras: [
                     { nombre: "H. Hernández", pos: "POR", rating: 80 }, { nombre: "M. Alatorre", pos: "LD", rating: 76 }, { nombre: "F. Araujo", pos: "DFC", rating: 75 },
@@ -811,14 +930,14 @@
                 { nombre: "Querétaro de Ronaldinho", estado: "activo", figuras: [
                     { nombre: "T. Volpi", pos: "POR", rating: 85 }, { nombre: "G. Corral", pos: "LD", rating: 77 }, { nombre: "M. Martínez", pos: "DFC", rating: 78 },
                     { nombre: "Y. Corona", pos: "DFC", rating: 79 }, { nombre: "J.R. Chávez", pos: "LI", rating: 76 }, { nombre: "M. Osuna", pos: "MC", rating: 80 },
-                    { nombre: "R. Güémez", pos: "MC", rating: 79 }, { nombre: "Ronaldinho", pos: "MC", rating: 91 }, { nombre: "E. Villa", pos: "DC", rating: 82 },
-                    { nombre: "C. Sanvezzo", pos: "DC", rating: 83 }, { nombre: "A. Sepúlveda", pos: "ED", rating: 77 }
+                    { nombre: "R. Güémez", pos: "MC", rating: 79 }, { nombre: "Ronaldinho", pos: "MC", rating: 91 }, { nombre: "P. Rubio", pos: "EI", rating: 83 }, { nombre: "E. Villa", pos: "DC", rating: 82 },
+                    { nombre: "C. Sanvezzo", pos: "DC", rating: 83 }, { nombre: "A. Sepúlveda", pos: "ED", rating: 77,  }
                 ]},
                 { nombre: "León de Matosas", estado: "activo", figuras: [
                     { nombre: "W. Yarbrough", pos: "POR", rating: 86 }, { nombre: "R. Márquez", pos: "DFC", rating: 89 }, { nombre: "J. I. González", pos: "DFC", rating: 85 },
                     { nombre: "E. Hernández", pos: "LI", rating: 84 }, { nombre: "J. Pineda", pos: "LD", rating: 82 }, { nombre: "L. Montes", pos: "MC", rating: 88 },
                     { nombre: "C. Peña", pos: "MC", rating: 87 }, { nombre: "J. Vázquez", pos: "MC", rating: 86 }, { nombre: "H. Burbano", pos: "EI", rating: 85 },
-                    { nombre: "F. Arizala", pos: "ED", rating: 83 }, { nombre: "M. Boselli", pos: "DC", rating: 90 }, { nombre: "M. Britos", pos: "DC", rating: 84 }
+                    { nombre: "F. Arizala", pos: "ED", rating: 83 }, { nombre: "M. Boselli", pos: "DC", rating: 92 }, { nombre: "M. Britos", pos: "DC", rating: 85 }
                 ]},
                 {nombre: "Cruz Azul Era Boing",estado: "activo",figuras: [
                     { nombre: "J. Corona", pos: "POR", rating: 88 }, { nombre: "O. Mendoza", pos: "LD", rating: 78 }, { nombre: "J.C. Domínguez", pos: "DFC", rating: 80 },
@@ -829,6 +948,7 @@
             ],
             "2016-2022": [
                 { nombre: "Tigres del Tuca", estado: "activo", figuras: [
+                    
                     { nombre: "N. Guzmán", pos: "POR", rating: 89 }, { nombre: "Juninho", pos: "DFC", rating: 87 }, { nombre: "H. Ayala", pos: "DFC", rating: 86 },
                     { nombre: "J. Torres Nilo", pos: "LI", rating: 83 }, { nombre: "L. Rodríguez", pos: "LD", rating: 84 }, { nombre: "G. Pizarro", pos: "MC", rating: 88 },
                     { nombre: "R. Carioca", pos: "MC", rating: 87 }, { nombre: "J. Dueñas", pos: "MC", rating: 84 }, { nombre: "J. Aquino", pos: "EI", rating: 86 },
@@ -883,89 +1003,91 @@
         
         // RIVALES DE LA LIGA NORMAL (18 EQUIPOS EN TOTAL)
         const rivalesLigaMX = [
-            { nombre: "Pumas UNAM", rating: 88 }, { nombre: "Chivas", rating: 89 }, { nombre: "América", rating: 87 },
-            { nombre: "Cruz Azul", rating: 91 }, { nombre: "Tigres UANL", rating: 84 }, { nombre: "Monterrey", rating: 84 },
-            { nombre: "Toluca", rating: 85 }, { nombre: "León", rating: 82 }, { nombre: "Atlas", rating: 84 },
-            { nombre: "Pachuca", rating: 80 }, { nombre: "Santos Laguna", rating: 79 }, { nombre: "Necaxa", rating: 77 },
+            { nombre:  "Pumas UNAM", rating: 84 }, { nombre: "Chivas", rating: 85 }, { nombre: "América", rating: 85 },
+            { nombre: "Cruz Azul", rating: 90 }, { nombre: "Tigres UANL", rating: 83 }, { nombre: "Monterrey", rating: 81 },
+            { nombre: "Toluca", rating: 85 }, { nombre: "León", rating: 82 }, { nombre: "Atlas", rating: 80 },
+            { nombre: "Pachuca", rating: 80 }, { nombre: "Santos Laguna", rating: 79  }, { nombre: "Necaxa", rating: 77 },
             { nombre: "Puebla", rating: 76 }, { nombre: "Querétaro", rating: 74 }, { nombre: "Tijuana", rating: 74 },
             { nombre: "Atlante", rating: 70}, { nombre: "Atlético San Luis", rating: 73 }, { nombre: "FC Juárez", rating: 72 }
         ];
 
         // RIVALES DE ÉPOCA (MODO DIFÍCIL)
         const rivalesEpoca = [
-            { nombre: "Toluca 1998", rating: 94 }, { nombre: "Chivas 2006", rating: 91 },
+            { nombre: "Toluca 1998", rating: 93 }, { nombre: "Chivas 2006", rating: 91 },
             { nombre: "América Tricampeon", rating: 92 }, { nombre: "Pumas 2004", rating: 90 },
-            { nombre: "Tigres 2017", rating: 95 }, { nombre: "Cruz Azul 2021", rating: 89 },
-            { nombre: "Pachuca 2006", rating: 91 }, { nombre: "Monterrey 2009", rating: 92 },
-            { nombre: "León 2014", rating: 90 }, { nombre: "Atlas 2021", rating: 92 },
-            { nombre: "Santos 2012", rating: 93 }, { nombre: "Necaxa 1998", rating: 91 },
-            { nombre: "Tijuana 2012", rating: 88 }, { nombre: "Morelia 2000", rating: 85 },
-            { nombre: "Atlante 2007", rating: 88 }, { nombre: "Puebla 2021", rating: 87 },
-            { nombre: "Tecos 1994", rating: 86 }, { nombre: "Cruz Azul 1997", rating: 90 }
+            { nombre: "Tigres 2017", rating: 91 }, { nombre: "Cruz Azul 2021", rating: 89 },
+            { nombre: "Pachuca 2006", rating: 90 }, { nombre: "Monterrey 2009", rating: 91 },
+             { nombre: "León 2014", rating: 90 }, { nombre: "Atlas 2021", rating: 91 },
+            { nombre: "Santos 2012", rating: 88 }, { nombre: "Necaxa 1998", rating: 90 },
+            { nombre: "Tijuana 2012", rating: 84 }, { nombre: "Morelia 2000", rating: 85 },
+            { nombre: "Atlante 2007", rating: 87 }, { nombre: "Puebla 2021", rating: 86 },
+             { nombre: "Tecos 1994", rating: 86 }, { nombre: "Cruz Azul 1997", rating: 88 }
         ];
-        const esquemasTacticos = {
+ const esquemasTacticos = {
             "4-3-3": [
                 { id: 0, pos: "POR", top: 88, left: 50 }, { id: 1, pos: "LI",  top: 70, left: 15 },
                 { id: 2, pos: "DFC", top: 73, left: 37 }, { id: 3, pos: "DFC", top: 73, left: 63 },
-                { id: 4, pos: "LD",  top: 70, left: 85 }, { id: 5, pos: "MC",  top: 48, left: 25 },
+                 { id: 4, pos: "LD",  top: 70, left: 85 }, { id: 5, pos: "MC",  top: 48, left: 25 },
                 { id: 6, pos: "MC",  top: 53, left: 50 }, { id: 7, pos: "MC",  top: 48, left: 75 },
-                { id: 8, pos: "EI",  top: 22, left: 18 }, { id: 9, pos: "DC",  top: 18, left: 50 }, { id: 10, pos: "ED", top: 22, left: 82 }
+                { id: 8, pos: "EI",  top: 22, left: 18 }, { id: 9, pos: "DC",  top: 18, left: 50 }, {  id: 10, pos: "ED", top: 22, left: 82 }
             ],
             "4-4-2": [
                 { id: 0, pos: "POR", top: 88, left: 50 }, { id: 1, pos: "LI",  top: 70, left: 15 },
-                { id: 2, pos: "DFC", top: 73, left: 37 }, { id: 3, pos: "DFC", top: 73, left: 63 },
+                { id: 2, pos: "DFC", top: 73, left: 37 }, { id: 3, pos: "DFC",  top: 73, left: 63 },
                 { id: 4, pos: "LD",  top: 70, left: 85 }, { id: 5, pos: "EI",  top: 46, left: 15 },
                 { id: 6, pos: "MC",  top: 48, left: 38 }, { id: 7, pos: "MC",  top: 48, left: 62 },
-                { id: 8, pos: "ED",  top: 46, left: 85 }, { id: 9, pos: "DC",  top: 20, left: 33 }, { id: 10, pos: "DC", top: 20, left: 67 }
+                { id: 8, pos: "ED",   top: 46, left: 85 }, { id: 9, pos: "DC",  top: 20, left: 33 }, { id: 10, pos: "DC", top: 20, left: 67 }
             ],
             "3-5-2": [
                 { id: 0, pos: "POR", top: 88, left: 50 }, { id: 1, pos: "DFC", top: 73, left: 25 },
-                { id: 2, pos: "DFC", top: 75, left: 50 }, { id: 3, pos: "DFC", top: 73, left: 75 },
+                 { id: 2, pos: "DFC", top: 75, left: 50 }, { id: 3, pos: "DFC", top: 73, left: 75 },
                 { id: 4, pos: "EI",  top: 46, left: 15 }, { id: 5, pos: "MC",  top: 50, left: 34 },
                 { id: 6, pos: "MC",  top: 54, left: 50 }, { id: 7, pos: "MC",  top: 50, left: 66 },
-                { id: 8, pos: "ED",  top: 46, left: 85 }, { id: 9, pos: "DC",  top: 20, left: 33 }, { id: 10, pos: "DC", top: 20, left: 67 }
+                 { id: 8, pos: "ED",  top: 46, left: 85 }, { id: 9, pos: "DC",  top: 20, left: 33 }, { id: 10, pos: "DC", top: 20, left: 67 }
             ]
         };
-        // Estado global del Draft
+ // Estado global del Draft
         let clubSeleccionado = null;
         let plantillaGuardada = {};
-        let equipoRatingGlobal = 0;
+ let equipoRatingGlobal = 0;
         let nombreEquipoUsuario = "Mis Cracks FC";
         let resorteosRestantes = 2;
         let equiposYaSalidos = [];
-        // Estado de Simulación
+ // Estado de Simulación y Estadísticas
         let partidoActual = 1;
-        let recordPerfecto = true;
+ let recordPerfecto = true;
         let btnState = "REGULAR"; // REGULAR, SHOW_LIGUILLA, LIGUILLA_IDA, LIGUILLA_VUELTA, END
         let equiposLiga = [];
-        let calendarioUsuario = [];
+ let calendarioUsuario = [];
         let llavesLiguilla = [];
+        let statsJugadores = [];
+ // Almacena las estadísticas de nuestro equipo
 
         // Elementos DOM Draft
         const selectorFormacion = document.getElementById("formation-select");
-        const inputNombreEquipo = document.getElementById("input-team-name");
+ const inputNombreEquipo = document.getElementById("input-team-name");
         const contenedorCancha = document.getElementById("pitch-display");
         const botonRandom = document.getElementById("btn-random-team");
         const botonReroll = document.getElementById("btn-reroll");
         const bannerInfo = document.getElementById("active-team-banner");
-        const panelOpciones = document.getElementById("options-panel-content");
+ const panelOpciones = document.getElementById("options-panel-content");
         const botonPasarSim = document.getElementById("btn-go-to-sim");
         const chkHardMode = document.getElementById("chk-hard-mode");
-        // Elementos DOM Simulación
+ // Elementos DOM Simulación
         const vistaDraft = document.getElementById("view-draft");
         const vistaSimulacion = document.getElementById("view-simulation");
-        const botonIniciarSim = document.getElementById("btn-start-simulation");
+ const botonIniciarSim = document.getElementById("btn-start-simulation");
         const botonSimularTodo = document.getElementById("btn-sim-all-regular");
         const botonReiniciar = document.getElementById("btn-restart-game");
         const logsBox = document.getElementById("simulation-logs");
         
         const lblClub = document.getElementById("lbl-sim-club");
-        const lblRating = document.getElementById("lbl-sim-rating");
+ const lblRating = document.getElementById("lbl-sim-rating");
         const lblPj = document.getElementById("lbl-sim-pj");
         const lblRecord = document.getElementById("lbl-sim-record");
         const perfectBadge = document.getElementById("perfect-badge");
         const tbodyTabla = document.getElementById("standings-body");
-        const newsBox = document.getElementById("news-box");
+ const newsBox = document.getElementById("news-box");
 
         // ==========================================================================
         // DRAFT LOGIC
@@ -975,14 +1097,14 @@
             botonPasarSim.disabled = true;
             botonRandom.disabled = false;
             botonReroll.style.display = "none";
-            resorteosRestantes = 2;
+             resorteosRestantes = 2;
             renderizarCancha();
         });
-        chkHardMode.addEventListener("change", () => {
+ chkHardMode.addEventListener("change", () => {
             renderizarCancha();
             if(clubSeleccionado) desplegarOpcionesInmediatas();
         });
-        botonRandom.addEventListener("click", ejecutarRandomizador);
+ botonRandom.addEventListener("click", ejecutarRandomizador);
         
         botonReroll.addEventListener("click", () => {
             if (resorteosRestantes > 0) {
@@ -990,114 +1112,126 @@
                 ejecutarRandomizador();
             }
         });
-        renderizarCancha();
+ renderizarCancha();
 
         function ejecutarRandomizador() {
             let todosLosEquipos = [];
-            Object.values(baseDeDatosRetro).forEach(periodo => { todosLosEquipos = todosLosEquipos.concat(periodo); });
+ Object.values(baseDeDatosRetro).forEach(periodo => { todosLosEquipos = todosLosEquipos.concat(periodo); });
             let equiposDisponibles = todosLosEquipos.filter(eq => !equiposYaSalidos.includes(eq.nombre));
-            if (equiposDisponibles.length === 0) {
+ if (equiposDisponibles.length === 0) {
                 equiposYaSalidos = [];
-                equiposDisponibles = todosLosEquipos;
+ equiposDisponibles = todosLosEquipos;
             }
 
             clubSeleccionado = equiposDisponibles[Math.floor(Math.random() * equiposDisponibles.length)];
-            equiposYaSalidos.push(clubSeleccionado.nombre);
+ equiposYaSalidos.push(clubSeleccionado.nombre);
 
             const badgeClass = clubSeleccionado.estado === "activo" ? "status-activo" : "status-extinto";
-            const badgeText = clubSeleccionado.estado === "activo" ? "En Primera" : "Descendido/Extinto";
+            const badgeText = clubSeleccionado.estado === "activo" ?
+ "En Primera" : "Descendido/Extinto";
             bannerInfo.innerHTML = `Opciones extraídas de: <span>${clubSeleccionado.nombre}</span> <span class="status-badge ${badgeClass}">${badgeText}</span>`;
 
             botonRandom.disabled = true;
             botonReroll.style.display = "block";
-            botonReroll.innerText = `🔄 Resortear (${resorteosRestantes})`;
+ botonReroll.innerText = `🔄 Resortear (${resorteosRestantes})`;
             botonReroll.disabled = resorteosRestantes === 0;
             chkHardMode.disabled = true;
     
             desplegarOpcionesInmediatas();
-        }
+ // Bajar automáticamente a las opciones al dar spin
+            setTimeout(() => {
+                const selectionPool = document.querySelector('.selection-pool');
+                if (selectionPool) {
+                    selectionPool.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+ }
+            }, 100);
+ }
 
         function desplegarOpcionesInmediatas() {
             panelOpciones.innerHTML = "";
-            const esquemaActual = esquemasTacticos[selectorFormacion.value];
+ const esquemaActual = esquemasTacticos[selectorFormacion.value];
 
             let posicionesRequeridas = {};
             esquemaActual.forEach(slot => { posicionesRequeridas[slot.pos] = (posicionesRequeridas[slot.pos] || 0) + 1; });
-            
-            let posicionesLlenas = {};
+ let posicionesLlenas = {};
             let nombresEnPlantilla = [];
             Object.values(plantillaGuardada).forEach(jugador => {
                 posicionesLlenas[jugador.pos] = (posicionesLlenas[jugador.pos] || 0) + 1;
                 nombresEnPlantilla.push(jugador.nombre);
             });
-
-            let jugadoresMostrados = [...clubSeleccionado.figuras];
+ let jugadoresMostrados = [...clubSeleccionado.figuras];
             
             let contadorCanteranos = 1;
             esquemaActual.forEach(slot => {
                 if(!plantillaGuardada[slot.id]) {
                     let jugPosDisponibles = clubSeleccionado.figuras.filter(j => j.pos === slot.pos && !nombresEnPlantilla.includes(j.nombre));
                     if(jugPosDisponibles.length === 0) {
-                        jugadoresMostrados.push({ nombre: "Canterano " + slot.pos + " " + contadorCanteranos++, pos: slot.pos, rating: 60 });
+                         jugadoresMostrados.push({ nombre: "Canterano " + slot.pos + " " + contadorCanteranos++, pos: slot.pos, rating: 60 });
                     }
                 }
             });
-
-            // Eliminar duplicados exactos en visualización
+ // Eliminar duplicados exactos en visualización
             jugadoresMostrados = jugadoresMostrados.filter((v,i,a)=>a.findIndex(t=>(t.pos===v.pos && t.nombre===v.nombre))===i);
-
-            const modoDificil = chkHardMode.checked;
+ const modoDificil = chkHardMode.checked;
             jugadoresMostrados.forEach(jugadorSeleccionado => {
                 let requeridos = posicionesRequeridas[jugadorSeleccionado.pos] || 0;
                 let llenos = posicionesLlenas[jugadorSeleccionado.pos] || 0;
                 let faltan = requeridos - llenos;
                 let estaEnPlantilla = nombresEnPlantilla.includes(jugadorSeleccionado.nombre);
 
-                // No mostramos al que exactamente ya tenemos seleccionado en esta tirada
+                 // No mostramos al que exactamente ya tenemos seleccionado en esta tirada
                 if (estaEnPlantilla) return; 
 
                 // Si ya no nos falta nadie en esta posición, deshabilitamos la opción
                 let esSeleccionable = faltan > 0;
 
-                const tarjetaChoice = document.createElement("div");
+                const  tarjetaChoice = document.createElement("div");
                 tarjetaChoice.className = "choice-card";
                 if (!esSeleccionable) tarjetaChoice.classList.add("disabled");
 
                 const displayRating = modoDificil ? "?" : jugadorSeleccionado.rating;
 
                 tarjetaChoice.innerHTML = `
-                    <div class="choice-rating">${displayRating}</div>
+                    <div  class="choice-rating">${displayRating}</div>
                     <div class="choice-info">
                         <span class="choice-name">${jugadorSeleccionado.nombre}</span>
                         <span class="choice-pos">${jugadorSeleccionado.pos}</span>
                     </div>
-                `;
+                 `;
 
                 if (esSeleccionable) {
                     tarjetaChoice.addEventListener("click", () => {
                         let slotDestino = esquemaActual.find(slot => slot.pos === jugadorSeleccionado.pos && !plantillaGuardada[slot.id]);
                         if (slotDestino) {
-                            plantillaGuardada[slotDestino.id] = { nombre: jugadorSeleccionado.nombre, rating: jugadorSeleccionado.rating, pos: jugadorSeleccionado.pos };
+                             plantillaGuardada[slotDestino.id] = { nombre: jugadorSeleccionado.nombre, rating: jugadorSeleccionado.rating, pos: jugadorSeleccionado.pos };
                             renderizarCancha();
                             verificarDraftTerminado();
-                            if (Object.keys(plantillaGuardada).length < esquemaActual.length) {
-                                botonRandom.disabled = false;
-                                botonReroll.disabled = true; 
-                                panelOpciones.innerHTML = `<p class="no-selection-msg" style="color: #38bdf8;">🔄 ¡Jugador fichado!<br><b>Oprime el botón azul</b> para seguir buscando talento retro.</p>`;
-                            } else {
-                                botonReroll.disabled = true;
-                                panelOpciones.innerHTML = `<p class="no-selection-msg" style="color: var(--accent);">🏆 ¡Alineación completada! Ponle nombre a tu club e inicia el torneo.</p>`;
+                             
+                            // Subir la página para mostrar el botón resortear (que ahora es sticky)
+                            const topHeader = document.querySelector('.sticky-draft-header');
+                             if (topHeader) {
+                                topHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
                             }
+
+                             if (Object.keys(plantillaGuardada).length < esquemaActual.length) {
+                                botonRandom.disabled = false;
+ botonReroll.disabled = true; 
+                                panelOpciones.innerHTML = `<p class="no-selection-msg" style="color: #38bdf8;">🔄 ¡Jugador fichado!<br><b>Oprime el botón azul</b> para seguir buscando talento retro.</p>`;
+ } else {
+                                botonReroll.disabled = true;
+ panelOpciones.innerHTML = `<p class="no-selection-msg" style="color: var(--accent);">🏆 ¡Alineación completada! Ponle nombre a tu club e inicia el torneo.</p>`;
+ }
                         }
                     });
-                }
+ }
                 panelOpciones.appendChild(tarjetaChoice);
             });
-        }
+ }
 
         function renderizarCancha() {
             contenedorCancha.innerHTML = "";
-            const esquemaActual = esquemasTacticos[selectorFormacion.value];
+ const esquemaActual = esquemasTacticos[selectorFormacion.value];
             const modoDificil = chkHardMode.checked;
 
             esquemaActual.forEach((ranura) => {
@@ -1106,7 +1240,7 @@
                 elementoSlot.style.top = `${ranura.top}%`;
                 elementoSlot.style.left = `${ranura.left}%`;
 
-                let nombreMostrado = "Vacante";
+                let  nombreMostrado = "Vacante";
                 let ratingMostrado = "--";
 
                 if (plantillaGuardada[ranura.id]) {
@@ -1118,30 +1252,30 @@
                 elementoSlot.innerHTML = `
                     <div class="slot-badge">
                         <span class="slot-pos">${ranura.pos}</span>
-                        <span class="slot-rating">${ratingMostrado}</span>
+                         <span class="slot-rating">${ratingMostrado}</span>
                     </div>
                     <span class="slot-name">${nombreMostrado}</span>
                 `;
-                contenedorCancha.appendChild(elementoSlot);
+ contenedorCancha.appendChild(elementoSlot);
             });
         }
 
         function verificarDraftTerminado() {
             const numeroTitulares = esquemasTacticos[selectorFormacion.value].length;
-            if (Object.keys(plantillaGuardada).length === numeroTitulares) {
+ if (Object.keys(plantillaGuardada).length === numeroTitulares) {
                 botonPasarSim.disabled = false;
-                botonRandom.disabled = true;
+ botonRandom.disabled = true;
             }
         }
 
         // ==========================================================================
-        // SIMULACIÓN AVANZADA
+        // SIMULACIÓN AVANZADA Y ESTADÍSTICAS
         // ==========================================================================
         botonPasarSim.addEventListener("click", () => {
             let suma = 0;
             const llaves = Object.keys(plantillaGuardada);
             llaves.forEach(k => suma += plantillaGuardada[k].rating);
-    
+     
             equipoRatingGlobal = Math.round(suma / llaves.length);
 
             nombreEquipoUsuario = inputNombreEquipo.value.trim() || "Mis Cracks FC";
@@ -1149,161 +1283,416 @@
             lblRating.innerText = equipoRatingGlobal;
             
             // Setup visual
-            document.getElementById("sim-pitch-wrapper").innerHTML = "";
+             document.getElementById("sim-pitch-wrapper").innerHTML = "";
             document.getElementById("sim-pitch-wrapper").appendChild(contenedorCancha.cloneNode(true));
             vistaDraft.style.display = "none";
             vistaSimulacion.style.display = "block";
-            iniciarVariablesTorneo();
+ iniciarVariablesTorneo();
         });
 
         function iniciarVariablesTorneo() {
             partidoActual = 1;
-            recordPerfecto = true;
+ recordPerfecto = true;
             btnState = "REGULAR";
             llavesLiguilla = [];
             
+            // Iniciar Estadísticas de Jugadores
+            statsJugadores = [];
+ Object.keys(plantillaGuardada).forEach(id => {
+                let j = plantillaGuardada[id];
+                statsJugadores.push({
+                    id: id,
+                    nombre: j.nombre,
+                    pos:  j.pos,
+                    rating: j.rating,
+                    goles: 0,
+                    asistencias: 0,
+                    amarillas: 0,
+                     rojas: 0,
+                    atajadas: 0
+                });
+            });
+ renderPlayerStats();
+
             const poolRivales = chkHardMode.checked ? rivalesEpoca : rivalesLigaMX;
             equiposLiga = poolRivales.map(r => ({...r, pts:0, pj:0, pg:0, pe:0, pp:0, gf:0, gc:0, dif:0, isUser: false}));
-            equiposLiga.push({nombre: nombreEquipoUsuario, rating: equipoRatingGlobal, pts:0, pj:0, pg:0, pe:0, pp:0, gf:0, gc:0, dif:0, isUser: true});
-            calendarioUsuario = [...poolRivales].sort(() => Math.random() - 0.5);
+ equiposLiga.push({nombre: nombreEquipoUsuario, rating: equipoRatingGlobal, pts:0, pj:0, pg:0, pe:0, pp:0, gf:0, gc:0, dif:0, isUser: true});
+ calendarioUsuario = [...poolRivales].sort(() => Math.random() - 0.5);
 
             renderTabla();
             
             lblPj.innerText = "0 / 24";
             lblRecord.innerText = "0 - 0 - 0";
-            perfectBadge.className = "perfect-status status-perfect-ok";
+ perfectBadge.className = "perfect-status status-perfect-ok";
             perfectBadge.innerHTML = "✨ Récord Perfecto Activo (24-0)";
-            logsBox.innerHTML = '<p class="no-selection-msg">Presiona "Simular Jornada 1" para ver rodar el balón o "Simular Temporada Regular Completa" para jugar las 18 jornadas.</p>';
-            newsBox.innerHTML = `📰 <b>ESPN:</b> Arranca la liga. ¡Gran expectativa por ver a ${nombreEquipoUsuario} en acción tras comprar una plaza en primera división!`;
-            
-            botonIniciarSim.style.display = "block";
+ logsBox.innerHTML = '<p class="no-selection-msg">Presiona "Simular Jornada 1" para ver rodar el balón o "Simular Temporada Regular Completa" para jugar las 18 jornadas.</p>';
+ newsBox.innerHTML = `📰 <b>ESPN:</b> Arranca la liga. ¡Gran expectativa por ver a ${nombreEquipoUsuario} en acción tras comprar una plaza en primera división!`;
+ botonIniciarSim.style.display = "block";
             botonIniciarSim.innerText = "⚽ Simular Jornada 1";
             botonSimularTodo.style.display = "block";
             botonReiniciar.style.display = "none";
+ }
+
+        // FUNCION DE CANALES DE TV SEGÚN RIVAL
+        function getNewsOutlet(rivalName) {
+            let name = rivalName.toLowerCase();
+ if (name.includes("monterrey") || name.includes("rayados") || name.includes("tigres")) return "Canal 6 Multimedios";
+ if (name.includes("américa") || name.includes("pumas") || name.includes("cruz azul") || name.includes("toluca")) return "TUDN";
+            if (name.includes("atlas")) return "Canal 4";
+ if (name.includes("chivas")) return "Amazon Sports";
+            if (name.includes("león") || name.includes("pachuca")) return "Tubi";
+            if (name.includes("querétaro") || name.includes("tijuana") || name.includes("xolos")) return "Caliente TV";
+ if (name.includes("necaxa") || name.includes("juárez") || name.includes("indios") || name.includes("atlante") || name.includes("puebla")) return "TV Azteca";
+            if (name.includes("san luis") || name.includes("santos")) return "ESPN";
+ return "ESPN"; // Default
         }
 
-        function simularMarcador(ratingA, ratingB) {
-            let baseA = ratingA / 24;
-            let baseB = ratingB / 24;
+        // FUNCION DE NOTICIAS PERSONALIZADAS SEGÚN MEDIO Y RESULTADO
+        function generarNoticiaPersonalizada(outlet, userTeam, rivalTeam, res, isLiguilla = false) {
+            let msg = "";
+            
+            if (isLiguilla) {
+                // Mensajes para fase eliminatoria
+                if (res === "win") {
+                    switch(outlet) {
+                        case "Canal 6 Multimedios": msg = `¡Fracaso total de ${rivalTeam}! ${userTeam} echa a ${rivalTeam} y sigue vivo en la liguilla. "La culpa es de la señorita Tatiana Flores por no..."`; break;
+                        case "TUDN": msg = `¡Señoras y señores, lo consiguieron! ${userTeam} elimina a ${rivalTeam} y dan otro paso en la Fiesta Grande. Reacciones en banca Gibran`; break;
+                        case "TV Azteca": msg = `¡Suéltame Zaguinho! ${userTeam} se mete a la siguiente ronda dejando a ${rivalTeam} en el camino.`; break;
+                        case "Caliente TV": msg = `¡Se cobra el parley de Liguilla! ${userTeam} despacha a ${rivalTeam} y los ludopatas celebran.`; break;
+                        case "Tubi": msg = ` ${userTeam} elimina a ${rivalTeam} tras una serie de infarto.`; break;
+                        case "Amazon Sports": msg = `¡Robo historico! ${userTeam} le gana a las ${rivalTeam} con un arbitraje mas que favoritario para ${userTeam}.`; break;
+                        default: msg = `¡Paso firme al título! ${userTeam} supera a ${rivalTeam} y avanza de ronda.`; break;
+                    }
+                } else {
+                    switch(outlet) {
+                        case "Canal 6 Multimedios": msg = `¡Al estilo Regio! ${rivalTeam} echa de la Liguilla a ${userTeam}. ¿Que es mas grande? El papel de ${userTeam} o la cabeza de Willie Gonzalez`; break;
+                        case "TUDN": msg = `¡Fracaso rotundo! ${userTeam} queda eliminado a manos de un sorprendente ${rivalTeam}. Vamos a la codere cam Profe.`; break;
+                        case "TV Azteca": msg = `¡Infame, deprimente lo que se vivio el dia de hoy! ${userTeam} se va de vacaciones tempranito al hogar de Jorgito Campos. ${rivalTeam} los mandó a su casa.`; break;
+                        case "Caliente TV": msg = `¡Rompe-quinielas en Liguilla! ${rivalTeam} elimina a ${userTeam} contra todo pronóstico.`; break;
+                        case "Tubi": msg = ` ${rivalTeam} elimina a ${userTeam} con contundencia y paso firme.`; break;
+                        case "Amazon Sports": msg = `¡Las mejores chivas de la historia señores! ${rivalTeam} le gana a ${userTeam} y este año es el bueno para el chiverio.`; break;
+                        
+                        default: msg = `¡Se acabó el sueño! ${rivalTeam} despacha a ${userTeam} de la Liguilla.`; break;
+                    }
+                }
+            } else {
+                // Mensajes para fase regular
+                switch(outlet) {
+                    case "Canal 6 Multimedios":
+                        if(res === "win") msg = `¡Bárbaro Willy! ${userTeam} le da un baile a ${rivalTeam}. ¡Qué exhibición a los regios!`;
+                        else if(res === "draw") msg = `Punto con sabor a nada señores. ${userTeam} y ${rivalTeam} nos quedan a deber en la cancha.`;
+                        else msg = `¡Qué tragedia! ${rivalTeam} le pinta la cara a ${userTeam}. "Tienen que rodar cabezas empezando por la cabeza olmeca de Willie Gonzalez" `;
+                        break;
+                    case "TUDN":
+                        if(res === "win") msg = `¡Partidazo! ${userTeam} demuestra su poder y aplasta a ${rivalTeam}.`;
+                        else if(res === "draw") msg = `¡Terminó el partido! ${userTeam} y ${rivalTeam} dividen unidades en un choque muy trabado por la señal de Vix.`;
+                        else msg = `¡Increíble! ${rivalTeam} da el campanazo y derrota a ${userTeam} ante el asombro de todos los presentes en el estadio.`;
+                        break;
+                    case "TV Azteca":
+                        if(res === "win") msg = `¡Esto es el Viernes Botanero carajo! ${userTeam} le gana a un ${rivalTeam} en el partido de las 9 de la noche.`;
+                        else if(res === "draw") msg = `¡Me duelen los ojos! Infame empate sin emociones entre ${userTeam} y ${rivalTeam}.`;
+                        else msg = `¡Pero qué le pasó a ${userTeam}! ¡Dignidad, muchachos! ${rivalTeam} los hizo ver mal.`;
+                        break;
+                    case "Caliente TV":
+                        if(res === "win") msg = `¡Pagó el momio! Los que apostaron por ${userTeam} frente a ${rivalTeam} están cobrando sabroso.`;
+                        else if(res === "draw") msg = `¡Empate rompe-quinielas! ${userTeam} y ${rivalTeam} no se hacen daño.`;
+                        else msg = `¡Cobraron los valientes! Sorpresota de ${rivalTeam} que tumba las apuestas sobre ${userTeam}.`;
+                        break;
+                    case "Amazon Sports":
+                        if(res === "win") msg = `¡Suscríbete a esta victoria! ${userTeam} da un partidazo y vence a ${rivalTeam}.`;
+                        else if(res === "draw") msg = `Acción sin ganador. ${userTeam} y ${rivalTeam} firman tablas en nuestra transmisión.`;
+                        else msg = `Falla la conexión. ${rivalTeam} supera tácticamente a ${userTeam} en este encuentro.`;
+                        break;
+                    case "Canal 4":
+                        if(res === "win") msg = `¡La caida del rojinegro! ${userTeam} se impone a ${rivalTeam} con autoridad y sudando la camiseta.`;
+                        else if(res === "draw") msg = `Un empate que deja dudas en el Atlas. ${userTeam} no pudo descifrar el cerrojo del ${rivalTeam} de Cocca.`;
+                        else msg = `Noche redonda en tierras tapatias. ${rivalTeam} se lleva el botín completo ante un ${userTeam} desdibujado.`;
+                        break;
+                    case "Tubi":
+                        if(res === "win") msg = `¡Fútbol dinámico! ${userTeam} arrolla a ${rivalTeam} con un estilo veloz.`;
+                        else if(res === "draw") msg = `Empate vibrante. ${userTeam} y ${rivalTeam} nos regalan un duelo lleno de ida y vuelta por la señal de Fox ONE.`;
+                        else msg = `¡Tropiezo doloroso! ${rivalTeam} sorprende a ${userTeam} frenando su buen ritmo en liga.`;
+                        break;
+                    default: // ESPN
+                        if(res === "win") msg = `¡Callando bocas! ${userTeam} es el amo y señor tras humillar a ${rivalTeam} en la cancha.`;
+                        else if(res === "draw") msg = `Polémica en la mesa mas caliente del futbol: ¿Le faltó actitud a ${userTeam} contra ${rivalTeam}? "Les falto un entrenador como yo" declara el pentapichichi.`;
+                        else msg = `¡Un fracaso monumental! ${userTeam} es exhibido por ${rivalTeam}. ¿Se acaba la mentira de ellos?`;
+                        break;
+                }
+            }
+            
+            return `📰 <b>${outlet}:</b> ${msg}`;
+        }
 
-            let golesA = Math.max(0, Math.floor(baseA + (Math.random() * 4 - 2)));
-            let golesB = Math.max(0, Math.floor(baseB + (Math.random() * 4 - 2)));
+        // LÓGICA DE MARCADORES MÁS REALISTA QUE TOMA EN CUENTA AL PORTERO
+        function simularMarcador(ratingA, ratingB, gkRatingA = null, gkRatingB = null) {
+            let baseA = ratingA / 40;
+ let baseB = ratingB / 40; 
+            
+            let golesA = Math.max(0, Math.floor(baseA + (Math.random() * 2.5 - 1)));
+ let golesB = Math.max(0, Math.floor(baseB + (Math.random() * 2.5 - 1)));
+ // Impacto del arquero
+            if (gkRatingB) {
+                let diff = gkRatingB - ratingA;
+ if (diff > 4 && Math.random() < 0.6) golesA = Math.max(0, golesA - 1);
+ if (diff < -4 && Math.random() < 0.5) golesA += 1;
+ }
+            if (gkRatingA) {
+                let diff = gkRatingA - ratingB;
+ if (diff > 4 && Math.random() < 0.6) golesB = Math.max(0, golesB - 1);
+ if (diff < -4 && Math.random() < 0.5) golesB += 1;
+ }
 
             const dif = ratingA - ratingB;
-            if (dif > 4 && golesA <= golesB && Math.random() < 0.5) golesA++;
-            if (dif < -4 && golesB <= golesA && Math.random() < 0.3) golesB++;
+ if (dif > 5 && Math.random() < 0.6) golesA++;
+            if (dif < -5 && Math.random() < 0.4) golesB++;
+ // Reducimos goleadas extremas
+            if (Math.random() < 0.05) golesA += 2;
+ if (Math.random() < 0.05) golesB += 2;
 
             return { golesA, golesB };
+ }
+
+        // SELECCION PONDERADA DE JUGADORES PARA ESTADÍSTICAS
+        function pickWeighted(players, type) {
+            let totalWeight = 0;
+ let weights = players.map(p => {
+                let w = 0;
+                if(type === "goal") {
+                    if(["DC"].includes(p.pos)) w = Math.max(1, (p.rating - 60) * 3);
+                    else if(["EI", "ED"].includes(p.pos)) w = Math.max(1, (p.rating - 60)  * 2);
+                    else if(["MC"].includes(p.pos)) w = Math.max(1, (p.rating - 60) * 0.5);
+                    else if(["DFC", "LI", "LD"].includes(p.pos)) w = 1;
+                } else if(type === "assist") {
+                    if(["MC", "EI", "ED"].includes(p.pos))  w = Math.max(1, (p.rating - 60) * 2.5);
+                    else if(["LI", "LD"].includes(p.pos)) w = Math.max(1, (p.rating - 60));
+                    else if(["DC", "DFC"].includes(p.pos)) w = 2;
+                }
+                totalWeight += w;
+                 return w;
+            });
+ if(totalWeight === 0) return null;
+            let rand = Math.random() * totalWeight;
+ for(let i=0; i<players.length; i++) {
+                if(rand < weights[i]) return players[i];
+ rand -= weights[i];
+            }
+            return players[0];
+ }
+
+        function getCardChance(player) {
+            let base = 0.05;
+ if(["DFC", "LI", "LD"].includes(player.pos)) base = 0.25;
+            else if(["MC"].includes(player.pos)) base = 0.15;
+            let ratingAdj = (85 - player.rating) * 0.01;
+ return Math.max(0.01, base + ratingAdj);
         }
+
+        function procesarEventosUsuario(golesUsuario, golesRival) {
+            let eventosPartido = [];
+ let goleadoresPartido = {}; 
+
+            // Distribuir Goles y Asistencias
+            for(let i=0; i<golesUsuario; i++) {
+                let scorer = pickWeighted(statsJugadores, "goal");
+ if(scorer) {
+                    scorer.goles++;
+ goleadoresPartido[scorer.id] = (goleadoresPartido[scorer.id] || 0) + 1;
+                    
+                    if(Math.random() > 0.3) {
+                        let assister = pickWeighted(statsJugadores.filter(j => j.id !== scorer.id), "assist");
+ if(assister) {
+                            assister.asistencias++;
+ eventosPartido.push(`👟 ${assister.nombre}`);
+                        }
+                    }
+                }
+            }
+
+            // Agrupar hat-tricks
+            for (let id in goleadoresPartido) {
+                let player =  statsJugadores.find(j => j.id == id);
+                let count = goleadoresPartido[id];
+                if(count >= 3) {
+                    eventosPartido.push(`🎩 ${player.nombre}`);
+ } else {
+                    for(let k=0; k<count; k++) eventosPartido.push(`⚽ ${player.nombre}`);
+ }
+            }
+
+            // Distribuir Tarjetas
+            statsJugadores.forEach(j => {
+                if(j.pos !== "POR") {
+                    let cardChance = getCardChance(j);
+                     if(Math.random() < cardChance) {
+                        j.amarillas++;
+                        eventosPartido.push(`🟨 ${j.nombre}`);
+                    }
+                    if(Math.random() < (cardChance / 10)) {
+                         j.rojas++;
+                        eventosPartido.push(`🟥 ${j.nombre}`);
+                    }
+                } else {
+                     if(Math.random() < 0.05) {
+                        j.amarillas++;
+                        eventosPartido.push(`🟨 ${j.nombre}`);
+                    }
+                }
+             });
+
+            // Atajadas del Portero
+            let gk = statsJugadores.find(j => j.pos === "POR");
+ if(gk) {
+                let baseSaves = Math.floor(Math.random() * 4);
+ let gkBonus = Math.max(0, Math.floor((gk.rating - 70) / 5)); // A mayor rating, más atajadas
+                gk.atajadas += baseSaves + Math.max(0, golesRival) + gkBonus;
+ }
+
+            renderPlayerStats();
+            return eventosPartido.join(" &nbsp; ");
+ }
+
+        function renderPlayerStats() {
+            const tbody = document.getElementById("player-stats-body");
+ if(!tbody) return;
+            tbody.innerHTML = "";
+            let sorted = [...statsJugadores].sort((a,b) => b.goles - a.goles || b.asistencias - a.asistencias || b.rating - a.rating);
+ sorted.forEach(j => {
+                let tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td style="text-align:left">${j.nombre}</td>
+                    <td>${j.pos}</td>
+                     <td>${j.rating}</td>
+                    <td>${j.goles}</td>
+                    <td>${j.asistencias}</td>
+                    <td>${j.amarillas}</td>
+                    <td>${j.rojas}</td>
+                     <td>${j.pos === "POR" ? j.atajadas : "-"}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+ }
 
         function actualizarStatsLiga(equipo, gf, gc) {
             equipo.pj++;
-            equipo.gf += gf;
+ equipo.gf += gf;
             equipo.gc += gc;
             equipo.dif = equipo.gf - equipo.gc;
             if (gf > gc) { equipo.pg++; equipo.pts += 3;
-            }
+ }
             else if (gf === gc) { equipo.pe++;
-            equipo.pts += 1; }
+ equipo.pts += 1; }
             else { equipo.pp++;
-            }
+ }
         }
 
         function sortTabla(a, b) {
             if(b.pts !== a.pts) return b.pts - a.pts;
-            if(b.dif !== a.dif) return b.dif - a.dif;
+ if(b.dif !== a.dif) return b.dif - a.dif;
             return b.gf - a.gf;
-        }
+ }
 
         function renderTabla() {
             tbodyTabla.innerHTML = "";
-            equiposLiga.sort(sortTabla);
+ equiposLiga.sort(sortTabla);
             equiposLiga.forEach((e, idx) => {
                 let tr = document.createElement("tr");
                 if (e.isUser) tr.classList.add("user-row");
                 if (idx < 8) tr.classList.add("top-8");
                 
-                let shortName = e.nombre.length > 15 ? e.nombre.substring(0, 14) + "." : e.nombre;
+                let shortName = e.nombre.length > 15 ?  e.nombre.substring(0, 14) + "." : e.nombre;
                 tr.innerHTML = `
                     <td>${idx+1}</td>
                     <td style="text-align:left">${shortName}</td>
                     <td>${e.pj}</td>
-                    <td>${e.pg}</td>
+                     <td>${e.pg}</td>
                     <td>${e.pe}</td>
                     <td>${e.pp}</td>
                     <td>${e.dif > 0 ? '+'+e.dif : e.dif}</td>
                     <td><b>${e.pts}</b></td>
-                `;
+                 `;
                 tbodyTabla.appendChild(tr);
             });
-        }
+ }
 
         function romperRecordPerfecto() {
             if(recordPerfecto) {
                 recordPerfecto = false;
-                perfectBadge.className = "perfect-status status-perfect-broken";
+ perfectBadge.className = "perfect-status status-perfect-broken";
                 perfectBadge.innerHTML = "❌ Récord Perfecto Roto (Ya no es 24-0)";
-            }
+ }
         }
 
         function simularJornadaRegular() {
             if(partidoActual === 1) logsBox.innerHTML = "";
-
-            // Obtener Rival del Usuario
+ // Obtener Rival del Usuario
             const rivalInfo = calendarioUsuario[partidoActual - 1];
-            let rivalUser = equiposLiga.find(e => e.nombre === rivalInfo.nombre);
+ let rivalUser = equiposLiga.find(e => e.nombre === rivalInfo.nombre);
             let userObj = equiposLiga.find(e => e.isUser);
+ // Fetch arqueros para el usuario y el rival
+            let gk = statsJugadores.find(j => j.pos === "POR");
+ let userGkRating = gk ? gk.rating : 75;
+            let rivalGkRating = rivalUser.rating;
+ // El rival asume la media general de su equipo para el portero
 
             // Simular Partido de Usuario
-            let marc = simularMarcador(userObj.rating, rivalUser.rating);
-            actualizarStatsLiga(userObj, marc.golesA, marc.golesB);
+            let marc = simularMarcador(userObj.rating, rivalUser.rating, userGkRating, rivalGkRating);
+ actualizarStatsLiga(userObj, marc.golesA, marc.golesB);
             actualizarStatsLiga(rivalUser, marc.golesB, marc.golesA);
 
-            // Imprimir Log de Usuario
-            let classRes = "draw"; let badge = "EMPATE";
-            if (marc.golesA > marc.golesB) { classRes = "win"; badge = "VICTORIA"; }
-            else if (marc.golesA < marc.golesB) { classRes = "loss"; badge = "DERROTA"; }
+            // Obtener string de eventos del equipo usuario
+            let eventosStr = procesarEventosUsuario(marc.golesA, marc.golesB);
+ // Imprimir Log de Usuario
+            let classRes = "draw";
+ let badge = "EMPATE";
+            if (marc.golesA > marc.golesB) { classRes = "win"; badge = "VICTORIA";
+ }
+            else if (marc.golesA < marc.golesB) { classRes = "loss";
+ badge = "DERROTA"; }
             
             if(classRes !== "win") romperRecordPerfecto();
-            const logRow = document.createElement("div");
+ const logRow = document.createElement("div");
             logRow.className = `log-row ${classRes}`;
             logRow.innerHTML = `
-                <div><b>[Jornada ${partidoActual}]</b> ${userObj.nombre} <span>${marc.golesA} - ${marc.golesB}</span> ${rivalUser.nombre}</div>
-                <span class="badge-res badge-${classRes}" style="font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; color:#fff; text-transform:uppercase;">${badge}</span>
+                <div style="width: 100%;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div><b>[Jornada ${partidoActual}]</b> ${userObj.nombre} <span>${marc.golesA} - ${marc.golesB}</span> ${rivalUser.nombre}</div>
+                         <span class="badge-res badge-${classRes}" style="font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; color:#fff; text-transform:uppercase;">${badge}</span>
+                    </div>
+                    ${eventosStr ? `<div style="font-size: 0.75rem; margin-top: 5px; color: #38bdf8;">${eventosStr}</div>` : ''}
+                </div>
             `;
-            logsBox.appendChild(logRow);
+ logsBox.appendChild(logRow);
 
-            // Generar Noticia Regular
-            if (classRes === "win") newsBox.innerHTML = `📰 <b>ESPN:</b> ¡Implacable! ${userObj.nombre} derrota a ${rivalUser.nombre} de forma contundente.`;
-            else if (classRes === "draw") newsBox.innerHTML = `📰 <b>ESPN:</b> Puntos divididos. ${userObj.nombre} se atora frente a un duro ${rivalUser.nombre}.`;
-            else newsBox.innerHTML = `📰 <b>ESPN:</b> "Ahora resulta que meter menos goles que el rival es perder". ${rivalUser.nombre} hace la maldad y le arrebata los 3 puntos a ${userObj.nombre}.`;
-            
-            // Simular Resto de Partidos
+            // Generar Noticia Regular en el medio adecuado
+            let newsOutlet = getNewsOutlet(rivalUser.nombre);
+            newsBox.innerHTML = generarNoticiaPersonalizada(newsOutlet, userObj.nombre, rivalUser.nombre, classRes, false);
+
+ // Simular Resto de Partidos
             let otrosEquipos = equiposLiga.filter(e => !e.isUser && e.nombre !== rivalUser.nombre);
-            otrosEquipos.sort(() => Math.random() - 0.5); // Mezclar
+ otrosEquipos.sort(() => Math.random() - 0.5); 
             for (let i = 0; i < otrosEquipos.length - 1; i += 2) {
                 let t1 = otrosEquipos[i];
-                let t2 = otrosEquipos[i+1];
-                let m = simularMarcador(t1.rating, t2.rating);
+ let t2 = otrosEquipos[i+1];
+                let m = simularMarcador(t1.rating, t2.rating, t1.rating, t2.rating);
                 actualizarStatsLiga(t1, m.golesA, m.golesB);
                 actualizarStatsLiga(t2, m.golesB, m.golesA);
-            }
+ }
 
             renderTabla();
             logsBox.scrollTop = logsBox.scrollHeight;
-            lblPj.innerText = `${partidoActual} / 24`;
+ lblPj.innerText = `${partidoActual} / 24`;
             lblRecord.innerText = `${userObj.pg} - ${userObj.pe} - ${userObj.pp}`;
             partidoActual++;
-
-            if (partidoActual > 18) {
+ if (partidoActual > 18) {
                 btnState = "SHOW_LIGUILLA";
-                botonIniciarSim.innerText = "👀 Ver Llaves de Liguilla";
+ botonIniciarSim.innerText = "👀 Ver Llaves de Liguilla";
                 botonIniciarSim.style.background = "#eab308";
                 botonIniciarSim.style.color = "#000";
                 botonSimularTodo.style.display = "none";
-            } else {
+ } else {
                 botonIniciarSim.innerText = `⚽ Simular Jornada ${partidoActual}`;
-            }
+ }
         }
 
         botonSimularTodo.addEventListener("click", () => {
@@ -1311,148 +1700,180 @@
                 while(partidoActual <= 18) {
                     simularJornadaRegular();
                 }
-            }
+             }
         });
-
-        // MOTOR PRINCIPAL AL HACER CLICK
+ // MOTOR PRINCIPAL AL HACER CLICK
         botonIniciarSim.addEventListener("click", () => {
             if (btnState === "REGULAR") {
                 simularJornadaRegular();
             } else if (btnState === "SHOW_LIGUILLA") {
                 let top8 = equiposLiga.slice(0, 8);
-                let userRank = top8.findIndex(c => c.isUser);
+                 let userRank = top8.findIndex(c => c.isUser);
                 
                 const llavesHTML = document.createElement("div");
                 llavesHTML.className = "llaves-box";
                 llavesHTML.innerHTML = `<h4>🔥 Clasificados a Liguilla 🔥</h4>
-                    <div class="matchup-row">(1) ${top8[0].nombre} vs ${top8[7].nombre} (8)</div>
+                     <div class="matchup-row">(1) ${top8[0].nombre} vs ${top8[7].nombre} (8)</div>
                     <div class="matchup-row">(4) ${top8[3].nombre} vs ${top8[4].nombre} (5)</div>
                     <div class="matchup-row">(2) ${top8[1].nombre} vs ${top8[6].nombre} (7)</div>
                     <div class="matchup-row">(3) ${top8[2].nombre} vs ${top8[5].nombre} (6)</div>
                 `;
+   
                 logsBox.appendChild(llavesHTML);
                 logsBox.scrollTop = logsBox.scrollHeight;
-
-                if (userRank === -1) {
+ if (userRank === -1) {
                     newsBox.innerHTML = `📰 <b>ESPN:</b> ¡Fracaso rotundo! ${nombreEquipoUsuario} no logró clasificar a liguilla. HUGO SANCHEZ SE OFRECE AL CARGO DE DT "Estoy listo para volver a dirigir" `;
-                    btnState = "END";
+ btnState = "END";
                     botonIniciarSim.style.display = "none";
                     finalizarTorneo(false);
                 } else {
                     newsBox.innerHTML = `📰 <b>ESPN:</b> ¡Comienza la fiesta grande! ${nombreEquipoUsuario} entra como el #${userRank+1} general y buscara el trofeo.`;
-                    llavesLiguilla = [
+ llavesLiguilla = [
                         { tA: top8[0], tB: top8[7], glA: 0, glB: 0, pA: 1, pB: 8 },
                         { tA: top8[3], tB: top8[4], glA: 0, glB: 0, pA: 4, pB: 5 },
                         { tA: top8[1], tB: top8[6], glA: 0, glB: 0, pA: 2, pB: 7 },
                         { tA: top8[2], tB: top8[5], glA: 0, glB: 0, pA: 3, pB: 6 }
                     ];
-                    btnState = "LIGUILLA_IDA";
+ btnState = "LIGUILLA_IDA";
                     botonIniciarSim.innerText = `⚽ Simular Cuartos de Final (Ida)`;
                     botonIniciarSim.style.background = "#38bdf8";
-                }
+ }
 
             } else if (btnState === "LIGUILLA_IDA") {
                 simularRondaLiguilla(false);
-                btnState = "LIGUILLA_VUELTA";
+ btnState = "LIGUILLA_VUELTA";
                 let faseStr = llavesLiguilla.length === 4 ? "Cuartos" : (llavesLiguilla.length === 2 ? "Semis" : "Final");
-                botonIniciarSim.innerText = `⚽ Simular ${faseStr} (Vuelta)`;
+ botonIniciarSim.innerText = `⚽ Simular ${faseStr} (Vuelta)`;
                 botonIniciarSim.style.background = "#fb8500";
             } else if (btnState === "LIGUILLA_VUELTA") {
                 simularRondaLiguilla(true);
-                let userAlive = llavesLiguilla.some(ll => ll.ganador && ll.ganador.isUser);
+ let userAlive = llavesLiguilla.some(ll => ll.ganador && ll.ganador.isUser);
                 
                 if (!userAlive) {
                     btnState = "END";
-                    botonIniciarSim.style.display = "none";
+ botonIniciarSim.style.display = "none";
                     finalizarTorneo(false);
                 } else {
                     if (llavesLiguilla.length === 1) { // Acaba de terminar la final
                         btnState = "END";
-                        botonIniciarSim.style.display = "none";
+ botonIniciarSim.style.display = "none";
                         let objU = equiposLiga.find(e=>e.isUser);
                         finalizarTorneo(true, objU.pg);
                     } else {
                         // Construir Siguiente Ronda (Re-siembra: Mejor vs Peor)
                         let newLlaves = [];
-                        let ganadores = llavesLiguilla.map(ll => ll.ganador);
+ let ganadores = llavesLiguilla.map(ll => ll.ganador);
                         
                         // Ordenar a los ganadores según la tabla general (se mantiene intacta tras 18 jornadas)
                         ganadores.sort(sortTabla);
-
-                        if (llavesLiguilla.length === 4) {
+ if (llavesLiguilla.length === 4) {
                             // Semifinales
                             newLlaves.push({ tA: ganadores[0], tB: ganadores[3], glA:0, glB:0, pA: equiposLiga.indexOf(ganadores[0])+1, pB: equiposLiga.indexOf(ganadores[3])+1 });
-                            newLlaves.push({ tA: ganadores[1], tB: ganadores[2], glA:0, glB:0, pA: equiposLiga.indexOf(ganadores[1])+1, pB: equiposLiga.indexOf(ganadores[2])+1 });
-                        } else if (llavesLiguilla.length === 2) {
+ newLlaves.push({ tA: ganadores[1], tB: ganadores[2], glA:0, glB:0, pA: equiposLiga.indexOf(ganadores[1])+1, pB: equiposLiga.indexOf(ganadores[2])+1 });
+ } else if (llavesLiguilla.length === 2) {
                             // Final
                             newLlaves.push({ tA: ganadores[0], tB: ganadores[1], glA:0, glB:0, pA: equiposLiga.indexOf(ganadores[0])+1, pB: equiposLiga.indexOf(ganadores[1])+1 });
-                        }
+ }
 
                         // Asegurar que tA sea mejor posicionado
                         newLlaves.forEach(ll => {
                             if(ll.pB < ll.pA) {
-                                let tmpT = ll.tA; ll.tA = ll.tB; ll.tB = tmpT;
+                                  let tmpT = ll.tA; ll.tA = ll.tB; ll.tB = tmpT;
                                 let tmpP = ll.pA; ll.pA = ll.pB; ll.pB = tmpP;
                             }
                         });
-                        
-                        llavesLiguilla = newLlaves;
+ llavesLiguilla = newLlaves;
 
                         btnState = "LIGUILLA_IDA";
                         let fStr = llavesLiguilla.length === 2 ? "Semifinales" : "Gran Final";
-                        botonIniciarSim.innerText = `⚽ Simular ${fStr} (Ida)`;
+ botonIniciarSim.innerText = `⚽ Simular ${fStr} (Ida)`;
                         botonIniciarSim.style.background = "#38bdf8";
 
                         // Anunciar llaves
                         const llavesHTML = document.createElement("div");
-                        llavesHTML.className = "llaves-box";
+ llavesHTML.className = "llaves-box";
                         llavesHTML.style.borderColor = "#38bdf8";
                         llavesHTML.innerHTML = `<h4 style="color:#38bdf8">${fStr}</h4>`;
-                        llavesLiguilla.forEach(ll => {
+ llavesLiguilla.forEach(ll => {
                             llavesHTML.innerHTML += `<div class="matchup-row">${ll.tA.nombre} vs ${ll.tB.nombre}</div>`;
                         });
-                        logsBox.appendChild(llavesHTML);
+ logsBox.appendChild(llavesHTML);
                         logsBox.scrollTop = logsBox.scrollHeight;
                     }
                 }
             }
         });
-
-        function simularRondaLiguilla(esVuelta) {
+ function simularRondaLiguilla(esVuelta) {
             let faseNombre = llavesLiguilla.length === 4 ? "Cuartos" : (llavesLiguilla.length === 2 ? "Semis" : "Final");
             let tipoIda = esVuelta ? "Vuelta" : "Ida";
-            let sep = document.createElement("div");
+ let sep = document.createElement("div");
             sep.style.textAlign = "center"; sep.style.color = "#94a3b8"; sep.style.fontWeight = "bold"; sep.style.margin = "10px 0 5px";
-            sep.innerText = `--- ${faseNombre.toUpperCase()} (${tipoIda.toUpperCase()}) ---`;
+ sep.innerText = `--- ${faseNombre.toUpperCase()} (${tipoIda.toUpperCase()}) ---`;
             logsBox.appendChild(sep);
 
             llavesLiguilla.forEach(llave => {
-                let m = simularMarcador(llave.tA.rating, llave.tB.rating);
+                
+                // Fetch de Porteros
+                let userGkRating = null;
+                let rivalGkRating = null;
+                if (llave.tA.isUser) {
+                    let gk = statsJugadores.find(j => j.pos === "POR");
+                    userGkRating = gk ? gk.rating : 75;
+                    rivalGkRating = llave.tB.rating;
+                } else if (llave.tB.isUser) {
+                     let gk = statsJugadores.find(j => j.pos === "POR");
+                    userGkRating = gk ? gk.rating : 75;
+                    rivalGkRating = llave.tA.rating;
+                } else {
+                     userGkRating = llave.tA.rating;
+                    rivalGkRating = llave.tB.rating;
+                }
+
+                let m;
+                if (llave.tA.isUser) {
+                     m = simularMarcador(llave.tA.rating, llave.tB.rating, userGkRating, rivalGkRating);
+                } else if (llave.tB.isUser) {
+                    m = simularMarcador(llave.tA.rating, llave.tB.rating, rivalGkRating, userGkRating);
+ } else {
+                    m = simularMarcador(llave.tA.rating, llave.tB.rating, userGkRating, rivalGkRating);
+ }
+
                 llave.glA += m.golesA;
-                llave.glB += m.golesB;
+ llave.glB += m.golesB;
 
                 let isUserMatch = llave.tA.isUser || llave.tB.isUser;
                 let classRes = "draw";
-                if(isUserMatch) {
+                let eventosStr = "";
+ if(isUserMatch) {
                     let userG = llave.tA.isUser ? m.golesA : m.golesB;
                     let rivG = llave.tA.isUser ? m.golesB : m.golesA;
-                    if(userG > rivG) classRes = "win";
+                    
+                    eventosStr = procesarEventosUsuario(userG, rivG);
+ if(userG > rivG) classRes = "win";
                     else if (userG < rivG) classRes = "loss";
                     if(classRes !== "win") romperRecordPerfecto();
-                }
+ }
 
                 let lRow = document.createElement("div");
-                lRow.className = `log-row ${classRes}`;
-                lRow.innerHTML = `<div><b>[${faseNombre}]</b> ${llave.tA.nombre} <span>${m.golesA} - ${m.golesB}</span> ${llave.tB.nombre} <small style="color:var(--text-muted)">(Glb: ${llave.glA}-${llave.glB})</small></div>`;
-                logsBox.appendChild(lRow);
+ lRow.className = `log-row ${classRes}`;
+                lRow.innerHTML = `
+                    <div style="width: 100%;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div><b>[${faseNombre}]</b> ${llave.tA.nombre} <span>${m.golesA} - ${m.golesB}</span> ${llave.tB.nombre} <small style="color:var(--text-muted)">(Glb: ${llave.glA}-${llave.glB})</small></div>
+                         </div>
+                        ${eventosStr ? `<div style="font-size: 0.75rem; margin-top: 5px; color: #38bdf8;">${eventosStr}</div>` : ''}
+                    </div>
+                `;
+ logsBox.appendChild(lRow);
 
                 if(esVuelta) {
                     if (llave.glA > llave.glB) llave.ganador = llave.tA;
-                    else if (llave.glB > llave.glA) llave.ganador = llave.tB;
+ else if (llave.glB > llave.glA) llave.ganador = llave.tB;
                     else { // Empate Global
                         if (llavesLiguilla.length === 1) { // Final: Penales
                             let pA = 0, pB = 0;
-                            while(pA === pB) { pA = Math.floor(Math.random()*4)+2; pB = Math.floor(Math.random()*4)+2; }
+ while(pA === pB) { pA = Math.floor(Math.random()*4)+2; pB = Math.floor(Math.random()*4)+2;
+ }
                             llave.ganador = pA > pB ? llave.tA : llave.tB;
                             let msg = document.createElement("div"); msg.style.textAlign="center"; msg.style.color="#38bdf8"; msg.style.fontSize="0.8rem";
                             msg.innerText = `⭐ ¡Se decide en penales! ${llave.ganador.nombre} gana ${Math.max(pA,pB)}-${Math.min(pA,pB)} ⭐`;
@@ -1462,47 +1883,50 @@
                             let msg = document.createElement("div"); msg.style.textAlign="center"; msg.style.color="#94a3b8"; msg.style.fontSize="0.8rem";
                             msg.innerText = `Avanza ${llave.ganador.nombre} por mejor posición en tabla.`;
                             logsBox.appendChild(msg);
-                        }
+ }
                     }
 
                     if(isUserMatch) {
-                        if(llave.ganador.isUser) newsBox.innerHTML = `📰 <b>ESPN:</b> ¡Locura total! ${nombreEquipoUsuario} sella su pase a la siguiente ronda.`;
-                        else newsBox.innerHTML = `📰 <b>ESPN:</b> ¡Se acabó el sueño! ${llave.ganador.nombre} despacha a ${nombreEquipoUsuario} de la Liguilla.`;
+                        let rivalDeLlave = llave.ganador.isUser ? (llave.ganador === llave.tA ? llave.tB : llave.tA) : llave.ganador;
+                        let outletLiguilla = getNewsOutlet(rivalDeLlave.nombre);
+                        let classResLig = llave.ganador.isUser ? "win" : "loss";
+                        
+                        newsBox.innerHTML = generarNoticiaPersonalizada(outletLiguilla, nombreEquipoUsuario, rivalDeLlave.nombre, classResLig, true);
                     }
                 }
             });
-            if(isUserMatch=true && esVuelta === false) {
+ if(isUserMatch=true && esVuelta === false) {
                 lblPj.innerText = `${partidoActual} / 24`;
-                partidoActual++;
+ partidoActual++;
             } else if (isUserMatch=true && esVuelta === true) {
                 lblPj.innerText = `${partidoActual} / 24`;
-                partidoActual++;
+ partidoActual++;
             }
             logsBox.scrollTop = logsBox.scrollHeight;
-        }
+ }
 
         function finalizarTorneo(esCampeon, totalVictorias = 0) {
             botonReiniciar.style.display = "block";
-            const bannerFinal = document.createElement("div");
+ const bannerFinal = document.createElement("div");
             bannerFinal.style.textAlign = "center";
             bannerFinal.style.padding = "1rem";
             bannerFinal.style.fontWeight = "bold";
             bannerFinal.style.marginTop = "1rem";
             bannerFinal.style.fontSize = "1.1rem";
-            if (esCampeon && recordPerfecto) {
+ if (esCampeon && recordPerfecto) {
                 bannerFinal.style.color = "#4ade80";
-                bannerFinal.innerHTML = "🎉 ¡HAZAÑA DE LEYENDA! Lograste el 24-0 invicto absoluto y eres Campeón de la Liga MX! 🏆";
-                newsBox.innerHTML = `📰 <b>ESPN:</b> ¡HISTORIA PURA! ${nombreEquipoUsuario} es el único equipo en lograr el mítico 24-0.`;
-            } else if (esCampeon) {
+ bannerFinal.innerHTML = "🎉 ¡HAZAÑA DE LEYENDA! Lograste el 24-0 invicto absoluto y eres Campeón de la Liga MX! 🏆";
+ newsBox.innerHTML = `📰 <b>ESPN:</b> ¡HISTORIA PURA! ${nombreEquipoUsuario} es el único equipo en lograr el mítico 24-0.`;
+ } else if (esCampeon) {
                 bannerFinal.style.color = "#38bdf8";
-                bannerFinal.innerHTML = "🏆 ¡Felicidades! Te coronaste Campeón de la Liga MX, aunque rompiste la racha invicta en el camino.";
-            } else {
+ bannerFinal.innerHTML = "🏆 ¡Felicidades! Te coronaste Campeón de la Liga MX, aunque rompiste la racha invicta en el camino.";
+ } else {
                 bannerFinal.style.color = "#f87171";
-                bannerFinal.innerHTML = `🏁 Fin del torneo. Te quedaste corto en el objetivo. ¡Ajusta tus piezas y vuelve a intentar!`;
-            }
+ bannerFinal.innerHTML = `🏁 Fin del torneo. Te quedaste corto en el objetivo. ¡Ajusta tus piezas y vuelve a intentar!`;
+ }
             
             logsBox.appendChild(bannerFinal);
-            logsBox.scrollTop = logsBox.scrollHeight;
+ logsBox.scrollTop = logsBox.scrollHeight;
         }
 
         botonReiniciar.addEventListener("click", () => {
@@ -1510,22 +1934,23 @@
             plantillaGuardada = {};
             equipoRatingGlobal = 0;
             resorteosRestantes = 2;
+            statsJugadores = [];
 
             botonReiniciar.style.display = "none";
-            botonIniciarSim.disabled = false;
+             botonIniciarSim.disabled = false;
             botonSimularTodo.style.display = "none";
             botonRandom.disabled = false;
             botonReroll.style.display = "none";
             botonReroll.innerText = `🔄 Resortear (${resorteosRestantes})`;
             botonPasarSim.disabled = true;
             chkHardMode.disabled = false;
-            botonIniciarSim.style.background = "#22c55e";
+             botonIniciarSim.style.background = "#22c55e";
 
             bannerInfo.innerHTML = `🎲 Presiona el botón azul para comenzar a crear tu club`;
             panelOpciones.innerHTML = `<p class="no-selection-msg">Presiona "Obtener Jugadores" para desplegar opciones inmediatas en este panel.</p>`;
             
             renderizarCancha();
-            vistaSimulacion.style.display = "none";
+ vistaSimulacion.style.display = "none";
             vistaDraft.style.display = "block";
         });
     </script>
